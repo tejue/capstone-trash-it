@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Result {
-    private List<Round> results;
+       private List<Round> rounds;
 }
