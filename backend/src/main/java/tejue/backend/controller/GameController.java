@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tejue.backend.model.Result;
+import tejue.backend.service.GameService;
 
 import java.util.List;
 
@@ -13,8 +14,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameController {
 
+    private final GameService service;
     @GetMapping("/results")
-    public List<Result> getAllResults() {
-        return service.getAllResults();
+    public List<Result> getAllGameResults() {
+        return service.getAllGameResults();
     }
 }
