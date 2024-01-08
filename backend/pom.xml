@@ -41,6 +41,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>trash-it</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
