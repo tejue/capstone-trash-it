@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class GameServiceTest {
-    GameRepo gameRepo = mock(GameRepo.class);
-    GameService gameService = new GameService(gameRepo);
+    private final GameRepo gameRepo = mock(GameRepo.class);
+    private final GameService gameService = new GameService(gameRepo);
 
     @Test
     void getPlayerResult_whenPlayerWithId1IsCalled_thenReturnAllResultsOfPlayer1() {
@@ -26,9 +26,9 @@ class GameServiceTest {
         gameRepo.save(testPlayer);
 
         //WHEN & THEN
-        List<Result> actual = gameService.getPlayerResults("1");
-
         when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
+
+        List<Result> actual = gameService.getPlayerResults("1");
         verify(gameRepo).findById("1");
         assertEquals(expectedResults, actual);
     }
