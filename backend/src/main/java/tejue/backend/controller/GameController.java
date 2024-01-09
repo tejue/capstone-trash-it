@@ -1,10 +1,7 @@
 package tejue.backend.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import tejue.backend.model.Player;
+import org.springframework.web.bind.annotation.*;
 import tejue.backend.model.Result;
 import tejue.backend.service.GameService;
 
@@ -16,8 +13,8 @@ import java.util.List;
 public class GameController {
 
     private final GameService service;
-    @GetMapping("/results")
-    public List<Player> getAllGameResults() {
-        return service.getAllGameResults();
+    @GetMapping("/{playerId}/results")
+    public List<Result> getPlayerResults(@PathVariable String playerId) {
+        return service.getPlayerResults(playerId);
     }
 }
