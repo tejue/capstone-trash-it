@@ -25,14 +25,47 @@ class GameServiceTest {
         Player testPlayer = new Player("1", "Jane", expectedResults);
         gameRepo.save(testPlayer);
 
-        when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
-
-        //WHEN
+        //WHEN & THEN
         List<Result> actual = gameService.getPlayerResults("1");
 
-        //THEN
+        when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
         verify(gameRepo).findById("1");
         assertEquals(expectedResults, actual);
     }
 
+
+    @Test
+    void getPlayerResults_whenNoPlayerFound_thenThrowNoSuchElementException() {
+        // GIVEN
+        Player testPlayer = new Player("1", "Jane", null);
+        gameRepo.save(testPlayer);
+
+        //WHEN & THEN
+        when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
+
+        try {
+            gameService.getPlayerResults("1");
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException exception) {
+            assertEquals("No player found!", exception.getMessage());
+        }
+    }
+
+
+    @Test
+    void getPlayerResults_whenPlayerFoundButNoResultsFound_thenThrowNoSuchElementException() {
+        // GIVEN
+        Player testPlayer = new Player("1", "Jane", null);
+        gameRepo.save(testPlayer);
+
+        //WHEN & THEN
+        when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
+
+        try {
+            gameService.getPlayerResults("1");
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException exception) {
+            assertEquals("No results found!", exception.getMessage());
+        }
+    }
 }
