@@ -1,5 +1,6 @@
 package tejue.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ class GameControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private GameRepo testGameRepo;
 
@@ -38,30 +42,14 @@ class GameControllerTest {
         List<Round> testRounds = List.of(new Round(1, 10, 5, 4, 1, 5, 3, 0));
         List<Result> testResults = List.of(new Result(testRounds));
         Player testPlayer = new Player("1", "Jane", testResults);
+        String testResultsAsJSON = objectMapper.writeValueAsString(testResults);
 
-        Mockito.when(testGameRepo.findById("1"))
+                Mockito.when(testGameRepo.findById("1"))
                 .thenReturn(Optional.of(testPlayer));
 
         mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/results"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json("""
-                        [
-                            {
-                              "rounds": [
-                                {
-                                  "noOfRound": 1,
-                                  "garbageTotal": 10,
-                                  "garbageTotalPlastic": 5,
-                                  "garbageTotalPaper": 4,
-                                  "garbageTotalRest": 1,
-                                  "trashedPlastic": 5,
-                                  "trashedPaper": 3,
-                                  "trashedRest": 0
-                                }
-                              ]
-                            }
-                          ]
-                        """));
+                .andExpect(MockMvcResultMatchers.content().json(testResultsAsJSON));
 
     }
 }
