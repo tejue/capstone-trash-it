@@ -1,11 +1,9 @@
 import './App.css'
+import RoundResults from "./components/RoundResults.tsx";
 
-function App() {
+export default function App() {
 
-  return (
-    <>
-    </>
-  )
+    return (
+        <RoundResults/>
+    )
 }
-
-export default App
