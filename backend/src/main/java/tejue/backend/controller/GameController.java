@@ -2,7 +2,7 @@ package tejue.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import tejue.backend.model.Result;
+import tejue.backend.model.Round;
 import tejue.backend.service.GameService;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.List;
 public class GameController {
 
     private final GameService service;
-    @GetMapping("/{playerId}/results")
-    public List<Result> getPlayerResults(@PathVariable String playerId) {
-        return service.getPlayerResults(playerId);
+    @GetMapping("/{playerId}/rounds")
+    public List<Round> getRoundsResults(@PathVariable String playerId) {
+        return service.getRoundsResults(playerId);
     }
 }
