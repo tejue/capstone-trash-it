@@ -1,6 +1,7 @@
 import {useState} from "react";
 import axios from "axios";
 import {RoundType} from "../types/RoundType.ts";
+import styled from "styled-components";
 
 export default function RoundResults() {
 
@@ -20,11 +21,16 @@ export default function RoundResults() {
             <button onClick={getRoundsResults}>Click</button>
             {rounds
                 .map((round, index) => (
-                    <section key={index}>
+                    <StyledSection key={index}>
                         <p>{`Round: ${round.roundNumber}`}</p>
                         <p>{`You trashed ${round.trashedTotal} / ${round.garbageTotal}`}</p>
-                    </section>
+                    </StyledSection>
                 ))}
         </>
     );
 }
+
+const StyledSection = styled.section`
+  display: flex;
+  gap: 20px;
+`
