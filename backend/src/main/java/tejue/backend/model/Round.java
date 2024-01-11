@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Round {
-      private int noOfRound;
+      private int roundNumber;
       private int garbageTotal;
       private int garbageTotalPlastic;
       private int garbageTotalPaper;

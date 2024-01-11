@@ -16,5 +16,5 @@ public class Player {
     @Id
     private String id;
     private String name;
-    private List<Result> results;
+    private List<Round> rounds;
 }
