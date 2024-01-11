@@ -13,6 +13,7 @@ public class Round {
       private int garbageTotalPlastic;
       private int garbageTotalPaper;
       private int garbageTotalRest;
+      private int trashedTotal;
       private int trashedPlastic;
       private int trashedPaper;
       private int trashedRest;
