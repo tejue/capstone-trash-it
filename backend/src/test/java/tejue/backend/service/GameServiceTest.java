@@ -19,7 +19,7 @@ class GameServiceTest {
     @Test
     void getRoundsResults_whenPlayerWithId1IsCalled_thenReturnAllRoundsResultsOfPlayer1() {
         //GIVEN
-        List<Round> expectedRounds = List.of(new Round(1, 10, 5, 4, 1, 5, 3, 0));
+        List<Round> expectedRounds = List.of(new Round(1, 10, 5, 4, 1, 9, 5, 3, 0));
         Player testPlayer = new Player("1", "Jane", expectedRounds);
         gameRepo.save(testPlayer);
 
