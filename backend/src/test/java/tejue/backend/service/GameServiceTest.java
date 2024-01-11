@@ -2,7 +2,6 @@ package tejue.backend.service;
 
 import org.junit.jupiter.api.Test;
 import tejue.backend.model.Player;
-import tejue.backend.model.Result;
 import tejue.backend.model.Round;
 import tejue.backend.repo.GameRepo;
 
@@ -18,24 +17,23 @@ class GameServiceTest {
     private final GameService gameService = new GameService(gameRepo);
 
     @Test
-    void getPlayerResult_whenPlayerWithId1IsCalled_thenReturnAllResultsOfPlayer1() {
+    void getRoundsResults_whenPlayerWithId1IsCalled_thenReturnAllRoundsResultsOfPlayer1() {
         //GIVEN
-        List<Round> testRounds = List.of(new Round(1, 10, 5, 4, 1, 5, 3, 0));
-        List<Result> expectedResults = List.of(new Result(testRounds));
-        Player testPlayer = new Player("1", "Jane", expectedResults);
+        List<Round> expectedRounds = List.of(new Round(1, 10, 5, 4, 1, 5, 3, 0));
+        Player testPlayer = new Player("1", "Jane", expectedRounds);
         gameRepo.save(testPlayer);
 
         //WHEN & THEN
         when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
 
-        List<Result> actual = gameService.getPlayerResults("1");
+        List<Round> actual = gameService.getRoundsResults("1");
         verify(gameRepo).findById("1");
-        assertEquals(expectedResults, actual);
+        assertEquals(expectedRounds, actual);
     }
 
 
     @Test
-    void getPlayerResults_whenNoPlayerFound_thenThrowNoSuchElementException() {
+    void getRoundsResults_whenNoPlayerFound_thenThrowNoSuchElementException() {
         // GIVEN
         Player testPlayer = new Player("1", "Jane", null);
         gameRepo.save(testPlayer);
@@ -43,19 +41,6 @@ class GameServiceTest {
         //WHEN & THEN
         when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
 
-        assertThrows(NoSuchElementException.class, () -> gameService.getPlayerResults("1"));
-    }
-
-
-    @Test
-    void getPlayerResults_whenPlayerFoundButNoResultsFound_thenThrowNoSuchElementException() {
-        // GIVEN
-        Player testPlayer = new Player("1", "Jane", null);
-        gameRepo.save(testPlayer);
-
-        //WHEN & THEN
-        when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
-
-        assertThrows(NoSuchElementException.class, () -> gameService.getPlayerResults("1"));
+        assertThrows(NoSuchElementException.class, () -> gameService.getRoundsResults("1"));
     }
 }
