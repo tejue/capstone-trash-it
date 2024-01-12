@@ -16,16 +16,18 @@ export default function RoundResults() {
             })
     }
 
-    return (
+   return (
         <>
             <button onClick={getRoundsResults}>Click</button>
-            {rounds
-                .map((round, index) => (
-                    <StyledSection key={index}>
+            {rounds.length === 0 ? (
+                    <p>Nothing to show yet. Play a new round</p>
+                ) : (
+                rounds.map((round) => (
+                    <StyledSection key={round.roundNumber}>
                         <p>{`Round: ${round.roundNumber}`}</p>
                         <p>{`You trashed ${round.trashedTotal} / ${round.garbageTotal}`}</p>
                     </StyledSection>
-                ))}
+                )))}
         </>
     );
 }
