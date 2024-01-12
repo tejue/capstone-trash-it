@@ -14,7 +14,7 @@ public class GameService {
 
     private final GameRepo repo;
 
-    public List<Round> getRoundsResults(String playerId) {
+    public List<Round> getAllRounds(String playerId) {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new NoSuchElementException("No player found!"));
 

@@ -17,7 +17,7 @@ class GameServiceTest {
     private final GameService gameService = new GameService(gameRepo);
 
     @Test
-    void getRoundsResults_whenPlayerWithId1IsCalled_thenReturnAllRoundsResultsOfPlayer1() {
+    void getAllRounds_whenRoundResultsOfPlayerId1AreCalled_thenReturnAllRoundResultsOfPlayerId1() {
         //GIVEN
         List<Round> expectedRounds = List.of(new Round(1, 10, 5, 4, 1, 9, 5, 3, 0));
         Player testPlayer = new Player("1", "Jane", expectedRounds);
@@ -26,14 +26,14 @@ class GameServiceTest {
         //WHEN & THEN
         when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
 
-        List<Round> actual = gameService.getRoundsResults("1");
+        List<Round> actual = gameService.getAllRounds("1");
         verify(gameRepo).findById("1");
         assertEquals(expectedRounds, actual);
     }
 
 
     @Test
-    void getRoundsResults_whenNoPlayerFound_thenThrowNoSuchElementException() {
+    void getAllRounds_whenNoPlayerFound_thenThrowNoSuchElementException() {
         // GIVEN
         Player testPlayer = new Player("1", "Jane", null);
         gameRepo.save(testPlayer);
@@ -41,6 +41,6 @@ class GameServiceTest {
         //WHEN & THEN
         when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
 
-        assertThrows(NoSuchElementException.class, () -> gameService.getRoundsResults("1"));
+        assertThrows(NoSuchElementException.class, () -> gameService.getAllRounds("1"));
     }
 }

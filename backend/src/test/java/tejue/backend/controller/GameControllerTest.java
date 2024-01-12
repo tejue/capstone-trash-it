@@ -35,7 +35,7 @@ class GameControllerTest {
     private GameRepo testGameRepo;
 
     @Test
-    void getPlayerResults_whenResultsOfPlayerWithId1AreCalled_thenReturnResult() throws Exception {
+    void getAllRounds_whenRoundResultsOfPlayerId1AreCalled_thenReturnAllRoundResultsOfPlayerId1() throws Exception {
         List<Round> testRounds = List.of(new Round(1, 10, 5, 4, 1, 9, 5, 3, 0));
         Player testPlayer = new Player("1", "Jane", testRounds);
         String testRoundsAsJSON = objectMapper.writeValueAsString(testRounds);

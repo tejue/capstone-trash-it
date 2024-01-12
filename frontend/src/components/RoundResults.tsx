@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {RoundType} from "../types/RoundType.ts";
 import styled from "styled-components";
+import {RoundType} from "../types/RoundType.ts";
 
 export default function RoundResults() {
 
@@ -10,10 +10,10 @@ export default function RoundResults() {
     const playerId: string = "2"
 
     useEffect(() => {
-        getRoundsResults()
+        getAllRounds()
     }, []);
 
-    function getRoundsResults() {
+    function getAllRounds() {
         axios.get(`/api/game/${playerId}/rounds`)
             .then(response => {
                 setRounds(response.data);

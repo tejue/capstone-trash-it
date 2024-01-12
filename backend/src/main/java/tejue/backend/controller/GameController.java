@@ -14,7 +14,7 @@ public class GameController {
 
     private final GameService service;
     @GetMapping("/{playerId}/rounds")
-    public List<Round> getRoundsResults(@PathVariable String playerId) {
-        return service.getRoundsResults(playerId);
+    public List<Round> getAllRounds(@PathVariable String playerId) {
+        return service.getAllRounds(playerId);
     }
 }
