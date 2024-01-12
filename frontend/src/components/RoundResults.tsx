@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {RoundType} from "../types/RoundType.ts";
 import styled from "styled-components";
@@ -7,7 +7,11 @@ export default function RoundResults() {
 
     const [rounds, setRounds] = useState<RoundType[]>([])
 
-    const playerId: string = "1"
+    const playerId: string = "2"
+
+    useEffect(() => {
+        getRoundsResults()
+    }, []);
 
     function getRoundsResults() {
         axios.get(`/api/game/${playerId}/rounds`)
@@ -16,16 +20,15 @@ export default function RoundResults() {
             })
     }
 
-   return (
+    return (
         <>
-            <button onClick={getRoundsResults}>Click</button>
             {rounds.length === 0 ? (
-                    <p>Nothing to show yet. Play a new round</p>
-                ) : (
+                <RoundBox>You have no saved result so far</RoundBox>
+            ) : (
                 rounds.map((round) => (
                     <StyledSection key={round.roundNumber}>
-                        <p>{`Round: ${round.roundNumber}`}</p>
-                        <p>{`You trashed ${round.trashedTotal} / ${round.garbageTotal}`}</p>
+                        <RoundBox>{`Round: ${round.roundNumber}`}</RoundBox>
+                        <RoundBox>{`You trashed ${round.trashedTotal} / ${round.garbageTotal}`}</RoundBox>
                     </StyledSection>
                 )))}
         </>
@@ -34,5 +37,11 @@ export default function RoundResults() {
 
 const StyledSection = styled.section`
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
 `
+const RoundBox = styled.p`
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+ `
