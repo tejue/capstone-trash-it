@@ -16,9 +16,6 @@ import tejue.backend.model.TrashType;
 import tejue.backend.repo.TrashCanRepo;
 
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
