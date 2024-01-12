@@ -18,6 +18,6 @@ public class TrashController {
 
     @GetMapping()
     public List<Trash> getAllTrash() {
-        return service.getAllTrash();
+        return service.getRandomMax();
     }
 }
