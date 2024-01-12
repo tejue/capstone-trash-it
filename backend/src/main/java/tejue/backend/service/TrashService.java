@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tejue.backend.model.Trash;
 import tejue.backend.repo.TrashRepo;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,6 +16,11 @@ public class TrashService {
     private final TrashRepo repo;
 
     public List<Trash> getAllTrash() {
-        return repo.findAll();
+        List<Trash> allTrash = repo.findAll();
+
+        Collections.shuffle(allTrash);
+        int size = Math.min(10, allTrash.size());
+
+        return new ArrayList<>(allTrash.subList(0, size));
     }
 }
