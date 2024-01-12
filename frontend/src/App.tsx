@@ -1,11 +1,12 @@
 import './App.css'
+import RoundResults from "./components/RoundResults.tsx";
+import {Route, Routes} from "react-router-dom";
 
-function App() {
+export default function App() {
 
-  return (
-    <>
-    </>
-  )
+    return (
+            <Routes>
+                <Route path={"/rounds"} element={<RoundResults/>}></Route>
+            </Routes>
+    )
 }
-
-export default App

@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Round {
-      private int noOfRound;
+      private int roundNumber;
       private int garbageTotal;
       private int garbageTotalPlastic;
       private int garbageTotalPaper;
       private int garbageTotalRest;
+      private int trashedTotal;
       private int trashedPlastic;
       private int trashedPaper;
       private int trashedRest;

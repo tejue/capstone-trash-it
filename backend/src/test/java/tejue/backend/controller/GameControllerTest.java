@@ -12,14 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tejue.backend.model.Player;
-import tejue.backend.model.Result;
 import tejue.backend.model.Round;
 import tejue.backend.repo.GameRepo;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,18 +35,16 @@ class GameControllerTest {
     private GameRepo testGameRepo;
 
     @Test
-    void getPlayerResults_whenResultsOfPlayerWithId1AreCalled_thenReturnResult() throws Exception {
-        List<Round> testRounds = List.of(new Round(1, 10, 5, 4, 1, 5, 3, 0));
-        List<Result> testResults = List.of(new Result(testRounds));
-        Player testPlayer = new Player("1", "Jane", testResults);
-        String testResultsAsJSON = objectMapper.writeValueAsString(testResults);
+    void getAllRounds_whenRoundResultsOfPlayerId1AreCalled_thenReturnAllRoundResultsOfPlayerId1() throws Exception {
+        List<Round> testRounds = List.of(new Round(1, 10, 5, 4, 1, 9, 5, 3, 0));
+        Player testPlayer = new Player("1", "Jane", testRounds);
+        String testRoundsAsJSON = objectMapper.writeValueAsString(testRounds);
 
-                Mockito.when(testGameRepo.findById("1"))
+        Mockito.when(testGameRepo.findById("1"))
                 .thenReturn(Optional.of(testPlayer));
 
-        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/results"))
+        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/rounds"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(testResultsAsJSON));
-
+                .andExpect(MockMvcResultMatchers.content().json(testRoundsAsJSON));
     }
 }
