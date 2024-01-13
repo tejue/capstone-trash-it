@@ -15,7 +15,7 @@ public class TrashService {
 
     private final TrashRepo repo;
 
-    public List<Trash> getRandomMax() {
+    public List<Trash> getRandomTrashMax() {
         List<Trash> allTrash = repo.findAll();
 
         Collections.shuffle(allTrash);
