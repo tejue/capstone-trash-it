@@ -11,8 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class TrashCanServiceTest {
 
     private final TrashCanRepo trashCanRepo = mock(TrashCanRepo.class);
@@ -24,10 +22,12 @@ class TrashCanServiceTest {
         List<TrashCan> expectedTrashCans = List.of(new TrashCan("1", "Paper Can", "blue", "", TrashType.PAPER, List.of("1", "7", "10")));
         trashCanRepo.saveAll(expectedTrashCans);
 
-        //WHEN & THEN
         when(trashCanRepo.findAll()).thenReturn(expectedTrashCans);
 
+        //WHEN
         List<TrashCan> actual = trashCanService.getAllTrashCans();
+
+        //THEN
         verify(trashCanRepo).findAll();
         assertEquals(expectedTrashCans, actual);
     }
@@ -38,10 +38,12 @@ class TrashCanServiceTest {
         List<TrashCan> expectedTrashCans = List.of();
         trashCanRepo.saveAll(expectedTrashCans);
 
-        //WHEN & THEN
         when(trashCanRepo.findAll()).thenReturn(Collections.emptyList());
 
+        //WHEN
         List<TrashCan> actual = trashCanService.getAllTrashCans();
+
+        //THEN
         verify(trashCanRepo).findAll();
         assertEquals(expectedTrashCans, actual);
     }

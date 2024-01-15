@@ -23,10 +23,12 @@ class GameServiceTest {
         Player testPlayer = new Player("1", "Jane", expectedRounds);
         gameRepo.save(testPlayer);
 
-        //WHEN & THEN
         when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
 
+        //WHEN
         List<Round> actual = gameService.getAllRounds("1");
+
+        //THEN
         verify(gameRepo).findById("1");
         assertEquals(expectedRounds, actual);
     }
@@ -38,9 +40,9 @@ class GameServiceTest {
         Player testPlayer = new Player("1", "Jane", null);
         gameRepo.save(testPlayer);
 
-        //WHEN & THEN
         when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
 
+        //WHEN & THEN
         assertThrows(NoSuchElementException.class, () -> gameService.getAllRounds("1"));
     }
 }
