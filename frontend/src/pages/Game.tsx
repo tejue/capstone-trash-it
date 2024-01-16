@@ -36,8 +36,6 @@ export default function Game() {
 
     function handleDragEnd(event: DragEndEvent) {
         const {active, over} = event
-        console.log("ACTIVE " + active.id);
-
 
         if (active && over) {
             setDragResults((prevResults) => {
@@ -63,6 +61,5 @@ export default function Game() {
             <Trash trashes={trashes}/>
             <TrashCan trashCans={trashCans}/>
         </DndContext>
-
     )
-}
+  }
