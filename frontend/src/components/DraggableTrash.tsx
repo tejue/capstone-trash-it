@@ -7,7 +7,7 @@ type DraggableTrashProps = {
     trash: TrashType;
     index: number;
 }
-export default function DraggableTrash(props: DraggableTrashProps) {
+export default function DraggableTrash(props: Readonly<DraggableTrashProps>) {
 
     const {attributes, listeners, setNodeRef, transform} = useDraggable({id: props.trash.id});
 

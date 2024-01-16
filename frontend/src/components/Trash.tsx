@@ -6,7 +6,7 @@ type TrashProps = {
     trashes: TrashType [];
 }
 
-export default function Trash(props: TrashProps) {
+export default function Trash(props: Readonly<TrashProps>) {
 
     return (
         <StyledSection>

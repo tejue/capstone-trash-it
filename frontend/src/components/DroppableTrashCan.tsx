@@ -6,7 +6,7 @@ type DroppableTrashCanProps = {
     trashCan: TrashCanType;
 }
 
-export default function DroppableTrashCan(props: DroppableTrashCanProps) {
+export default function DroppableTrashCan(props: Readonly<DroppableTrashCanProps>) {
 
     const {isOver, setNodeRef} = useDroppable({
         id: props.trashCan.id,
