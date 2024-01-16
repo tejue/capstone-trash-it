@@ -48,15 +48,15 @@ export default function Game() {
                 return newResults;
             });
             setTrashes((prevTrashes) => {
-                const trashToSort = prevTrashes.filter((trash) => trash.id !== active.id)
-                handleGameEnd(trashToSort);
-                return trashToSort;
+                const trashToRecycle = prevTrashes.filter((trash) => trash.id !== active.id)
+                handleGameEnd(trashToRecycle);
+                return trashToRecycle;
             });
         }
     }
 
-    function handleGameEnd(trashToSort: TrashType []) {
-        if (trashToSort.length === 0) setGameEnd(true)
+    function handleGameEnd(trashToRecycle: TrashType []) {
+        if (trashToRecycle.length === 0) setGameEnd(true)
     }
 
     console.log(dragResults)
@@ -66,10 +66,7 @@ export default function Game() {
             onDragEnd={handleDragEnd}
         >
             {gameEnd ? (
-                <div>
-                    <h1>Well Done!</h1>
-                    <p>All trash is sorted.</p>
-                </div>
+                <p>Well Done! All trash is sorted.</p>
             ) : (
                 <>
                     <Trash trashes={trashes}/>
