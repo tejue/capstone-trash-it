@@ -2,7 +2,7 @@ import Trash from "../components/Trash.tsx";
 import TrashCan from "../components/TrashCan.tsx";
 import {TrashType} from "../types/TrashType.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
-import {DndContext, closestCenter, DragEndEvent} from "@dnd-kit/core";
+import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
@@ -63,7 +63,6 @@ export default function Game() {
 
     return (
         <DndContext
-            collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
         >
             {gameEnd ? (
