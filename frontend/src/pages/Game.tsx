@@ -14,14 +14,15 @@ export default function Game() {
         [key: string]: { trashCanId: string; trashIds: string[] };
     }>({});
 
-    const [initialTrashes, setInitialTrashes] = useState(false);
+    const [initialTrashes, setInitialTrashes] = useState<boolean>(false);
+    const [gameEnd, setGameEnd] = useState<boolean>(false);
 
     useEffect(() => {
         if (!initialTrashes) {
             getTrashes();
             setInitialTrashes(true);
         }
-        getTrashCans()
+        getTrashCans();
     }, [initialTrashes]);
 
     function getTrashes() {
@@ -47,9 +48,15 @@ export default function Game() {
                 return newResults;
             });
             setTrashes((prevTrashes) => {
-                return prevTrashes.filter((trash) => trash.id !== active.id);
+                const trashToSort = prevTrashes.filter((trash) => trash.id !== active.id)
+                handleGameEnd(trashToSort);
+                return trashToSort;
             });
         }
+    }
+
+    function handleGameEnd(trashToSort: TrashType []) {
+        if (trashToSort.length === 0) setGameEnd(true)
     }
 
     console.log(dragResults)
@@ -57,9 +64,18 @@ export default function Game() {
     return (
         <DndContext
             collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}>
-            <Trash trashes={trashes}/>
-            <TrashCan trashCans={trashCans}/>
+            onDragEnd={handleDragEnd}
+        >
+            {gameEnd ? (
+                <div>
+                    <h1>Well Done!</h1>
+                    <p>All trash is sorted.</p>
+                </div>
+            ) : (
+                <>
+                    <Trash trashes={trashes}/>
+                    <TrashCan trashCans={trashCans}/>
+                </>)}
         </DndContext>
     )
-  }
+}
