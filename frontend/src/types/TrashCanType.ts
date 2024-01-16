@@ -4,5 +4,5 @@ export type TrashCanType = {
     color?: string,
     image: string;
     trashType: string,
-    trashIds?: [];
+    trashIds?: string[];
 }
