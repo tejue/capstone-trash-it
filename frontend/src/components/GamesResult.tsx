@@ -17,8 +17,10 @@ export default function GamesResult() {
         axios.get(`/api/game/${playerId}/games`)
             .then(response => {
                 setGames(response.data);
-                console.log(response.data)
             })
+            .catch(error => {
+                console.error("Request failed: ", error);
+            });
     }
 
     return (
@@ -45,4 +47,4 @@ const GameBox = styled.p`
   border-radius: 5px;
   padding: 20px;
   text-align: center;
- `
+`

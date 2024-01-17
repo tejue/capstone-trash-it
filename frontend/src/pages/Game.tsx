@@ -26,12 +26,22 @@ export default function Game() {
 
     function getTrashes() {
         axios.get("api/trash")
-            .then(response => setTrashes((response.data)))
+            .then(response => {
+                setTrashes(response.data)
+            })
+            .catch(error => {
+                console.error("Request failed: ", error);
+            });
     }
 
     function getTrashCans() {
         axios.get("api/trashcan")
-            .then(response => setTrashCans((response.data)))
+            .then(response => {
+                setTrashCans(response.data)
+            })
+            .catch(error => {
+                console.error("Request failed: ", error);
+            });
     }
 
     const playerId: string = "5"
@@ -39,11 +49,8 @@ export default function Game() {
 
     function postPlayerResult() {
         axios.post(`/api/game/${playerId}/${gameId}`, playerResult)
-            .then(() => {
-                console.log("playerResult successfully transmitted")
-            })
             .catch(error => {
-                console.error("playerResult could not be transmitted:", error);
+                console.error("data could not be transmitted:", error);
             });
     }
 
