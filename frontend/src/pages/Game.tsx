@@ -5,13 +5,13 @@ import {TrashCanType} from "../types/TrashCanType.ts";
 import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {PlayersResultType} from "../types/PlayersResultType.ts";
+import {PlayerResultType} from "../types/PlayerResultType.ts";
 
 export default function Game() {
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
-    const [playersResults, setPlayersResults] = useState<PlayersResultType>({});
+    const [playerResult, setPlayerResult] = useState<PlayerResultType>({});
 
     const [initialTrashes, setInitialTrashes] = useState<boolean>(false);
     const [gameEnd, setGameEnd] = useState<boolean>(false);
@@ -34,16 +34,16 @@ export default function Game() {
             .then(response => setTrashCans((response.data)))
     }
 
-    const playerId: string = "2"
-    const gameId: string = "2"
+    const playerId: string = "5"
+    const gameId: string = "1"
 
-    function postPlayersResults() {
-        axios.post(`/api/game/${playerId}/${gameId}`, playersResults)
+    function postPlayerResult() {
+        axios.post(`/api/game/${playerId}/${gameId}`, playerResult)
             .then(() => {
-                console.log("playersResults successfully transmitted")
+                console.log("playerResult successfully transmitted")
             })
             .catch(error => {
-                console.error("playersResults could not be transmitted:", error);
+                console.error("playerResult could not be transmitted:", error);
             });
     }
 
@@ -51,7 +51,7 @@ export default function Game() {
         const {active, over} = event
 
         if (active && over) {
-            setPlayersResults((prevResults) => {
+            setPlayerResult((prevResults) => {
                 const newResults = {...prevResults};
                 newResults[over.id] = {
                     trashCanId: over.id as string,
@@ -78,7 +78,7 @@ export default function Game() {
             {gameEnd ? (
                 <>
                     <p>Well Done! All trash is sorted.</p>
-                    <button onClick={postPlayersResults}>See your result</button>
+                    <button onClick={postPlayerResult}>See your result</button>
                 </>
             ) : (
                 <>
