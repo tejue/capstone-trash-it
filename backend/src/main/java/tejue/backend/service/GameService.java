@@ -2,6 +2,7 @@ package tejue.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.DbResult;
 import tejue.backend.model.Game;
 import tejue.backend.model.Player;
@@ -22,9 +23,9 @@ public class GameService {
         return player.getGames();
     }
 
-    public Player savePlayerResult(String playerId, String gameId, Map<String, DbResult> playerResult) {
+    public Player savePlayerResult(String playerId, String gameId, Map<String, DbResult> playerResult) throws PlayerNotFoundException{
         Player player = repo.findById(playerId)
-                .orElseThrow(() -> new NoSuchElementException("No player found!"));
+                .orElseThrow(() -> new PlayerNotFoundException("Player with id " + playerId + " not found!"));
 
         List<Game> games = player.getGames();
 

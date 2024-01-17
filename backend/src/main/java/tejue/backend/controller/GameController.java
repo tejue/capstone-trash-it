@@ -2,6 +2,7 @@ package tejue.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.DbResult;
 import tejue.backend.model.Game;
 import tejue.backend.model.Player;
@@ -22,7 +23,7 @@ public class GameController {
     }
 
     @PostMapping("/{playerId}/{gameId}")
-    public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) {
+    public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) throws PlayerNotFoundException {
         return service.savePlayerResult(playerId, gameId, playerResult);
     }
 
