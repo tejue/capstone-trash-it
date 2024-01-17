@@ -34,6 +34,19 @@ export default function Game() {
             .then(response => setTrashCans((response.data)))
     }
 
+    const playerId: string = "2"
+    const gameId: string = "2"
+
+    function postPlayersResults() {
+        axios.post(`/api/game/${playerId}/${gameId}`, playersResults)
+            .then(() => {
+                console.log("playersResults successfully transmitted")
+            })
+            .catch(error => {
+                console.error("playersResults could not be transmitted:", error);
+            });
+    }
+
     function handleDragEnd(event: DragEndEvent) {
         const {active, over} = event
 
@@ -58,14 +71,15 @@ export default function Game() {
         if (trashToRecycle.length === 0) setGameEnd(true)
     }
 
-    console.log(playersResults)
-
     return (
         <DndContext
             onDragEnd={handleDragEnd}
         >
             {gameEnd ? (
-                <p>Well Done! All trash is sorted.</p>
+                <>
+                    <p>Well Done! All trash is sorted.</p>
+                    <button onClick={postPlayersResults}>See your result</button>
+                </>
             ) : (
                 <>
                     <Trash trashes={trashes}/>
