@@ -16,5 +16,6 @@ public class Player {
     @Id
     private String id;
     private String name;
-    private List<Round> rounds;
+    private List<Game> games;
+    //private List<Round> rounds;
 }

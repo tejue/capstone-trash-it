@@ -5,14 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Game {
-    private String gameId;
-    private List<DbResult> gameResult;
-    private List<DbResult> playerResult;
-    private List<DbResult> dataResult;
+public class DbResult {
+    private String trashCanId;
+    private List<String> trashIds;
 }

@@ -2,11 +2,13 @@ package tejue.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tejue.backend.model.DbResult;
+import tejue.backend.model.Game;
 import tejue.backend.model.Player;
 import tejue.backend.model.Round;
 import tejue.backend.repo.GameRepo;
-import java.util.List;
-import java.util.NoSuchElementException;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -14,10 +16,30 @@ public class GameService {
 
     private final GameRepo repo;
 
-    public List<Round> getAllRounds(String playerId) {
+/*    public List<Round> getAllRounds(String playerId) {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new NoSuchElementException("No player found!"));
 
         return player.getRounds();
-    }}
+    }*/
+
+    public Player savePlayerResult(String playerId, String gameId, Map<String, DbResult> playerResult) {
+        Player player = repo.findById(playerId)
+                .orElseThrow(() -> new NoSuchElementException("No player found!"));
+
+        List<Game> games = player.getGames();
+
+        Optional<Game> foundGame = games.stream()
+                .filter(game -> game.getGameId().equals(gameId))
+                .findFirst();
+
+
+        if (foundGame.isPresent()) {
+            List<DbResult> dbPlayerResult = new ArrayList<>(playerResult.values());
+            foundGame.get().setPlayerResult(dbPlayerResult);
+        }
+        repo.save(player);
+        return player;
+    }
+}
 
