@@ -6,9 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TrashType {
-    PLASTIC ("plastic"),
-    PAPER ("paper"),
-    REST ("rest");
+    PAPER("paper"),
+    RECYCLE("recyclable"),
+    REST("rest");
 
     private final String value;
 }
