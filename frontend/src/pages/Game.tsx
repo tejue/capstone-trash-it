@@ -5,14 +5,13 @@ import {TrashCanType} from "../types/TrashCanType.ts";
 import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {PlayersResultType} from "../types/PlayersResultType.ts";
 
 export default function Game() {
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
-    const [dragResults, setDragResults] = useState<{
-        [key: string]: { trashCanId: string; trashIds: string[] };
-    }>({});
+    const [playersResults, setPlayersResults] = useState<PlayersResultType>({});
 
     const [initialTrashes, setInitialTrashes] = useState<boolean>(false);
     const [gameEnd, setGameEnd] = useState<boolean>(false);
@@ -39,7 +38,7 @@ export default function Game() {
         const {active, over} = event
 
         if (active && over) {
-            setDragResults((prevResults) => {
+            setPlayersResults((prevResults) => {
                 const newResults = {...prevResults};
                 newResults[over.id] = {
                     trashCanId: over.id as string,
@@ -59,7 +58,7 @@ export default function Game() {
         if (trashToRecycle.length === 0) setGameEnd(true)
     }
 
-    console.log(dragResults)
+    console.log(playersResults)
 
     return (
         <DndContext
