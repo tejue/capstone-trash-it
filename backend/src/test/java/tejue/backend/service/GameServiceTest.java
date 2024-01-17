@@ -18,7 +18,7 @@ class GameServiceTest {
     private final GameService gameService = new GameService(gameRepo);
 
     @Test
-    void getAllRounds_whenRoundResultsOfPlayerId1AreCalled_thenReturnAllRoundResultsOfPlayerId1() {
+    void getAllGames_whenGamesOfPlayerId1AreCalled_thenReturnAllGamesOfPlayerId1() {
         //GIVEN
         List<DbResult> testDbResult = List.of(new DbResult("1", List.of("1")));
         List<Game> expectedGames = List.of(new Game("1", testDbResult, testDbResult, testDbResult));

@@ -11,6 +11,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import tejue.backend.model.DbResult;
+import tejue.backend.model.Game;
 import tejue.backend.model.Player;
 import tejue.backend.repo.GameRepo;
 
@@ -34,16 +36,17 @@ class GameControllerTest {
     private GameRepo testGameRepo;
 
     @Test
-    void getAllRounds_whenRoundResultsOfPlayerId1AreCalled_thenReturnAllRoundResultsOfPlayerId1() throws Exception {
-        List<Round> testRounds = List.of(new Round(1, 10, 5, 4, 1, 9, 5, 3, 0));
-        Player testPlayer = new Player("1", "Jane", testRounds);
-        String testRoundsAsJSON = objectMapper.writeValueAsString(testRounds);
+    void getAllGames_whenGamesOfPlayerId1AreCalled_thenReturnAllGamesOfPlayerId1() throws Exception {
+        List<DbResult> testDbResult = List.of(new DbResult("1", List.of("1")));
+        List<Game> testGames = List.of(new Game("1", testDbResult, testDbResult, testDbResult));
+        Player testPlayer = new Player("1", "Jane", testGames);
+        String testGamesAsJSON = objectMapper.writeValueAsString(testGames);
 
         Mockito.when(testGameRepo.findById("1"))
                 .thenReturn(Optional.of(testPlayer));
 
-        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/rounds"))
+        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/games"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(testRoundsAsJSON));
+                .andExpect(MockMvcResultMatchers.content().json(testGamesAsJSON));
     }
 }
