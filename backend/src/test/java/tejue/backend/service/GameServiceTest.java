@@ -1,6 +1,8 @@
 package tejue.backend.service;
 
 import org.junit.jupiter.api.Test;
+import tejue.backend.model.DbResult;
+import tejue.backend.model.Game;
 import tejue.backend.model.Player;
 import tejue.backend.repo.GameRepo;
 
@@ -18,18 +20,19 @@ class GameServiceTest {
     @Test
     void getAllRounds_whenRoundResultsOfPlayerId1AreCalled_thenReturnAllRoundResultsOfPlayerId1() {
         //GIVEN
-        List<Round> expectedRounds = List.of(new Round(1, 10, 5, 4, 1, 9, 5, 3, 0));
-        Player testPlayer = new Player("1", "Jane", expectedRounds);
+        List<DbResult> testDbResult = List.of(new DbResult("1", List.of("1")));
+        List<Game> expectedGames = List.of(new Game("1", testDbResult, testDbResult, testDbResult));
+        Player testPlayer = new Player("1", "Jane", expectedGames);
         gameRepo.save(testPlayer);
 
         when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
 
         //WHEN
-        List<Round> actual = gameService.getAllRounds("1");
+        List<Game> actual = gameService.getAllGames("1");
 
         //THEN
         verify(gameRepo).findById("1");
-        assertEquals(expectedRounds, actual);
+        assertEquals(expectedGames, actual);
     }
 
 
@@ -42,6 +45,6 @@ class GameServiceTest {
         when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
 
         //WHEN & THEN
-        assertThrows(NoSuchElementException.class, () -> gameService.getAllRounds("1"));
+        assertThrows(NoSuchElementException.class, () -> gameService.getAllGames("1"));
     }
 }
