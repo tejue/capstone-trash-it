@@ -7,16 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.DbResult;
 import tejue.backend.model.Game;
 import tejue.backend.model.Player;
 import tejue.backend.repo.GameRepo;
+import tejue.backend.service.GameService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SpringBootTest
@@ -32,7 +37,7 @@ class GameControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @Autowired
     private GameRepo testGameRepo;
 
     @Test
@@ -42,11 +47,32 @@ class GameControllerTest {
         Player testPlayer = new Player("1", "Jane", testGames);
         String testGamesAsJSON = objectMapper.writeValueAsString(testGames);
 
-        Mockito.when(testGameRepo.findById("1"))
-                .thenReturn(Optional.of(testPlayer));
+        testGameRepo.save(testPlayer);
 
+        //WHEN & THEN
         mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/games"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(testGamesAsJSON));
+    }
+
+    @Test
+    void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws Exception {
+        //GIVEN
+        DbResult testDbResult = new DbResult("1", List.of("1", "2", "3"));
+        List<DbResult> testDbPlayerResult = List.of(testDbResult);
+        Map<String, DbResult> testPlayerResult = Map.of("1", testDbResult);
+        List<Game> testGames = List.of(new Game("1", List.of(testDbResult), testDbPlayerResult, List.of(testDbResult)));
+        Player testPlayer = new Player("1", "Jane", testGames);
+        String testPlayerResultAsJSON = objectMapper.writeValueAsString(testPlayerResult);
+        String testPlayerAsJSON = objectMapper.writeValueAsString(testPlayer);
+
+        testGameRepo.save(testPlayer);
+
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.post(BASE_URL + "/1/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testPlayerResultAsJSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(testPlayerAsJSON));
     }
 }
