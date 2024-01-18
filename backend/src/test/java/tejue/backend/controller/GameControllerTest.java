@@ -2,27 +2,21 @@ package tejue.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.DbResult;
 import tejue.backend.model.Game;
 import tejue.backend.model.Player;
 import tejue.backend.repo.GameRepo;
-import tejue.backend.service.GameService;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -69,7 +63,7 @@ class GameControllerTest {
         testGameRepo.save(testPlayer);
 
         //WHEN & THEN
-        mvc.perform(MockMvcRequestBuilders.post(BASE_URL + "/1/1")
+        mvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(testPlayerResultAsJSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

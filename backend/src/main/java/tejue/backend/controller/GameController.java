@@ -22,7 +22,7 @@ public class GameController {
         return service.getAllGames(playerId);
     }
 
-    @PostMapping("/{playerId}/{gameId}")
+    @PutMapping("/{playerId}/{gameId}")
     public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) throws PlayerNotFoundException {
         return service.savePlayerResult(playerId, gameId, playerResult);
     }
