@@ -24,12 +24,11 @@ export default function GameResult() {
             })
     }
 
-    console.log(gameResult);
     return(
         <>
             {gameResult?.map((result) => (
                 <StyledSection key={result.trashCanId}>
-                    <GameBox bgColor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
+                    <GameBox bgcolor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
                 </StyledSection>
             ))}
         </>
@@ -37,7 +36,7 @@ export default function GameResult() {
 }
 
 type GameBoxProps = {
-    bgColor: string;
+    bgcolor: string;
 }
 
 const StyledSection = styled.section`
@@ -52,5 +51,5 @@ const GameBox = styled.p<GameBoxProps>`
   border-radius: 5px;
   padding: 20px;
   text-align: center;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.bgcolor};
 `
