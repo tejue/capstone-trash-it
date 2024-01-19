@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GameResult {
-    private int totalPoints;
+public class DbResult {
+    private String trashCanId;
+    private List<String> trashIds;
 }

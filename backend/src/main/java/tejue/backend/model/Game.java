@@ -10,8 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Game {
-    private String id;
-    private String mode;
-    private List<String> trashCanIds;
-    private GameResult gameResult;
+    private String gameId;
+    private List<DbResult> gameResult;
+    private List<DbResult> playerResult;
+    private List<DbResult> dataResult;
 }

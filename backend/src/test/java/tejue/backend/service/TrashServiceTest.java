@@ -20,9 +20,9 @@ class TrashServiceTest {
     void getRandomTrashMax_whenCalled_thenReturnListOfTrash() {
         //GIVEN
         List<Trash> expectedTrash = Arrays.asList(
-                new Trash("1", "Newspaper", "", TrashType.PAPER),
-                new Trash("2", "Plastic Bottle", "", TrashType.PLASTIC),
-                new Trash("3", "Yoghurt Cup", "", TrashType.PLASTIC)
+                new Trash("1", "Newspaper", "", "1", TrashType.PAPER),
+                new Trash("2", "Plastic Bottle", "", "2", TrashType.RECYCLE),
+                new Trash("3", "Yoghurt Cup", "", "2", TrashType.RECYCLE)
         );
         trashRepo.saveAll(expectedTrash);
 

@@ -35,7 +35,7 @@ class TrashControllerTest {
 
     @Test
     void getAllTrash_whenAllTrashIsCalled_thenReturnAllTrash() throws Exception {
-        List<Trash> testTrash = List.of(new Trash("1", "Newspaper", "", TrashType.PAPER));
+        List<Trash> testTrash = List.of(new Trash("1", "Newspaper", "", "1", TrashType.PAPER));
         String testTrashAsJSON = objectMapper.writeValueAsString(testTrash);
 
         Mockito.when(testTrashRepo.findAll())
