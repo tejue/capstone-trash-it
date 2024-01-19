@@ -48,7 +48,7 @@ export default function Game() {
     const gameId: string = "1"
 
     function postPlayerResult() {
-        axios.post(`/api/game/${playerId}/${gameId}`, playerResult)
+        axios.put(`/api/game/${playerId}/${gameId}`, playerResult)
             .catch(error => {
                 console.error("data could not be transmitted:", error);
             });
