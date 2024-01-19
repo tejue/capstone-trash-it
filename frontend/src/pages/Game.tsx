@@ -6,11 +6,14 @@ import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {PlayerResultType} from "../types/PlayerResultType.ts";
+import {useNavigate} from 'react-router-dom';
 
 export default function Game() {
 
     const playerId: string = "5"
     const gameId: string = "1"
+
+    const navigate = useNavigate();
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
@@ -50,8 +53,13 @@ export default function Game() {
 
     function postPlayerResult() {
         axios.put(`/api/game/${playerId}/${gameId}`, playerResult)
+
+
             .catch(error => {
                 console.error("data could not be transmitted:", error);
+            })
+            .finally(() => {
+                navigate('/game-result');
             });
     }
 
