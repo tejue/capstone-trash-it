@@ -2,6 +2,7 @@ package tejue.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tejue.backend.exception.GameNotFoundException;
 import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.*;
 import tejue.backend.service.GameService;
@@ -31,7 +32,7 @@ public class GameController {
     }
 
     @GetMapping("/{playerId}/{gameId}/gameResult")
-    public List<GamePoints> getGameResult(@PathVariable String playerId, @PathVariable String gameId) throws PlayerNotFoundException {
+    public GamePoints getGameResult(@PathVariable String playerId, @PathVariable String gameId) throws PlayerNotFoundException, GameNotFoundException {
         return service.getGameResult(playerId, gameId);
     }
 

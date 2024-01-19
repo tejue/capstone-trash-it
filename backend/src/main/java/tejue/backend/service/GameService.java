@@ -2,6 +2,7 @@ package tejue.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tejue.backend.exception.GameNotFoundException;
 import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.*;
 import tejue.backend.repo.GameRepo;
@@ -84,12 +85,11 @@ public class GameService {
                 .toList();
     }
 
-    public List<GamePoints> getGameResult(String playerId, String gameId) throws PlayerNotFoundException {
+    public GamePoints getGameResult(String playerId, String gameId) throws PlayerNotFoundException, GameNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
 
         List<Game> games = player.getGames();
-        List<GamePoints> gamePointsList = new ArrayList<>();
 
         for (Game game : games) {
             if (game.getGameId().equals(gameId)) {
@@ -100,11 +100,10 @@ public class GameService {
                 int playerPointsTotal = setOfPoints.stream().mapToInt(SetOfPoints::getPlayerPoints).sum();
                 int dataPointsTotal = setOfPoints.stream().mapToInt(SetOfPoints::getDataPoints).sum();
 
-                GamePoints gamePoints = new GamePoints(playerPointsTotal, dataPointsTotal, setOfPoints);
-                gamePointsList.add(gamePoints);
+                return new GamePoints(playerPointsTotal, dataPointsTotal, setOfPoints);
             }
         }
-        return gamePointsList;
+        throw new GameNotFoundException("Spiel mit der ID " + gameId + " wurde nicht gefunden");
     }
 
     private List<SetOfPoints> calculateSetOfPoints(List<DbResult> playerResult, List<DbResult> dataResult) {
@@ -151,7 +150,7 @@ public class GameService {
         List<String> playerTrashIds = playerResult.getTrashIds();
         List<String> dataTrashIds = dataResult.getTrashIds();
 
-       int playerPointsPerTrashCan = 0;
+        int playerPointsPerTrashCan = 0;
 
         for (String playerTrashId : playerTrashIds) {
             if (dataTrashIds.contains(playerTrashId)) {
