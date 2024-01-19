@@ -9,6 +9,9 @@ import {PlayerResultType} from "../types/PlayerResultType.ts";
 
 export default function Game() {
 
+    const playerId: string = "5"
+    const gameId: string = "1"
+
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
     const [playerResult, setPlayerResult] = useState<PlayerResultType>({});
@@ -28,7 +31,7 @@ export default function Game() {
         axios.get("api/trash")
             .then(response => {
                 setTrashes(response.data)
-                axios.put("/api/game/{playerId}/{gameId}/dataResult", response.data)
+                axios.put(`/api/game/${playerId}/${gameId}/dataResult`, response.data)
             })
             .catch(error => {
                 console.error("Request failed: ", error);
@@ -44,9 +47,6 @@ export default function Game() {
                 console.error("Request failed: ", error);
             });
     }
-
-    const playerId: string = "5"
-    const gameId: string = "1"
 
     function postPlayerResult() {
         axios.put(`/api/game/${playerId}/${gameId}`, playerResult)
