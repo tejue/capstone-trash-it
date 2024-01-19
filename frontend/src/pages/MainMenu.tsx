@@ -3,7 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import {GameResultType} from "../types/GameResultType.ts";
 
-export default function GamesResult() {
+export default function MainMenu() {
 
     const [games, setGames] = useState<GameResultType[]>([])
 
