@@ -28,6 +28,7 @@ export default function Game() {
         axios.get("api/trash")
             .then(response => {
                 setTrashes(response.data)
+                axios.put("/api/game/{playerId}/{gameId}/dataResult", response.data)
             })
             .catch(error => {
                 console.error("Request failed: ", error);
