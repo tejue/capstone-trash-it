@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {SetOfPointsType} from "../types/SetOfPointsType.ts";
+import styled from "styled-components";
 
 export default function GameResult() {
 
@@ -27,10 +28,29 @@ export default function GameResult() {
     return(
         <>
             {gameResult?.map((result) => (
-                <section key={result.trashCanId}>
-                    <p>{result.playerPoints} / {result.dataPoints}</p>
-                </section>
+                <StyledSection key={result.trashCanId}>
+                    <GameBox bgColor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
+                </StyledSection>
             ))}
         </>
     );
 }
+
+type GameBoxProps = {
+    bgColor: string;
+}
+
+const StyledSection = styled.section`
+  display: flex;
+  justify-content: space-between;
+`
+const getBackgroundColor = (trashCanId: string) =>
+    trashCanId === "1" ? "blue" : trashCanId === "2" ? "yellow" : trashCanId === "3" ? "grey" : "default";
+
+const GameBox = styled.p<GameBoxProps>`
+  border: solid 1px;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  background-color: ${(props) => props.bgColor};
+`
