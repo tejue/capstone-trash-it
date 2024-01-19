@@ -6,6 +6,7 @@ import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.DbResult;
 import tejue.backend.model.Game;
 import tejue.backend.model.Player;
+import tejue.backend.model.Trash;
 import tejue.backend.service.GameService;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public class GameController {
         return service.savePlayerResult(playerId, gameId, playerResult);
     }
 
+    @PutMapping("/{playerId}/{gameId}/dataResult")
+    public Player saveDataResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody List<Trash> gameData) throws PlayerNotFoundException {
+        return service.saveDataResult(playerId, gameId, gameData);
+    }
 }
