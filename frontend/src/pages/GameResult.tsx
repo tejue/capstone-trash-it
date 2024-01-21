@@ -2,11 +2,14 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {SetOfPointsType} from "../types/SetOfPointsType.ts";
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 
 export default function GameResult() {
 
     const playerId: string = "5"
     const gameId: string = "1"
+
+    const navigate = useNavigate();
 
     const [gameResult, setGameResult] = useState<SetOfPointsType[]>([])
 
@@ -24,6 +27,10 @@ export default function GameResult() {
             })
     }
 
+    function handleNextPage() {
+        navigate('/main-menu');
+    }
+
     return(
         <>
             {gameResult?.map((result) => (
@@ -31,6 +38,7 @@ export default function GameResult() {
                     <GameBox bgcolor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
                 </StyledSection>
             ))}
+            <button onClick={handleNextPage}>Go to Main Menu</button>
         </>
     );
 }
