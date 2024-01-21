@@ -1,4 +1,4 @@
-export type GamePoints = {
+export type GamePointsType = {
     playerPointsTotal: number,
     dataPointsTotal: number;
 }

@@ -1,13 +1,13 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
-import {GamePoints} from "../types/GamePoints.ts";
+import {GamePointsType} from "../types/GamePointsType.ts";
 
 export default function MainMenu() {
 
     const playerId: string = "5"
 
-    const [allGamesResult, setAllGamesResult] = useState<GamePoints[]>([])
+    const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
 
     useEffect(() => {
         getAllGamesResult()
