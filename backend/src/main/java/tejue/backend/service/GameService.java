@@ -85,6 +85,28 @@ public class GameService {
                 .toList();
     }
 
+    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException {
+        Player player = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
+
+        List<Game> games = player.getGames();
+        List<GamePoints> allGamesPoints = new ArrayList<>();
+
+        for (Game game : games) {
+            List<DbResult> playerResult = game.getPlayerResult();
+            List<DbResult> dataResult = game.getDataResult();
+
+            List<SetOfPoints> setOfPoints = calculateSetOfPoints(playerResult, dataResult);
+            int playerPointsTotal = setOfPoints.stream().mapToInt(SetOfPoints::getPlayerPoints).sum();
+            int dataPointsTotal = setOfPoints.stream().mapToInt(SetOfPoints::getDataPoints).sum();
+
+            GamePoints gamePoints = new GamePoints(playerPointsTotal, dataPointsTotal, setOfPoints);
+            allGamesPoints.add(gamePoints);
+        }
+
+        return allGamesPoints;
+    }
+
     public GamePoints getGameResult(String playerId, String gameId) throws PlayerNotFoundException, GameNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));

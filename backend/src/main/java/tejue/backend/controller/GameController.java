@@ -16,6 +16,7 @@ import java.util.Map;
 public class GameController {
 
     private final GameService service;
+
     @GetMapping("/{playerId}/games")
     public List<Game> getAllGames(@PathVariable String playerId) {
         return service.getAllGames(playerId);
@@ -36,5 +37,9 @@ public class GameController {
         return service.getGameResult(playerId, gameId);
     }
 
+    @GetMapping("/{playerId}/gamesResult")
+    public List<GamePoints> getAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException {
+        return service.getAllGamesResult(playerId);
+    }
 
 }
