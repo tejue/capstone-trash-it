@@ -1,41 +1,41 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
-import {GameResultType} from "../types/GameResultType.ts";
+import {GamePoints} from "../types/GamePoints.ts";
 
 export default function MainMenu() {
 
-    const [games, setGames] = useState<GameResultType[]>([])
+    const playerId: string = "5"
 
-    const playerId: string = "2"
+    const [allGamesResult, setAllGamesResult] = useState<GamePoints[]>([])
 
     useEffect(() => {
-        getAllGames()
+        getAllGamesResult()
     }, []);
 
-    function getAllGames() {
-        axios.get(`/api/game/${playerId}/games`)
+    function getAllGamesResult() {
+        axios.get(`/api/game/${playerId}/gamesResult`)
             .then(response => {
-                setGames(response.data);
+                setAllGamesResult(response.data)
+                console.log("new" + response.data)
             })
             .catch(error => {
                 console.error("Request failed: ", error);
-            });
+            })
     }
 
     return (
         <>
-            {games.length === 0 ? (
+            {allGamesResult.length === 0 ? (
                 <GameBox>You have no saved result so far</GameBox>
             ) : (
-                games.map((game) => (
-                    <StyledSection key={game.gameId}>
-                        <GameBox>{`Round: ${game.gameId}`}</GameBox>
-                        <GameBox>{`You trashed ${game.gameTotal} / ${game.dataTotal}`}</GameBox>
-                    </StyledSection>
-                )))}
+                allGamesResult.map((gameResult, index: number) =>
+                    <StyledSection key={index}>
+                        <GameBox>Game {index + 1}: </GameBox>
+                        <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
+                    </StyledSection>))}
         </>
-    );
+    )
 }
 
 const StyledSection = styled.section`
