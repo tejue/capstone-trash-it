@@ -2,15 +2,11 @@ package tejue.backend.service;
 
 import org.junit.jupiter.api.Test;
 import tejue.backend.exception.PlayerNotFoundException;
-import tejue.backend.model.DbResult;
-import tejue.backend.model.Game;
-import tejue.backend.model.Player;
+import tejue.backend.model.*;
 import tejue.backend.repo.GameRepo;
 
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.security.Provider;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -19,6 +15,20 @@ class GameServiceTest {
     private final GameRepo gameRepo = mock(GameRepo.class);
     private final GameService gameService = new GameService(gameRepo);
 
+    String playerId = "1";
+    String name = "Cody Coder";
+    String gameId = "1";
+
+    DbResult dbResult = new DbResult("1", List.of("1", "2", "3"));
+    List<DbResult> dbPlayerResult = List.of(dbResult);
+    List<DbResult> dbDataResult = List.of(dbResult);
+    Map<String, DbResult> playerResult = Map.of("1", dbResult);
+    Trash trashA = new Trash("1", "TrashA", "url", "1", TrashType.PAPER);
+    Trash trashB = new Trash("2", "TrashB", "url", "1", TrashType.PAPER);
+    Trash trashC = new Trash("3", "TrashC", "url", "1", TrashType.PAPER);
+    List<Trash> gameData = List.of(trashA, trashB, trashC);
+    List<Game> games = List.of(new Game(gameId, dbPlayerResult, List.of(dbResult), List.of(dbResult)));
+    Player player = new Player(playerId, name, games);
 
     @Test
     void getAllGames_whenGamesOfPlayerId1AreCalled_thenReturnAllGamesOfPlayerId1() {
@@ -81,5 +91,33 @@ class GameServiceTest {
 
         //WHEN & THEN
         assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult("1", null, null));
+    }
+
+    @Test
+    void saveDataResult_whenNewData_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException {
+        //GIVEN
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+        when(gameRepo.save(player)).thenReturn(player);
+
+        List<DbResult> expectedDataResult = List.of(dbResult);
+
+        //WHEN
+        Player actualPlayer = gameService.saveDataResult(playerId, gameId, gameData);
+        List<DbResult> actual = actualPlayer.getGames().getFirst().getDataResult();
+
+        //THEN
+        verify(gameRepo).save(player);
+        assertEquals(expectedDataResult, actual);
+    }
+
+    @Test
+    void saveDataResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
+        //GIVEN
+        Player testPlayer = new Player(playerId, name, null);
+
+        when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
     }
 }
