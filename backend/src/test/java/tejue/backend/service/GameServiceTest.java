@@ -1,6 +1,7 @@
 package tejue.backend.service;
 
 import org.junit.jupiter.api.Test;
+import tejue.backend.exception.GameNotFoundException;
 import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.*;
 import tejue.backend.repo.GameRepo;
@@ -32,10 +33,10 @@ class GameServiceTest {
         List<Game> expected = List.of(new Game(gameId, List.of(dbResult), dbPlayerResult, dbDataResult));
 
         //WHEN
-        List<Game> actual = gameService.getAllGames("1");
+        List<Game> actual = gameService.getAllGames(playerId);
 
         //THEN
-        verify(gameRepo).findById("1");
+        verify(gameRepo).findById(playerId);
         assertEquals(expected, actual);
     }
 
@@ -227,5 +228,29 @@ class GameServiceTest {
 
         //THEN
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void getGameResult_whenCalled_thenReturnGamePointsOfActualGame() throws PlayerNotFoundException, GameNotFoundException {
+        //GIVEN
+        SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+        GamePoints expected = new GamePoints(1, 1, List.of(setOfPoints));
+
+        //WHEN
+        GamePoints actual = gameService.getGameResult(playerId, gameId);
+
+        //THEN
+        verify(gameRepo).findById(player.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getGameResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
     }
 }
