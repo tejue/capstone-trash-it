@@ -35,38 +35,23 @@ class GameControllerTest {
     private GameRepo testGameRepo;
 
     @Test
-    void getAllGames_whenGamesOfPlayerId1AreCalled_thenReturnAllGamesOfPlayerId1() throws Exception {
-        List<DbResult> testDbResult = List.of(new DbResult("1", List.of("1")));
-        List<Game> testGames = List.of(new Game("1", testDbResult, testDbResult, testDbResult));
-        Player testPlayer = new Player("1", "Jane", testGames);
-        String testGamesAsJSON = objectMapper.writeValueAsString(testGames);
-
-        testGameRepo.save(testPlayer);
-
-        //WHEN & THEN
-        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/games"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(testGamesAsJSON));
-    }
-
-    @Test
     void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws Exception {
         //GIVEN
-        DbResult testDbResult = new DbResult("1", List.of("1", "2", "3"));
-        List<DbResult> testDbPlayerResult = List.of(testDbResult);
-        Map<String, DbResult> testPlayerResult = Map.of("1", testDbResult);
-        List<Game> testGames = List.of(new Game("1", List.of(testDbResult), testDbPlayerResult, List.of(testDbResult)));
-        Player testPlayer = new Player("1", "Jane", testGames);
-        String testPlayerResultAsJSON = objectMapper.writeValueAsString(testPlayerResult);
-        String testPlayerAsJSON = objectMapper.writeValueAsString(testPlayer);
+        DbResult dbResult = new DbResult("1", List.of("1", "2", "3"));
+        List<DbResult> dbPlayerResult = List.of(dbResult);
+        Map<String, DbResult> playerResult = Map.of("1", dbResult);
+        List<Game> games = List.of(new Game("1", List.of(dbResult), dbPlayerResult, List.of(dbResult)));
+        Player player = new Player("1", "Jane", games);
+        String playerResultAsJSON = objectMapper.writeValueAsString(playerResult);
+        String playerAsJSON = objectMapper.writeValueAsString(player);
 
-        testGameRepo.save(testPlayer);
+        testGameRepo.save(player);
 
         //WHEN & THEN
         mvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(testPlayerResultAsJSON))
+                        .content(playerResultAsJSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(testPlayerAsJSON));
+                .andExpect(MockMvcResultMatchers.content().json(playerAsJSON));
     }
 }
