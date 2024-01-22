@@ -125,11 +125,8 @@ class GameServiceTest {
     void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameSize() {
         //GIVEN
         Trash trashX = new Trash("1", "TrashX", "url", "1", TrashType.PAPER);
-        Trash trashXX = new Trash("11", "TrashXX", "url", "1", TrashType.PAPER);
         Trash trashY = new Trash("2", "TrashY", "url", "2", TrashType.RECYCLE);
-        Trash trashYY = new Trash("22", "TrashYY", "url", "2", TrashType.RECYCLE);
         Trash trashZ = new Trash("3", "TrashZ", "url", "3", TrashType.REST);
-        Trash trashZZ = new Trash("33", "TrashZZ", "url", "3", TrashType.REST);
         List<Trash> inputGameData = List.of(trashX, trashY, trashZ);
 
         DbResult dbResultX = new DbResult("1", List.of("1"));
