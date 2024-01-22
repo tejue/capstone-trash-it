@@ -68,10 +68,32 @@ class GameControllerTest {
 
         //WHEN & THEN
         mvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1/1/dataResult")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(gameDataAsJSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gameDataAsJSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(playerAsJSON));
+    }
+
+    @Test
+    void getGameResult_whenCalledWithPlayerAndGameId_thenReturnGamePoints() throws Exception {
+        //GIVEN
+        DbResult dbResult = new DbResult("1", List.of("1"));
+        List<DbResult> dbPlayerResult = List.of(dbResult);
+        List<DbResult> dbGameResult = List.of(dbResult);
+        Game game = new Game("1", List.of(dbResult), dbPlayerResult, dbGameResult);
+        Player player = new Player("1", "Cody Coder", List.of(game));
+        String playerAsJSON = objectMapper.writeValueAsString(player);
+        GamePoints gamePoints = new GamePoints(1, 1, List.of(new SetOfPoints("1", 1, 1)));
+        String gamePointsAsJSON = objectMapper.writeValueAsString(gamePoints);
+
+        gameRepo.save(player);
+
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/1/1/gameResult")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(playerAsJSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(gamePointsAsJSON));
     }
 
 }
