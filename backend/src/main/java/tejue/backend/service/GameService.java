@@ -128,7 +128,7 @@ public class GameService {
         throw new GameNotFoundException("Spiel mit der ID " + gameId + " wurde nicht gefunden");
     }
 
-    private List<SetOfPoints> calculateSetOfPoints(List<DbResult> playerResult, List<DbResult> dataResult) {
+    public List<SetOfPoints> calculateSetOfPoints(List<DbResult> playerResult, List<DbResult> dataResult) {
         List<SetOfPoints> setOfPointsPerGame = new ArrayList<>();
 
         Map<String, Integer> dataPointsPerTrashCan = calculateDataPointsPerTrashCan(dataResult);
@@ -148,7 +148,7 @@ public class GameService {
         return setOfPointsPerGame;
     }
 
-    private Map<String, Integer> calculateDataPointsPerTrashCan(List<DbResult> dataResult) {
+    public Map<String, Integer> calculateDataPointsPerTrashCan(List<DbResult> dataResult) {
         Map<String, Integer> trashIdsPerTrashCan = new HashMap<>();
 
         for (DbResult dbDataResult : dataResult) {
@@ -160,7 +160,7 @@ public class GameService {
         return trashIdsPerTrashCan;
     }
 
-    private DbResult getPlayerResultPerTrashCan(List<DbResult> playerResult, int trashCanIndex) {
+    public DbResult getPlayerResultPerTrashCan(List<DbResult> playerResult, int trashCanIndex) {
         if (trashCanIndex < playerResult.size()) {
             return playerResult.get(trashCanIndex);
         } else {
@@ -168,9 +168,12 @@ public class GameService {
         }
     }
 
-    private int calculatePlayerPointsPerTrashCan(DbResult playerResult, DbResult dataResult) {
+    public int calculatePlayerPointsPerTrashCan(DbResult playerResult, DbResult dataResult) {
         List<String> playerTrashIds = playerResult.getTrashIds();
         List<String> dataTrashIds = dataResult.getTrashIds();
+
+        if (playerTrashIds == null || dataTrashIds == null) {
+            return 0;}
 
         int playerPointsPerTrashCan = 0;
 
