@@ -17,7 +17,6 @@ export default function MainMenu() {
         axios.get(`/api/game/${playerId}/gamesResult`)
             .then(response => {
                 setAllGamesResult(response.data)
-                console.log("new" + response.data)
             })
             .catch(error => {
                 console.error("Request failed: ", error);
