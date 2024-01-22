@@ -16,14 +16,7 @@ public class GameService {
     private final GameRepo repo;
 
     public String playerNotFoundMessage(String playerId) {
-        return "player with id " + playerId + " not found";
-    }
-
-    public List<Game> getAllGames(String playerId) {
-        Player player = repo.findById(playerId)
-                .orElseThrow(() -> new NoSuchElementException("No player found!"));
-
-        return player.getGames();
+        return "Player with id " + playerId + " not found";
     }
 
     public Player savePlayerResult(String playerId, String gameId, Map<String, DbResult> playerResult) throws PlayerNotFoundException {
@@ -185,4 +178,3 @@ public class GameService {
         return playerPointsPerTrashCan;
     }
 }
-

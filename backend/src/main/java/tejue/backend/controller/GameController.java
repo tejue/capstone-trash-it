@@ -17,11 +17,6 @@ public class GameController {
 
     private final GameService service;
 
-    @GetMapping("/{playerId}/games")
-    public List<Game> getAllGames(@PathVariable String playerId) {
-        return service.getAllGames(playerId);
-    }
-
     @PutMapping("/{playerId}/{gameId}")
     public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) throws PlayerNotFoundException {
         return service.savePlayerResult(playerId, gameId, playerResult);
@@ -41,5 +36,4 @@ public class GameController {
     public List<GamePoints> getAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException {
         return service.getAllGamesResult(playerId);
     }
-
 }
