@@ -5,7 +5,6 @@ import tejue.backend.exception.PlayerNotFoundException;
 import tejue.backend.model.*;
 import tejue.backend.repo.GameRepo;
 
-import java.security.Provider;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,79 +17,64 @@ class GameServiceTest {
     String playerId = "1";
     String name = "Cody Coder";
     String gameId = "1";
-
-    DbResult dbResult = new DbResult("1", List.of("1", "2", "3"));
+    DbResult dbResult = new DbResult("1", List.of("1"));
     List<DbResult> dbPlayerResult = List.of(dbResult);
     List<DbResult> dbDataResult = List.of(dbResult);
-    Map<String, DbResult> playerResult = Map.of("1", dbResult);
-    Trash trashA = new Trash("1", "TrashA", "url", "1", TrashType.PAPER);
-    Trash trashB = new Trash("2", "TrashB", "url", "1", TrashType.PAPER);
-    Trash trashC = new Trash("3", "TrashC", "url", "1", TrashType.PAPER);
-    List<Trash> gameData = List.of(trashA, trashB, trashC);
-    List<Game> games = List.of(new Game(gameId, dbPlayerResult, List.of(dbResult), List.of(dbResult)));
+    List<Trash> gameData = List.of(new Trash("1", "TrashA", "url", "1", TrashType.PAPER));
+    List<Game> games = List.of(new Game(gameId, List.of(dbResult), dbPlayerResult, dbDataResult));
     Player player = new Player(playerId, name, games);
 
     @Test
     void getAllGames_whenGamesOfPlayerId1AreCalled_thenReturnAllGamesOfPlayerId1() {
         //GIVEN
-        List<DbResult> testDbResult = List.of(new DbResult("1", List.of("1")));
-        List<Game> expectedGames = List.of(new Game("1", testDbResult, testDbResult, testDbResult));
-        Player testPlayer = new Player("1", "Jane", expectedGames);
-        gameRepo.save(testPlayer);
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
 
-        when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
+        List<Game> expected = List.of(new Game(gameId, List.of(dbResult), dbPlayerResult, dbDataResult));
 
         //WHEN
         List<Game> actual = gameService.getAllGames("1");
 
         //THEN
         verify(gameRepo).findById("1");
-        assertEquals(expectedGames, actual);
+        assertEquals(expected, actual);
     }
 
 
     @Test
     void getAllRounds_whenNoPlayerFound_thenThrowNoSuchElementException() {
         // GIVEN
-        Player testPlayer = new Player("1", "Jane", null);
-        gameRepo.save(testPlayer);
-
-        when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
+        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(NoSuchElementException.class, () -> gameService.getAllGames("1"));
+        assertThrows(NoSuchElementException.class, () -> gameService.getAllGames(playerId));
     }
 
     @Test
     void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException {
         //GIVEN
-        DbResult testDbResult = new DbResult("1", List.of("1", "2", "3"));
-        List<DbResult> expectedPlayerResult = List.of(testDbResult);
-        Map<String, DbResult> testPlayerResult = Map.of("1", testDbResult);
-        List<Game> testGames = List.of(new Game("1", expectedPlayerResult, List.of(testDbResult), List.of(testDbResult)));
-        Player testPlayer = new Player("1", "Jane", testGames);
+        Map<String, DbResult> inputPlayerResult = Map.of("1", dbResult);
 
-        when(gameRepo.findById("1")).thenReturn(Optional.of(testPlayer));
-        when(gameRepo.save(testPlayer)).thenReturn(testPlayer);
+        when(gameRepo.findById(gameId)).thenReturn(Optional.of(player));
+        when(gameRepo.save(player)).thenReturn(player);
+
+        List<DbResult> expected = List.of(dbResult);
 
         //WHEN
-        Player actualPlayer = gameService.savePlayerResult("1", "1", testPlayerResult);
+        Player actualPlayer = gameService.savePlayerResult(playerId, gameId, inputPlayerResult);
         List<DbResult> actual = actualPlayer.getGames().getFirst().getPlayerResult();
 
         //THEN
-        verify(gameRepo).save(testPlayer);
-        assertEquals(expectedPlayerResult, actual);
+        verify(gameRepo).save(player);
+        assertEquals(expected, actual);
     }
 
     @Test
     void savePlayerResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
         //GIVEN
-        Player testPlayer = new Player("1", "Jane", null);
-
-        when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
+        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult("1", null, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult(playerId, null, null));
     }
 
     @Test
@@ -113,6 +97,57 @@ class GameServiceTest {
     @Test
     void saveDataResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
         //GIVEN
+        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
+    }
+
+    @Test
+    void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameSize() {
+        //GIVEN
+        List<DbResult> expected = List.of(dbResult);
+
+        //WHEN
+        List<DbResult> actual = gameService.transformGameData(gameData);
+
+        //THEN
+        assertEquals(expected.size(), actual.size());
+    }
+
+    @Test
+    void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameContent() {
+        //GIVEN
+        List<DbResult> expected = List.of(dbResult);
+
+        //WHEN
+        List<DbResult> actual = gameService.transformGameData(gameData);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException {
+        //GIVEN
+        SetOfPoints setOfPointsA = new SetOfPoints("1", 1, 1);
+        GamePoints gamePointsA = new GamePoints(1, 1, List.of(setOfPointsA));
+
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+
+        List<GamePoints> expected = List.of(gamePointsA);
+
+        //WHEN
+        List<GamePoints> actual = gameService.getAllGamesResult(player.getId());
+
+        //THEN
+        verify(gameRepo).findById(player.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAllGamesResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
+        //GIVEN
         Player testPlayer = new Player(playerId, name, null);
 
         when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
@@ -122,42 +157,73 @@ class GameServiceTest {
     }
 
     @Test
-    void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameSize() {
+    void calculateSetOfPoints_whenCalled_thenReturnListOfSetOfPoints() {
         //GIVEN
-        Trash trashX = new Trash("1", "TrashX", "url", "1", TrashType.PAPER);
-        Trash trashY = new Trash("2", "TrashY", "url", "2", TrashType.RECYCLE);
-        Trash trashZ = new Trash("3", "TrashZ", "url", "3", TrashType.REST);
-        List<Trash> inputGameData = List.of(trashX, trashY, trashZ);
-
-        DbResult dbResultX = new DbResult("1", List.of("1"));
-        DbResult dbResultY = new DbResult("2", List.of("2"));
-        DbResult dbResultZ = new DbResult("3", List.of("3"));
-
-        List<DbResult> expected = List.of(dbResultX, dbResultY, dbResultZ);
+        SetOfPoints setOfPointsA = new SetOfPoints("1", 1, 1);
+        List<SetOfPoints> expected = List.of(setOfPointsA);
 
         //WHEN
-        List<DbResult> actual = gameService.transformGameData(inputGameData);
+        List<SetOfPoints> actual = gameService.calculateSetOfPoints(dbPlayerResult, dbDataResult);
 
         //THEN
-        assertEquals(expected.size(), actual.size());
+        assertEquals(expected, actual);
     }
 
     @Test
-    void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameContent() {
+    void calculateDataPointsPerTrashCan_whenCalledWithDataResult_thenReturnAmountOfTrashIdsPerTrashCan() {
         //GIVEN
-        Trash trashX = new Trash("1", "TrashX", "url", "1", TrashType.PAPER);
-        Trash trashY = new Trash("2", "TrashY", "url", "2", TrashType.RECYCLE);
-        Trash trashZ = new Trash("3", "TrashZ", "url", "3", TrashType.REST);
-        List<Trash> inputGameData = List.of(trashX, trashY, trashZ);
-
-        DbResult dbResultX = new DbResult("1", List.of("1"));
-        DbResult dbResultY = new DbResult("2", List.of("2"));
-        DbResult dbResultZ = new DbResult("3", List.of("3"));
-
-        List<DbResult> expected = List.of(dbResultX, dbResultY, dbResultZ);
+        Map<String, Integer> expected = Map.of("1", 1);
 
         //WHEN
-        List<DbResult> actual = gameService.transformGameData(inputGameData);
+        Map<String, Integer> actual = gameService.calculateDataPointsPerTrashCan(dbDataResult);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayerResultPerTrashCan_whenLengthOfPlayerResultEqualsTrashCanIndex_thenReturnDbResult() {
+        //GIVEN
+        DbResult expected = dbResult;
+
+        //WHEN
+        DbResult actual = gameService.getPlayerResultPerTrashCan(dbPlayerResult, 0);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayerResultPerTrashCan_whenLengthOfPlayerResultIsSmallerThanTrashCanIndex_thenReturnNewEmptyDbResult() {
+        //GIVEN
+        DbResult expected = new DbResult(null, null);
+
+        //WHEN
+        DbResult actual = gameService.getPlayerResultPerTrashCan(dbPlayerResult, 1);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calculatePlayerPointsPerTrashCan_whenCorrectlySorted_thenReturnPointsForCorrectlySortedTrash() {
+        //GIVEN
+        int expected = 1;
+
+        //WHEN
+        int actual = gameService.calculatePlayerPointsPerTrashCan(dbResult, dbResult);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void calculatePlayerPointsPerTrashCan_whenNotCorrectlySorted_thenReturn0Points() {
+        //GIVEN
+        int expected = 0;
+
+        //WHEN
+        int actual = gameService.calculatePlayerPointsPerTrashCan(dbResult, (new DbResult("2", List.of("5", "6", "7"))));
 
         //THEN
         assertEquals(expected, actual);
