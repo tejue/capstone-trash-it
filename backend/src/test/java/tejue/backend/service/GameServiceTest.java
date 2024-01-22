@@ -19,45 +19,28 @@ class GameServiceTest {
     String name = "Cody Coder";
     String gameId = "1";
     DbResult dbResult = new DbResult("1", List.of("1"));
-    List<DbResult> dbPlayerResult = List.of(dbResult);
-    List<DbResult> dbDataResult = List.of(dbResult);
-    List<Trash> gameData = List.of(new Trash("1", "TrashA", "url", "1", TrashType.PAPER));
-    List<Game> games = List.of(new Game(gameId, List.of(dbResult), dbPlayerResult, dbDataResult));
-    Player player = new Player(playerId, name, games);
+    Trash trash = new Trash("1", "Trashy", "url", "1", TrashType.PAPER);
+    Game game = new Game(gameId, List.of(dbResult), List.of(dbResult), List.of(dbResult));
+    Player player = new Player(playerId, name, List.of(game));
 
     @Test
-    void getAllGames_whenGamesOfPlayerId1AreCalled_thenReturnAllGamesOfPlayerId1() {
+    void playerNotFound_whenCalledWithNonExistingPlayerId_thenReturnStringMessage() {
         //GIVEN
-        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
-
-        List<Game> expected = List.of(new Game(gameId, List.of(dbResult), dbPlayerResult, dbDataResult));
+        String expected = "Player with id " + playerId + " not found";
 
         //WHEN
-        List<Game> actual = gameService.getAllGames(playerId);
+        String actual = gameService.playerNotFoundMessage(playerId);
 
         //THEN
-        verify(gameRepo).findById(playerId);
         assertEquals(expected, actual);
-    }
-
-
-    @Test
-    void getAllRounds_whenNoPlayerFound_thenThrowNoSuchElementException() {
-        // GIVEN
-        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
-
-        //WHEN & THEN
-        assertThrows(NoSuchElementException.class, () -> gameService.getAllGames(playerId));
     }
 
     @Test
     void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException {
         //GIVEN
         Map<String, DbResult> inputPlayerResult = Map.of("1", dbResult);
-
-        when(gameRepo.findById(gameId)).thenReturn(Optional.of(player));
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
         when(gameRepo.save(player)).thenReturn(player);
-
         List<DbResult> expected = List.of(dbResult);
 
         //WHEN
@@ -72,7 +55,7 @@ class GameServiceTest {
     @Test
     void savePlayerResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
         //GIVEN
-        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
         assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult(playerId, null, null));
@@ -81,10 +64,10 @@ class GameServiceTest {
     @Test
     void saveDataResult_whenNewData_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException {
         //GIVEN
+        List<Trash> gameData = List.of(trash);
         when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
         when(gameRepo.save(player)).thenReturn(player);
-
-        List<DbResult> expectedDataResult = List.of(dbResult);
+        List<DbResult> expected = List.of(dbResult);
 
         //WHEN
         Player actualPlayer = gameService.saveDataResult(playerId, gameId, gameData);
@@ -92,13 +75,13 @@ class GameServiceTest {
 
         //THEN
         verify(gameRepo).save(player);
-        assertEquals(expectedDataResult, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
     void saveDataResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
         //GIVEN
-        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
         assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
@@ -107,6 +90,7 @@ class GameServiceTest {
     @Test
     void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameSize() {
         //GIVEN
+        List<Trash> gameData = List.of(trash);
         List<DbResult> expected = List.of(dbResult);
 
         //WHEN
@@ -119,6 +103,7 @@ class GameServiceTest {
     @Test
     void transformGameData_whenCalled_thenReturnGameDataTransformedToDbResultWithSameContent() {
         //GIVEN
+        List<Trash> gameData = List.of(trash);
         List<DbResult> expected = List.of(dbResult);
 
         //WHEN
@@ -131,40 +116,38 @@ class GameServiceTest {
     @Test
     void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException {
         //GIVEN
-        SetOfPoints setOfPointsA = new SetOfPoints("1", 1, 1);
-        GamePoints gamePointsA = new GamePoints(1, 1, List.of(setOfPointsA));
-
+        SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
+        GamePoints gamePoints = new GamePoints(1, 1, List.of(setOfPoints));
         when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
-
-        List<GamePoints> expected = List.of(gamePointsA);
+        List<GamePoints> expected = List.of(gamePoints);
 
         //WHEN
-        List<GamePoints> actual = gameService.getAllGamesResult(player.getId());
+        List<GamePoints> actual = gameService.getAllGamesResult(playerId);
 
         //THEN
-        verify(gameRepo).findById(player.getId());
+        verify(gameRepo).findById(playerId);
         assertEquals(expected, actual);
     }
 
     @Test
     void getAllGamesResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
         //GIVEN
-        Player testPlayer = new Player(playerId, name, null);
-
-        when(gameRepo.findById("2")).thenReturn(Optional.of(testPlayer));
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.getAllGamesResult(playerId));
     }
 
     @Test
     void calculateSetOfPoints_whenCalled_thenReturnListOfSetOfPoints() {
         //GIVEN
-        SetOfPoints setOfPointsA = new SetOfPoints("1", 1, 1);
-        List<SetOfPoints> expected = List.of(setOfPointsA);
+        SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
+        List<SetOfPoints> expected = List.of(setOfPoints);
+        List<DbResult> playerResult = List.of(dbResult);
+        List<DbResult> dataResult = List.of(dbResult);
 
         //WHEN
-        List<SetOfPoints> actual = gameService.calculateSetOfPoints(dbPlayerResult, dbDataResult);
+        List<SetOfPoints> actual = gameService.calculateSetOfPoints(playerResult, dataResult);
 
         //THEN
         assertEquals(expected, actual);
@@ -173,10 +156,11 @@ class GameServiceTest {
     @Test
     void calculateDataPointsPerTrashCan_whenCalledWithDataResult_thenReturnAmountOfTrashIdsPerTrashCan() {
         //GIVEN
+        List<DbResult> dataResult = List.of(dbResult);
         Map<String, Integer> expected = Map.of("1", 1);
 
         //WHEN
-        Map<String, Integer> actual = gameService.calculateDataPointsPerTrashCan(dbDataResult);
+        Map<String, Integer> actual = gameService.calculateDataPointsPerTrashCan(dataResult);
 
         //THEN
         assertEquals(expected, actual);
@@ -185,10 +169,11 @@ class GameServiceTest {
     @Test
     void getPlayerResultPerTrashCan_whenLengthOfPlayerResultEqualsTrashCanIndex_thenReturnDbResult() {
         //GIVEN
+        List<DbResult> playerResult = List.of(dbResult);
         DbResult expected = dbResult;
 
         //WHEN
-        DbResult actual = gameService.getPlayerResultPerTrashCan(dbPlayerResult, 0);
+        DbResult actual = gameService.getPlayerResultPerTrashCan(playerResult, 0);
 
         //THEN
         assertEquals(expected, actual);
@@ -197,10 +182,11 @@ class GameServiceTest {
     @Test
     void getPlayerResultPerTrashCan_whenLengthOfPlayerResultIsSmallerThanTrashCanIndex_thenReturnNewEmptyDbResult() {
         //GIVEN
+        List<DbResult> playerResult = List.of(dbResult);
         DbResult expected = new DbResult(null, null);
 
         //WHEN
-        DbResult actual = gameService.getPlayerResultPerTrashCan(dbPlayerResult, 1);
+        DbResult actual = gameService.getPlayerResultPerTrashCan(playerResult, 1);
 
         //THEN
         assertEquals(expected, actual);
@@ -248,9 +234,9 @@ class GameServiceTest {
     @Test
     void getGameResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
         //GIVEN
-        when(gameRepo.findById("2")).thenReturn(Optional.of(player));
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult(playerId, null));
     }
 }
