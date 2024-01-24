@@ -19,39 +19,24 @@ public class GameService {
         return "Player with id " + playerId + " not found";
     }
 
-    public Player savePlayerResult(String playerId, String gameId, Map<String, DbResult> playerResult) throws PlayerNotFoundException {
-        Player player = repo.findById(playerId)
-                .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
-
-        List<Game> games = player.getGames();
-
-        Optional<Game> foundGame = games.stream()
-                .filter(game -> game.getGameId().equals(gameId))
-                .findFirst();
-
-        if (foundGame.isPresent()) {
-            List<DbResult> dbPlayerResult = new ArrayList<>(playerResult.values());
-            foundGame.get().setPlayerResult(dbPlayerResult);
-        }
-
-        repo.save(player);
-        return player;
+    public String gameNotFoundMessage(String gameId) {
+        return "Game with id " + gameId + " not found";
     }
 
-    public Player saveDataResult(String playerId, String gameId, List<Trash> gameData) throws PlayerNotFoundException {
+    public Player saveDataResult(String playerId, List<Trash> gameData) throws PlayerNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
 
+        if (player.getGames() == null) {
+            player.setGames(new ArrayList<>());
+        }
+
         List<Game> games = player.getGames();
 
-        Optional<Game> foundGame = games.stream()
-                .filter(game -> game.getGameId().equals(gameId))
-                .findFirst();
-
-        if (foundGame.isPresent()) {
-            List<DbResult> dbDataResult = transformGameData(gameData);
-            foundGame.get().setDataResult(dbDataResult);
-        }
+        Game newGame = new Game();
+        newGame.setGameId(String.valueOf(games.size() + 1));
+        newGame.setDataResult(transformGameData(gameData));
+        games.add(newGame);
 
         repo.save(player);
         return player;
@@ -76,6 +61,24 @@ public class GameService {
         return gameDataMap.entrySet().stream()
                 .map(entry -> new DbResult(entry.getKey(), entry.getValue()))
                 .toList();
+    }
+
+    public Player savePlayerResult(String playerId, String gameId, Map<String, DbResult> playerResult) throws PlayerNotFoundException, GameNotFoundException {
+        Player player = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
+
+        List<Game> games = player.getGames();
+
+        Game foundGame = games.stream()
+                .filter(game -> game.getGameId().equals(gameId))
+                .findFirst()
+                .orElseThrow(() -> new GameNotFoundException(gameNotFoundMessage(gameId)));
+
+        List<DbResult> dbPlayerResult = new ArrayList<>(playerResult.values());
+        foundGame.setPlayerResult(dbPlayerResult);
+
+        repo.save(player);
+        return player;
     }
 
     public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException {
@@ -166,7 +169,8 @@ public class GameService {
         List<String> dataTrashIds = dataResult.getTrashIds();
 
         if (playerTrashIds == null || dataTrashIds == null) {
-            return 0;}
+            return 0;
+        }
 
         int playerPointsPerTrashCan = 0;
 

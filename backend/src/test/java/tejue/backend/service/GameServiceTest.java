@@ -36,7 +36,7 @@ class GameServiceTest {
     }
 
     @Test
-    void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException {
+    void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException, GameNotFoundException {
         //GIVEN
         Map<String, DbResult> inputPlayerResult = Map.of("1", dbResult);
         when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
@@ -67,10 +67,11 @@ class GameServiceTest {
         List<Trash> gameData = List.of(trash);
         when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
         when(gameRepo.save(player)).thenReturn(player);
+//        Player expectedPlayer = new Player(playerId, name, game )
         List<DbResult> expected = List.of(dbResult);
 
-        //WHEN
-        Player actualPlayer = gameService.saveDataResult(playerId, gameId, gameData);
+       //WHEN
+        Player actualPlayer = gameService.saveDataResult(playerId, gameData);
         List<DbResult> actual = actualPlayer.getGames().getFirst().getDataResult();
 
         //THEN
@@ -84,7 +85,7 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, null, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(null, null));
     }
 
     @Test

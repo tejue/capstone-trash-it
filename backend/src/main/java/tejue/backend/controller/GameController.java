@@ -18,13 +18,13 @@ public class GameController {
     private final GameService service;
 
     @PutMapping("/{playerId}/{gameId}")
-    public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) throws PlayerNotFoundException {
+    public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) throws PlayerNotFoundException, GameNotFoundException {
         return service.savePlayerResult(playerId, gameId, playerResult);
     }
 
-    @PutMapping("/{playerId}/{gameId}/dataResult")
-    public Player saveDataResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody List<Trash> gameData) throws PlayerNotFoundException {
-        return service.saveDataResult(playerId, gameId, gameData);
+    @PutMapping("/{playerId}/dataResult")
+    public Player saveDataResult(@PathVariable String playerId, @RequestBody List<Trash> gameData) throws PlayerNotFoundException {
+        return service.saveDataResult(playerId, gameData);
     }
 
     @GetMapping("/{playerId}/{gameId}/gameResult")

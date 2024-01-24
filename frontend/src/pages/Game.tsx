@@ -11,7 +11,7 @@ import {useNavigate} from 'react-router-dom';
 export default function Game() {
 
     const playerId: string = "5"
-    const gameId: string = "1"
+    //const gameId: string = "1"
 
     const navigate = useNavigate();
 
@@ -30,11 +30,16 @@ export default function Game() {
         getTrashCans();
     }, [initialTrashes]);
 
+    const [games, setGames] = useState([])
+
     function getTrashes() {
         axios.get("api/trash")
             .then(response => {
                 setTrashes(response.data)
-                axios.put(`/api/game/${playerId}/${gameId}/dataResult`, response.data)
+                axios.put(`/api/game/${playerId}/dataResult`, response.data)
+                    .then(response => {
+                        setGames(response.data.games)
+                    })
             })
             .catch(error => {
                 console.error("Request failed: ", error);
@@ -52,7 +57,7 @@ export default function Game() {
     }
 
     function postPlayerResult() {
-        axios.put(`/api/game/${playerId}/${gameId}`, playerResult)
+        axios.put(`/api/game/${playerId}/`+ games.length, playerResult)
 
 
             .catch(error => {
