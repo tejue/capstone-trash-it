@@ -60,7 +60,7 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult("Id not existing", "", new HashMap<>()));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult(playerId, "", new HashMap<>()));
     }
 
     @Test
@@ -87,7 +87,7 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult("Id not existing", List.of()));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(playerId, List.of()));
     }
 
     @Test
@@ -240,6 +240,6 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult("Id not existing", ""));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult(playerId, ""));
     }
 }
