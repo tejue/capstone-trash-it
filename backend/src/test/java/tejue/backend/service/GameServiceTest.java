@@ -21,7 +21,9 @@ class GameServiceTest {
     DbResult dbResult = new DbResult("1", List.of("1"));
     Trash trash = new Trash("1", "Trashy", "url", "1", TrashType.PAPER);
     Game game = new Game(gameId, List.of(dbResult), List.of(dbResult), List.of(dbResult));
-    Player player = new Player(playerId, name, List.of(game));
+    ArrayList<Game> games = new ArrayList<>(List.of(game));
+    Player player = new Player(playerId, name, games);
+
 
     @Test
     void playerNotFound_whenCalledWithNonExistingPlayerId_thenReturnStringMessage() {
@@ -58,7 +60,7 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult(playerId, null, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.savePlayerResult("Id not existing", "", new HashMap<>()));
     }
 
     @Test
@@ -70,7 +72,7 @@ class GameServiceTest {
 //        Player expectedPlayer = new Player(playerId, name, game )
         List<DbResult> expected = List.of(dbResult);
 
-       //WHEN
+        //WHEN
         Player actualPlayer = gameService.saveDataResult(playerId, gameData);
         List<DbResult> actual = actualPlayer.getGames().getFirst().getDataResult();
 
@@ -85,7 +87,7 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult(null, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.saveDataResult("Id not existing", List.of()));
     }
 
     @Test
@@ -238,6 +240,6 @@ class GameServiceTest {
         when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
 
         //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult(playerId, null));
+        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult("Id not existing", ""));
     }
 }

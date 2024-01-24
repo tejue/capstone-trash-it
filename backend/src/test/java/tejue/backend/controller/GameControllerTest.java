@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tejue.backend.model.*;
 import tejue.backend.repo.GameRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ class GameControllerTest {
         DbResult dbResult = new DbResult("1", List.of("1", "2", "3"));
         List<DbResult> dbPlayerResult = List.of(dbResult);
         Map<String, DbResult> playerResult = Map.of("1", dbResult);
-        List<Game> games = List.of(new Game("1", List.of(dbResult), dbPlayerResult, List.of(dbResult)));
+        ArrayList<Game> games = new ArrayList<>(List.of(new Game("1", List.of(dbResult), dbPlayerResult, List.of(dbResult))));
         Player player = new Player("1", "Cody Coder", games);
         String playerResultAsJSON = objectMapper.writeValueAsString(playerResult);
         String playerAsJSON = objectMapper.writeValueAsString(player);
@@ -57,17 +58,19 @@ class GameControllerTest {
     void saveDataResult_whenNewGame_thenReturnSavedPlayerWithNewGameResult() throws Exception {
         //GIVEN
         DbResult dbResult = new DbResult("1", List.of("1"));
-        List<DbResult> dbGameResult = List.of(dbResult);
+        List<DbResult> dbDataResult = List.of(dbResult);
         List<Trash> gameData = List.of(new Trash("1", "Trashy", "url", "1", TrashType.PAPER));
-        List<Game> games = List.of(new Game("1", List.of(dbResult), List.of(dbResult), dbGameResult));
+        Game game = new Game("1", List.of(), List.of(), dbDataResult);
+        ArrayList<Game> games = new ArrayList<>(List.of(game));
+        Player playerZero = new Player("1", "Cody Coder", new ArrayList<>());
         Player player = new Player("1", "Cody Coder", games);
         String playerAsJSON = objectMapper.writeValueAsString(player);
         String gameDataAsJSON = objectMapper.writeValueAsString(gameData);
 
-        gameRepo.save(player);
+        gameRepo.save(playerZero);
 
         //WHEN & THEN
-        mvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1/1/dataResult")
+        mvc.perform(MockMvcRequestBuilders.put(BASE_URL + "/1/dataResult")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gameDataAsJSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -81,7 +84,8 @@ class GameControllerTest {
         List<DbResult> dbPlayerResult = List.of(dbResult);
         List<DbResult> dbGameResult = List.of(dbResult);
         Game game = new Game("1", List.of(dbResult), dbPlayerResult, dbGameResult);
-        Player player = new Player("1", "Cody Coder", List.of(game));
+        ArrayList<Game> games = new ArrayList<>(List.of(game));
+        Player player = new Player("1", "Cody Coder", games);
         String playerAsJSON = objectMapper.writeValueAsString(player);
         GamePoints gamePoints = new GamePoints(1, 1, List.of(new SetOfPoints("1", 1, 1)));
         String gamePointsAsJSON = objectMapper.writeValueAsString(gamePoints);
@@ -102,7 +106,8 @@ class GameControllerTest {
         List<DbResult> dbPlayerResult = List.of(dbResult);
         List<DbResult> dbGameResult = List.of(dbResult);
         Game game = new Game("1", List.of(dbResult), dbPlayerResult, dbGameResult);
-        Player player = new Player("1", "Cody Coder", List.of(game));
+        ArrayList<Game> games = new ArrayList<>(List.of(game));
+        Player player = new Player("1", "Cody Coder", games);
         String playerAsJSON = objectMapper.writeValueAsString(player);
         List<GamePoints> allGamesPoints = List.of(new GamePoints(1, 1, List.of(new SetOfPoints("1", 1, 1))));
         String allGamesPointsAsJSON = objectMapper.writeValueAsString(allGamesPoints);
