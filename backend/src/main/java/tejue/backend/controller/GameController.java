@@ -33,7 +33,7 @@ public class GameController {
     }
 
     @GetMapping("/{playerId}/gamesResult")
-    public List<GamePoints> getAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException {
+    public List<GamePoints> getAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException, GameNotFoundException {
         return service.getAllGamesResult(playerId);
     }
 }

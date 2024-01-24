@@ -117,7 +117,7 @@ class GameServiceTest {
     }
 
     @Test
-    void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException {
+    void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException, GameNotFoundException {
         //GIVEN
         SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
         GamePoints gamePoints = new GamePoints(1, 1, List.of(setOfPoints));

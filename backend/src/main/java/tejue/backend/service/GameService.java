@@ -23,6 +23,10 @@ public class GameService {
         return "Game with id " + gameId + " not found";
     }
 
+    public String allGamesNotFoundMessage(String playerId) {
+        return "No games found for player with id " + playerId;
+    }
+
     public Player saveDataResult(String playerId, List<Trash> gameData) throws PlayerNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
@@ -81,11 +85,15 @@ public class GameService {
         return player;
     }
 
-    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException {
+    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException, GameNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
 
         List<Game> games = player.getGames();
+        if (games.isEmpty()) {
+            throw new GameNotFoundException(allGamesNotFoundMessage(playerId));
+        }
+
         List<GamePoints> allGamesPoints = new ArrayList<>();
 
         for (Game game : games) {
@@ -108,6 +116,9 @@ public class GameService {
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
 
         List<Game> games = player.getGames();
+        if (games.isEmpty()) {
+            throw new GameNotFoundException(allGamesNotFoundMessage(playerId));
+        }
 
         for (Game game : games) {
             if (game.getGameId().equals(gameId)) {
@@ -121,7 +132,7 @@ public class GameService {
                 return new GamePoints(playerPointsTotal, dataPointsTotal, setOfPoints);
             }
         }
-        throw new GameNotFoundException("Spiel mit der ID " + gameId + " wurde nicht gefunden");
+        throw new GameNotFoundException(gameNotFoundMessage(gameId));
     }
 
     public List<SetOfPoints> calculateSetOfPoints(List<DbResult> playerResult, List<DbResult> dataResult) {
