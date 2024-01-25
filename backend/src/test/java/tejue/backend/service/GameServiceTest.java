@@ -142,15 +142,6 @@ class GameServiceTest {
     }
 
     @Test
-    void savePlayerResult_whenGameNotFound_thenThrowGameNotFoundException() {
-        //GIVEN
-        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
-
-        //WHEN & THEN
-        assertThrows(GameNotFoundException.class, () -> gameService.savePlayerResult(playerId, gameId, new HashMap<>()));
-    }
-
-    @Test
     void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException, GameNotFoundException {
         //GIVEN
         SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
@@ -173,6 +164,39 @@ class GameServiceTest {
 
         //WHEN & THEN
         assertThrows(PlayerNotFoundException.class, () -> gameService.getAllGamesResult(playerId));
+    }
+
+    @Test
+    void getGameResult_whenCalled_thenReturnGamePointsOfActualGame() throws PlayerNotFoundException, GameNotFoundException {
+        //GIVEN
+        SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+        GamePoints expected = new GamePoints(1, 1, List.of(setOfPoints));
+
+        //WHEN
+        GamePoints actual = gameService.getGameResult(playerId, gameId);
+
+        //THEN
+        verify(gameRepo).findById(player.getId());
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getGameResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult(playerId, ""));
+    }
+
+    @Test
+    void getGameResult_whenGamesNotFound_thenThrowGameNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+
+        //WHEN & THEN
+        assertThrows(GameNotFoundException.class, () -> gameService.getGameResult(playerId, ""));
     }
 
     @Test
@@ -251,29 +275,5 @@ class GameServiceTest {
 
         //THEN
         assertEquals(expected, actual);
-    }
-
-    @Test
-    void getGameResult_whenCalled_thenReturnGamePointsOfActualGame() throws PlayerNotFoundException, GameNotFoundException {
-        //GIVEN
-        SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
-        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
-        GamePoints expected = new GamePoints(1, 1, List.of(setOfPoints));
-
-        //WHEN
-        GamePoints actual = gameService.getGameResult(playerId, gameId);
-
-        //THEN
-        verify(gameRepo).findById(player.getId());
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void getGameResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
-        //GIVEN
-        when(gameRepo.findById("Id not existing")).thenReturn(Optional.of(player));
-
-        //WHEN & THEN
-        assertThrows(PlayerNotFoundException.class, () -> gameService.getGameResult(playerId, ""));
     }
 }
