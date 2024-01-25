@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Game {
     private String gameId;
-    private List<DbResult> gameResult;
-    private List<DbResult> playerResult;
-    private List<DbResult> dataResult;
+    private List<DbResult> gameResult = List.of();
+    private List<DbResult> playerResult = List.of();
+    private List<DbResult> dataResult = List.of();
 }
