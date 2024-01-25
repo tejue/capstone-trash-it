@@ -60,7 +60,7 @@ export default function Game() {
                 console.error("data could not be transmitted:", error);
             })
             .finally(() => {
-                navigate('/game-result');
+                navigate('/game-result/' + games.length);
             });
     }
 
