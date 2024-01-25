@@ -2,10 +2,12 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import {GamePointsType} from "../types/GamePointsType.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function MainMenu() {
 
     const playerId: string = "5"
+    const navigate = useNavigate();
 
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
 
@@ -33,6 +35,10 @@ export default function MainMenu() {
             })
     }
 
+    function handleStartNewGame() {
+        navigate('/game');
+    }
+
     return (
         <>
             {allGamesResult.length === 0 ? (
@@ -47,6 +53,7 @@ export default function MainMenu() {
                     <button onClick={deleteAllGamesResult}>Fresh start: Delete all your results</button>
                 </>
             )}
+                <button onClick={handleStartNewGame}>Start a new  game</button>
         </>
     )
 }
