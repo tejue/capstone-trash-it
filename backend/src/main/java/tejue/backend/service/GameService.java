@@ -85,14 +85,11 @@ public class GameService {
         return player;
     }
 
-    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException, GameNotFoundException {
+    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
 
         List<Game> games = player.getGames();
-        if (games.isEmpty()) {
-            throw new GameNotFoundException(allGamesNotFoundMessage(playerId));
-        }
 
         List<GamePoints> allGamesPoints = new ArrayList<>();
 
