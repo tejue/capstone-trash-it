@@ -38,6 +38,18 @@ class GameServiceTest {
     }
 
     @Test
+    void gameNotFound_whenCalledWithNonExistingGameId_thenReturnStringMessage() {
+        //GIVEN
+        String expected = "Game with id " + gameId + " not found";
+
+        //WHEN
+        String actual = gameService.gameNotFoundMessage(gameId);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws PlayerNotFoundException, GameNotFoundException {
         //GIVEN
         Map<String, DbResult> inputPlayerResult = Map.of("1", dbResult);
