@@ -142,7 +142,7 @@ class GameServiceTest {
     }
 
     @Test
-    void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException, GameNotFoundException {
+    void getAllGamesResult_whenAllGamesResultIsCalled_thenReturnListOfGamePoints() throws PlayerNotFoundException {
         //GIVEN
         SetOfPoints setOfPoints = new SetOfPoints("1", 1, 1);
         GamePoints gamePoints = new GamePoints(1, 1, List.of(setOfPoints));
@@ -275,5 +275,37 @@ class GameServiceTest {
 
         //THEN
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteAllGamesResult_whenCalledWithPlayerId_thenReturnPlayerWithNoGamesResult() throws Exception {
+        //GIVEN
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+        Player expected = new Player(playerId, name, new ArrayList<>());
+
+        //WHEN
+        Player actual = gameService.deleteAllGamesResult(playerId);
+
+        //THEN
+        verify(gameRepo).findById(playerId);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deleteAllGamesResult_whenPlayerNotFound_thenThrowPlayerNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.empty());
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.deleteAllGamesResult("Id not existing"));
+    }
+
+    @Test
+    void deleteAllGamesResult_whenGamesNotFound_thenThrowAllGamesNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+
+        //WHEN & THEN
+        assertThrows(GameNotFoundException.class, () -> gameService.getGameResult(playerId, ""));
     }
 }
