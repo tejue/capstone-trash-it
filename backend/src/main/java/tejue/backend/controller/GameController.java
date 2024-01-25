@@ -36,4 +36,9 @@ public class GameController {
     public List<GamePoints> getAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException, GameNotFoundException {
         return service.getAllGamesResult(playerId);
     }
+
+    @PutMapping("/{playerId}")
+    public Player deleteAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException,GameNotFoundException {
+        return service.deleteAllGamesResult(playerId);
+    }
 }

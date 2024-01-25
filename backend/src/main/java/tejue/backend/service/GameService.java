@@ -192,4 +192,19 @@ public class GameService {
         }
         return playerPointsPerTrashCan;
     }
+
+    public Player deleteAllGamesResult(String playerId) throws PlayerNotFoundException, GameNotFoundException {
+        Player player = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
+
+        List<Game> games = player.getGames();
+        if (games.isEmpty()) {
+            throw new GameNotFoundException(allGamesNotFoundMessage(playerId));
+        }
+
+        player.getGames().clear();
+
+        repo.save(player);
+        return player;
+    }
 }
