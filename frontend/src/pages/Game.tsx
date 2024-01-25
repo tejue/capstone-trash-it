@@ -57,9 +57,7 @@ export default function Game() {
     }
 
     function postPlayerResult() {
-        axios.put(`/api/game/${playerId}/`+ games.length, playerResult)
-
-
+        axios.put(`/api/game/${playerId}/` + games.length, playerResult)
             .catch(error => {
                 console.error("data could not be transmitted:", error);
             })
