@@ -19,7 +19,17 @@ export default function MainMenu() {
                 setAllGamesResult(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error);
+                console.error("Request failed: ", error.response);
+            })
+    }
+
+    function deleteAllGamesResult() {
+        axios.put(`/api/game/${playerId}/gamesResult`)
+            .then(() => {
+                setAllGamesResult([])
+            })
+            .catch(error => {
+                console.error("Data could not be deleted:", error)
             })
     }
 
@@ -28,11 +38,15 @@ export default function MainMenu() {
             {allGamesResult.length === 0 ? (
                 <GameBox>You have no saved result so far</GameBox>
             ) : (
-                allGamesResult.map((gameResult, index: number) =>
-                    <StyledSection key={index}>
-                        <GameBox>Game {index + 1}: </GameBox>
-                        <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
-                    </StyledSection>))}
+                <>
+                    {allGamesResult.map((gameResult, index: number) =>
+                        <StyledSection key={index}>
+                            <GameBox>Game {index + 1}: </GameBox>
+                            <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
+                        </StyledSection>)}
+                    <button onClick={deleteAllGamesResult}>Fresh start: Delete all your results</button>
+                </>
+            )}
         </>
     )
 }
