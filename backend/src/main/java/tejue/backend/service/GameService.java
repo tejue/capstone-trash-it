@@ -28,6 +28,29 @@ public class GameService {
         return "No games found for player with id " + playerId;
     }
 
+    public Player createNewPlayer(PlayerDTO newPlayerDTO) {
+        Player newPlayer = new Player(idService.randomId(), newPlayerDTO.getName(), newPlayerDTO.getGames());
+
+        repo.save(newPlayer);
+        return newPlayer;
+    }
+
+    public PlayerDTO getPlayerById(String playerId) throws PlayerNotFoundException {
+        Player foundPlayer = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        PlayerDTO foundPlayerDTO = new PlayerDTO(foundPlayer.getName(), foundPlayer.getGames());
+        return foundPlayerDTO;
+    }
+
+    public Player deletePlayerById(String playerId) throws PlayerNotFoundException {
+        Player playerToDelete = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        repo.deleteById(playerId);
+        return playerToDelete;
+    }
+
     public Player saveDataResult(String playerId, List<Trash> gameData) throws PlayerNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
@@ -204,25 +227,5 @@ public class GameService {
 
         repo.save(player);
         return player;
-    }
-
-    public Player createNewPlayer(PlayerDTO newPlayerDTO) {
-        Player newPlayer = new Player(idService.randomId() , newPlayerDTO.getName(), newPlayerDTO.getGames());
-
-        repo.save(newPlayer);
-        return newPlayer;
-    }
-
-    public Player getPlayerById(String playerId) throws PlayerNotFoundException{
-        return repo.findById(playerId)
-                .orElseThrow(() -> new PlayerNotFoundException(playerId));
-    }
-
-    public Player deletePlayerById (String playerId) throws PlayerNotFoundException{
-        Player playerToDelete = repo.findById(playerId)
-                .orElseThrow(() -> new PlayerNotFoundException(playerId));
-
-        repo.deleteById(playerId);
-        return playerToDelete;
     }
 }

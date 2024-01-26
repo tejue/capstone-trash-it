@@ -48,7 +48,7 @@ public class GameController {
     }
 
     @GetMapping("/{playerId}")
-    public Player getPlayerById(@PathVariable String playerId) throws PlayerNotFoundException {
+    public PlayerDTO getPlayerById(@PathVariable String playerId) throws PlayerNotFoundException {
         return service.getPlayerById(playerId);
     }
 
