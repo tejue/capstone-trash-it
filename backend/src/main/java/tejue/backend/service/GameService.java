@@ -204,4 +204,24 @@ public class GameService {
         repo.save(player);
         return player;
     }
+
+    public Player createNewPlayer(Player player) {
+        Player newPlayer = new Player(player.getId(), player.getName(), player.getGames());
+
+        repo.save(newPlayer);
+        return newPlayer;
+    }
+
+    public Player getPlayerById(String playerId) throws PlayerNotFoundException{
+        return repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+    }
+
+    public Player deletePlayerById (String playerId) throws PlayerNotFoundException{
+        Player playerToDelete = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        repo.deleteById(playerId);
+        return playerToDelete;
+    }
 }
