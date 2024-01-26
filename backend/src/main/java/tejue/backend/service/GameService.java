@@ -53,8 +53,6 @@ public class GameService {
             String trashCanId = data.getTrashCanId();
             String trashId = data.getId();
 
-            //System.out.println("Trash Can ID: " + trashCanId + ", Trash ID: " + trashId);
-
             if (gameDataMap.containsKey(trashCanId)) {
                 gameDataMap.get(trashCanId).add(trashId);
             } else {
@@ -63,8 +61,6 @@ public class GameService {
                 gameDataMap.put(trashCanId, trashIds);
             }
         });
-
-        //System.out.println("Collected Data: " + gameDataMap);
 
         return gameDataMap.entrySet().stream()
                 .map(entry -> new DbResult(entry.getKey(), entry.getValue()))
@@ -144,7 +140,7 @@ public class GameService {
 
         for (int i = 0; i < amountTrashCans; i++) {
             String trashCanId = String.valueOf(i + 1);
-            DbResult playerResultPerTrashCan = getPlayerResultPerTrashCan(playerResult, trashCanId);
+            DbResult playerResultPerTrashCan = checkPlayerResultPerTrashCan(playerResult, trashCanId);
             DbResult dataResultPerTrashCan = dataResult.get(i);
 
             int playerPointsPerTrashCanCount = calculatePlayerPointsPerTrashCan(playerResultPerTrashCan, dataResultPerTrashCan);
@@ -169,7 +165,7 @@ public class GameService {
         return trashIdsPerTrashCan;
     }
 
-    public DbResult getPlayerResultPerTrashCan(List<DbResult> playerResult, String trashCanId) {
+    public DbResult checkPlayerResultPerTrashCan(List<DbResult> playerResult, String trashCanId) {
         return playerResult.stream()
                 .filter(result -> trashCanId.equals(result.getTrashCanId()))
                 .findFirst()
