@@ -228,26 +228,28 @@ class GameServiceTest {
     }
 
     @Test
-    void getPlayerResultPerTrashCan_whenLengthOfPlayerResultEqualsTrashCanIndex_thenReturnDbResult() {
+    void getPlayerResultPerTrashCan_whenTrashCanIdExists_thenReturnTheExisting() {
         //GIVEN
         List<DbResult> playerResult = List.of(dbResult);
-        DbResult expected = dbResult;
+        String trashCanId = "1";
+        DbResult expected = new DbResult("1", List.of("1"));
 
         //WHEN
-        DbResult actual = gameService.getPlayerResultPerTrashCan(playerResult, 0);
+        DbResult actual = gameService.getPlayerResultPerTrashCan(playerResult, trashCanId);
 
         //THEN
         assertEquals(expected, actual);
     }
 
     @Test
-    void getPlayerResultPerTrashCan_whenLengthOfPlayerResultIsSmallerThanTrashCanIndex_thenReturnNewEmptyDbResult() {
+    void getPlayerResultPerTrashCan_whenTrashCanIdNotExists_thenReturnNew() {
         //GIVEN
         List<DbResult> playerResult = List.of(dbResult);
-        DbResult expected = new DbResult(null, null);
+        String trashCanId = "2";
+        DbResult expected = new DbResult();
 
         //WHEN
-        DbResult actual = gameService.getPlayerResultPerTrashCan(playerResult, 1);
+        DbResult actual = gameService.getPlayerResultPerTrashCan(playerResult, trashCanId);
 
         //THEN
         assertEquals(expected, actual);
