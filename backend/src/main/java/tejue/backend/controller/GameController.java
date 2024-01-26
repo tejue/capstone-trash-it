@@ -43,8 +43,8 @@ public class GameController {
     }
 
     @PostMapping
-    public Player createNewPlayer(@RequestBody Player newPlayer) {
-        return service.createNewPlayer(newPlayer);
+    public Player createNewPlayer(@RequestBody PlayerDTO newPlayerDTO) {
+        return service.createNewPlayer(newPlayerDTO);
     }
 
     @GetMapping("/{playerId}")

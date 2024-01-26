@@ -14,6 +14,7 @@ import java.util.*;
 public class GameService {
 
     private final GameRepo repo;
+    private final IdService idService;
 
     public String playerNotFoundMessage(String playerId) {
         return "Player with id " + playerId + " not found";
@@ -205,8 +206,8 @@ public class GameService {
         return player;
     }
 
-    public Player createNewPlayer(Player player) {
-        Player newPlayer = new Player(player.getId(), player.getName(), player.getGames());
+    public Player createNewPlayer(PlayerDTO newPlayerDTO) {
+        Player newPlayer = new Player(idService.randomId() , newPlayerDTO.getName(), newPlayerDTO.getGames());
 
         repo.save(newPlayer);
         return newPlayer;
