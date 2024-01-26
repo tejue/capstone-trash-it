@@ -11,7 +11,7 @@ import {useNavigate} from 'react-router-dom';
 
 export default function Game() {
 
-    const playerId: string = "5"
+    const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
 
     const navigate = useNavigate();
 
