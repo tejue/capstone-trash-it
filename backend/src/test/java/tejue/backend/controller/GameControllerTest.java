@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import tejue.backend.model.*;
@@ -32,6 +33,69 @@ class GameControllerTest {
 
     @Autowired
     private GameRepo gameRepo;
+
+    @Test
+    void createNewPlayer_whenNewPlayerCreated_thenSaveNewPlayerWithRandomId() throws Exception {
+        //GIVEN
+        PlayerDTO playerDTO = new PlayerDTO("Cody Coder", new ArrayList<>());
+        String playerDTOasJSON = objectMapper.writeValueAsString(playerDTO);
+
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(playerDTOasJSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        Player savedPlayer = objectMapper.readValue(result.getResponse().getContentAsString(), Player.class);
+        String playerAsJSON = objectMapper.writeValueAsString(savedPlayer);
+
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/" + savedPlayer.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(playerAsJSON));
+    }
+
+    @Test
+    void getPlayerById_whenPlayerCalledWithID_thenReturnPlayerWithId() throws Exception {
+        //GIVEN
+        PlayerDTO playerDTO = new PlayerDTO("Cody Coder", new ArrayList<>());
+        String playerDTOAsJSON = objectMapper.writeValueAsString(playerDTO);
+
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(playerDTOAsJSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        Player savedPlayer = objectMapper.readValue(result.getResponse().getContentAsString(), Player.class);
+        String playerAsJSON = objectMapper.writeValueAsString(savedPlayer);
+
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/" + savedPlayer.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(playerAsJSON));
+    }
+
+    @Test
+    void deletePlayerById_whenPlayerCalledWithID_thenDeletePlayer() throws Exception {
+        //GIVEN
+        PlayerDTO playerDTO = new PlayerDTO("Cody Coder", new ArrayList<>());
+        String playerDTOAsJSON = objectMapper.writeValueAsString(playerDTO);
+
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(BASE_URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(playerDTOAsJSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        Player savedPlayer = objectMapper.readValue(result.getResponse().getContentAsString(), Player.class);
+        String playerAsJSON = objectMapper.writeValueAsString(savedPlayer);
+
+        //WHEN & THEN
+        mvc.perform(MockMvcRequestBuilders.delete(BASE_URL + "/" + savedPlayer.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(playerAsJSON));
+    }
 
     @Test
     void savePlayerResult_whenNewPlayerResult_thenReturnSavedPlayerWithNewResult() throws Exception {

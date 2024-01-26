@@ -17,6 +17,21 @@ public class GameController {
 
     private final GameService service;
 
+    @PostMapping
+    public Player createNewPlayer(@RequestBody PlayerDTO newPlayerDTO) {
+        return service.createNewPlayer(newPlayerDTO);
+    }
+
+    @GetMapping("/{playerId}")
+    public Player getPlayerByIdWithId(@PathVariable String playerId) throws PlayerNotFoundException {
+        return service.getPlayerById(playerId);
+    }
+
+    @DeleteMapping("/{playerId}")
+    public Player deletePlayerById(@PathVariable String playerId) throws PlayerNotFoundException {
+        return service.deletePlayerById(playerId);
+    }
+
     @PutMapping("/{playerId}/{gameId}")
     public Player savePlayerResult(@PathVariable String playerId, @PathVariable String gameId, @RequestBody Map<String, DbResult> playerResult) throws PlayerNotFoundException, GameNotFoundException {
         return service.savePlayerResult(playerId, gameId, playerResult);
@@ -38,7 +53,7 @@ public class GameController {
     }
 
     @PutMapping("/{playerId}/gamesResult")
-    public Player deleteAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException,GameNotFoundException {
+    public Player deleteAllGamesResult(@PathVariable String playerId) throws PlayerNotFoundException, GameNotFoundException {
         return service.deleteAllGamesResult(playerId);
     }
 }

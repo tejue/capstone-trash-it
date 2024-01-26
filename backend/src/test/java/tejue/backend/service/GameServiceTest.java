@@ -13,7 +13,8 @@ import static org.mockito.Mockito.*;
 
 class GameServiceTest {
     private final GameRepo gameRepo = mock(GameRepo.class);
-    private final GameService gameService = new GameService(gameRepo);
+    private final IdService idService = mock(IdService.class);
+    private final GameService gameService = new GameService(gameRepo, idService);
 
     String playerId = "1";
     String name = "Cody Coder";
@@ -23,6 +24,7 @@ class GameServiceTest {
     Game game = new Game(gameId, List.of(dbResult), List.of(dbResult), List.of(dbResult));
     ArrayList<Game> games = new ArrayList<>(List.of(game));
     Player player = new Player(playerId, name, games);
+    PlayerDTO playerDTO = new PlayerDTO(name, new ArrayList<>());
 
 
     @Test
@@ -59,6 +61,64 @@ class GameServiceTest {
 
         //THEN
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void createNewPlayer_whenCalled_thenSaveNewPlayer() {
+        //GIVEN
+        when(idService.randomId()).thenReturn("randomId");
+        when(gameRepo.save(player)).thenReturn(player);
+        Player expected = new Player("randomId", name, new ArrayList<>());
+
+        //WHEN
+        Player actual = gameService.createNewPlayer(playerDTO);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayerById_whenCalledWithId_thenReturnPlayer() throws PlayerNotFoundException {
+        //GIVEN
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+        Player expected = new Player(playerId, name, games);
+
+        //WHEN
+        Player actual = gameService.getPlayerById(playerId);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getPlayerById_whenCalledWithNonExistingId_thenThrowPlayerNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.empty());
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.getPlayerById("Id not existing"));
+    }
+
+    @Test
+    void deletePlayerById_whenCalledWithId_thenDeletePlayer() throws PlayerNotFoundException {
+        //GIVEN
+        when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
+        Player expected = player;
+
+        //WHEN
+        Player actual = gameService.deletePlayerById(playerId);
+
+        //THEN
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void deletePlayerById_whenCalledWithNonExistingId_thenThrowPlayerNotFoundException() {
+        //GIVEN
+        when(gameRepo.findById("Id not existing")).thenReturn(Optional.empty());
+
+        //WHEN & THEN
+        assertThrows(PlayerNotFoundException.class, () -> gameService.deletePlayerById("Id not existing"));
     }
 
     @Test

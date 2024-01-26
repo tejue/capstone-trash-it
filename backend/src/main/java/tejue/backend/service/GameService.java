@@ -14,6 +14,7 @@ import java.util.*;
 public class GameService {
 
     private final GameRepo repo;
+    private final IdService idService;
 
     public String playerNotFoundMessage(String playerId) {
         return "Player with id " + playerId + " not found";
@@ -25,6 +26,26 @@ public class GameService {
 
     public String allGamesNotFoundMessage(String playerId) {
         return "No games found for player with id " + playerId;
+    }
+
+    public Player createNewPlayer(PlayerDTO newPlayerDTO) {
+        Player newPlayer = new Player(idService.randomId(), newPlayerDTO.getName(), newPlayerDTO.getGames());
+
+        repo.save(newPlayer);
+        return newPlayer;
+    }
+
+    public Player getPlayerById(String playerId) throws PlayerNotFoundException {
+        return repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+    }
+
+    public Player deletePlayerById(String playerId) throws PlayerNotFoundException {
+        Player playerToDelete = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerId));
+
+        repo.deleteById(playerId);
+        return playerToDelete;
     }
 
     public Player saveDataResult(String playerId, List<Trash> gameData) throws PlayerNotFoundException {
