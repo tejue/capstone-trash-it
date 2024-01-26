@@ -2,10 +2,12 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 import {GamePointsType} from "../types/GamePointsType.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function MainMenu() {
 
     const playerId: string = "5"
+    const navigate = useNavigate();
 
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
 
@@ -19,8 +21,22 @@ export default function MainMenu() {
                 setAllGamesResult(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error);
+                console.error("Request failed: ", error.response);
             })
+    }
+
+    function deleteAllGamesResult() {
+        axios.put(`/api/game/${playerId}/gamesResult`)
+            .then(() => {
+                setAllGamesResult([])
+            })
+            .catch(error => {
+                console.error("Data could not be deleted:", error)
+            })
+    }
+
+    function handleStartNewGame() {
+        navigate('/game');
     }
 
     return (
@@ -28,11 +44,16 @@ export default function MainMenu() {
             {allGamesResult.length === 0 ? (
                 <GameBox>You have no saved result so far</GameBox>
             ) : (
-                allGamesResult.map((gameResult, index: number) =>
-                    <StyledSection key={index}>
-                        <GameBox>Game {index + 1}: </GameBox>
-                        <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
-                    </StyledSection>))}
+                <>
+                    {allGamesResult.map((gameResult, index: number) =>
+                        <StyledSection key={index}>
+                            <GameBox>Game {index + 1}: </GameBox>
+                            <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
+                        </StyledSection>)}
+                    <button onClick={deleteAllGamesResult}>Fresh start: Delete all your results</button>
+                </>
+            )}
+                <button onClick={handleStartNewGame}>Start a new  game</button>
         </>
     )
 }

@@ -2,6 +2,7 @@ import Trash from "../components/Trash.tsx";
 import TrashCan from "../components/TrashCan.tsx";
 import {TrashType} from "../types/TrashType.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
+import {GameType} from "../types/GameType.ts";
 import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -11,16 +12,15 @@ import {useNavigate} from 'react-router-dom';
 export default function Game() {
 
     const playerId: string = "5"
-    //const gameId: string = "1"
 
     const navigate = useNavigate();
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
     const [playerResult, setPlayerResult] = useState<PlayerResultType>({});
-
     const [initialTrashes, setInitialTrashes] = useState<boolean>(false);
     const [gameEnd, setGameEnd] = useState<boolean>(false);
+    const [games, setGames] = useState<GameType[]>([])
 
     useEffect(() => {
         if (!initialTrashes) {
@@ -30,10 +30,8 @@ export default function Game() {
         getTrashCans();
     }, [initialTrashes]);
 
-    const [games, setGames] = useState([])
-
     function getTrashes() {
-        axios.get("api/trash")
+        axios.get("/api/trash")
             .then(response => {
                 setTrashes(response.data)
                 axios.put(`/api/game/${playerId}/dataResult`, response.data)
@@ -47,7 +45,7 @@ export default function Game() {
     }
 
     function getTrashCans() {
-        axios.get("api/trashcan")
+        axios.get("/api/trashcan")
             .then(response => {
                 setTrashCans(response.data)
             })
@@ -57,14 +55,12 @@ export default function Game() {
     }
 
     function postPlayerResult() {
-        axios.put(`/api/game/${playerId}/`+ games.length, playerResult)
-
-
+        axios.put(`/api/game/${playerId}/` + games.length, playerResult)
             .catch(error => {
                 console.error("data could not be transmitted:", error);
             })
             .finally(() => {
-                navigate('/game-result');
+                navigate('/game-result/' + games.length);
             });
     }
 

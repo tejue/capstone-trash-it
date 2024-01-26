@@ -85,14 +85,11 @@ public class GameService {
         return player;
     }
 
-    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException, GameNotFoundException {
+    public List<GamePoints> getAllGamesResult(String playerId) throws PlayerNotFoundException {
         Player player = repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
 
         List<Game> games = player.getGames();
-        if (games.isEmpty()) {
-            throw new GameNotFoundException(allGamesNotFoundMessage(playerId));
-        }
 
         List<GamePoints> allGamesPoints = new ArrayList<>();
 
@@ -142,13 +139,14 @@ public class GameService {
         int amountTrashCans = dataResult.size();
 
         for (int i = 0; i < amountTrashCans; i++) {
-            DbResult playerResultPerTrashCan = getPlayerResultPerTrashCan(playerResult, i);
+            String trashCanId = String.valueOf(i + 1);
+            DbResult playerResultPerTrashCan = checkPlayerResultPerTrashCan(playerResult, trashCanId);
             DbResult dataResultPerTrashCan = dataResult.get(i);
 
             int playerPointsPerTrashCanCount = calculatePlayerPointsPerTrashCan(playerResultPerTrashCan, dataResultPerTrashCan);
-            int dataPointsCount = dataPointsPerTrashCan.get(String.valueOf(i + 1));
+            int dataPointsCount = dataPointsPerTrashCan.get(trashCanId);
 
-            SetOfPoints setOfPoints = new SetOfPoints(String.valueOf(i + 1), playerPointsPerTrashCanCount, dataPointsCount);
+            SetOfPoints setOfPoints = new SetOfPoints(trashCanId, playerPointsPerTrashCanCount, dataPointsCount);
             setOfPointsPerGame.add(setOfPoints);
         }
 
@@ -159,7 +157,7 @@ public class GameService {
         Map<String, Integer> trashIdsPerTrashCan = new HashMap<>();
 
         for (DbResult dbDataResult : dataResult) {
-            String trashCanId = String.valueOf(dbDataResult.getTrashCanId());
+            String trashCanId = dbDataResult.getTrashCanId();
             int trashIdsPerTrashCanCount = dbDataResult.getTrashIds().size();
 
             trashIdsPerTrashCan.put(trashCanId, trashIdsPerTrashCanCount);
@@ -167,12 +165,11 @@ public class GameService {
         return trashIdsPerTrashCan;
     }
 
-    public DbResult getPlayerResultPerTrashCan(List<DbResult> playerResult, int trashCanIndex) {
-        if (trashCanIndex < playerResult.size()) {
-            return playerResult.get(trashCanIndex);
-        } else {
-            return new DbResult();
-        }
+    public DbResult checkPlayerResultPerTrashCan(List<DbResult> playerResult, String trashCanId) {
+        return playerResult.stream()
+                .filter(result -> trashCanId.equals(result.getTrashCanId()))
+                .findFirst()
+                .orElse(new DbResult());
     }
 
     public int calculatePlayerPointsPerTrashCan(DbResult playerResult, DbResult dataResult) {
@@ -191,5 +188,20 @@ public class GameService {
             }
         }
         return playerPointsPerTrashCan;
+    }
+
+    public Player deleteAllGamesResult(String playerId) throws PlayerNotFoundException, GameNotFoundException {
+        Player player = repo.findById(playerId)
+                .orElseThrow(() -> new PlayerNotFoundException(playerNotFoundMessage(playerId)));
+
+        List<Game> games = player.getGames();
+        if (games.isEmpty()) {
+            throw new GameNotFoundException(allGamesNotFoundMessage(playerId));
+        }
+
+        player.getGames().clear();
+
+        repo.save(player);
+        return player;
     }
 }
