@@ -78,17 +78,16 @@ class GameServiceTest {
     }
 
     @Test
-    void getPlayerById_whenCalledWithId_thenReturnPlayerExceptID() throws PlayerNotFoundException {
+    void getPlayerById_whenCalledWithId_thenReturnPlayer() throws PlayerNotFoundException {
         //GIVEN
         when(gameRepo.findById(playerId)).thenReturn(Optional.of(player));
-        PlayerDTO expected = new PlayerDTO(name, games);
+        Player expected = new Player(playerId, name, games);
 
         //WHEN
-        PlayerDTO actual = gameService.getPlayerById(playerId);
+        Player actual = gameService.getPlayerById(playerId);
 
         //THEN
         assertEquals(expected, actual);
-        assertNotEquals(playerDTO, actual);
     }
 
     @Test

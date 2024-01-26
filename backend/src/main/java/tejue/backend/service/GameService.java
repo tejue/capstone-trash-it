@@ -35,12 +35,9 @@ public class GameService {
         return newPlayer;
     }
 
-    public PlayerDTO getPlayerById(String playerId) throws PlayerNotFoundException {
-        Player foundPlayer = repo.findById(playerId)
+    public Player getPlayerById(String playerId) throws PlayerNotFoundException {
+        return repo.findById(playerId)
                 .orElseThrow(() -> new PlayerNotFoundException(playerId));
-
-        PlayerDTO foundPlayerDTO = new PlayerDTO(foundPlayer.getName(), foundPlayer.getGames());
-        return foundPlayerDTO;
     }
 
     public Player deletePlayerById(String playerId) throws PlayerNotFoundException {
