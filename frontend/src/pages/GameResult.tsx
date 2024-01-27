@@ -33,12 +33,12 @@ export default function GameResult() {
 
     return (
         <>
-            {gameResult?.map((result) => (
-                <StyledSection key={result.trashCanId}>
-                    <GameBox
-                        bgcolor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
-                </StyledSection>
-            ))}
+            <StyledSection>
+                {gameResult?.map((result) => (
+                    <GameBox key={result.trashCanId}
+                             bgcolor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
+                ))}
+            </StyledSection>
             <button onClick={handleNextPage}>Go to Main Menu</button>
         </>
     );
@@ -48,17 +48,28 @@ type GameBoxProps = {
     bgcolor: string;
 }
 
+const trashCanColors: {[key: string]: string } = {
+    "1": "#0071BC",
+    "2": "#F7931E",
+    "3": "#333333",
+};
+
+const getBackgroundColor = (trashCanId: string) =>
+    trashCanColors[trashCanId] || "default";
+
 const StyledSection = styled.section`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
-const getBackgroundColor = (trashCanId: string) =>
-    trashCanId === "1" ? "blue" : trashCanId === "2" ? "yellow" : trashCanId === "3" ? "grey" : "default";
 
 const GameBox = styled.p<GameBoxProps>`
+  text-align: center;
   border: solid 1px;
   border-radius: 5px;
-  padding: 20px;
-  text-align: center;
+  height: 20vh;
+  width: 200px;
+  margin: 20px auto;
   background-color: ${(props) => props.bgcolor};
 `
