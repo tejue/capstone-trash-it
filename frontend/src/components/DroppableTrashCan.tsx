@@ -21,12 +21,14 @@ export default function DroppableTrashCan(props: Readonly<DroppableTrashCanProps
             id={props.trashCan.id}
             ref={setNodeRef}
             style={style}>
-            {`${props.trashCan.name}`}
+            <img src={`${props.trashCan.image}`} alt={`${props.trashCan.name}`} />
         </StyledDroppableTrashCan>
     )
 }
 
 const StyledDroppableTrashCan = styled.div`
-  border: solid white 1px;
-  text-align: center;
+  height: auto;
+  box-sizing: border-box;
+  width: 33%;
+  //width: 100px;  
 `
