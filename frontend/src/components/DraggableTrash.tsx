@@ -19,7 +19,7 @@ export default function DraggableTrash(props: Readonly<DraggableTrashProps>) {
             transform={transform}
             {...attributes}
             {...listeners}>
-            {`${props.trash.name}`}
+            <img src={`${props.trash.image}`} alt={`${props.trash.name}`}/>
         </StyledDraggableTrash>
     )
 }
@@ -32,9 +32,14 @@ const StyledDraggableTrash = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid white;
   padding: 8px;
-  height: 100%;
+  height: auto;
   box-sizing: border-box;
   transform: ${(props) => CSS.Transform.toString(props.transform)};
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
 `;

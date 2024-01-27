@@ -22,8 +22,8 @@ const StyledSection = styled.section`
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 8px;
-  grid-auto-flow: row dense;
-  grid-auto-rows: minmax(0, 1fr);
+  //grid-auto-flow: row dense;
+  //grid-auto-rows: minmax(0, 1fr);
   grid-template-areas:
     "area1 area1 area2 area2 area3 area3 area4 area4"
     "area1 area1 area2 area2 area3 area3 area4 area4"
