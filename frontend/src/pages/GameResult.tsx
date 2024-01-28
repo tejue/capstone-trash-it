@@ -36,19 +36,20 @@ export default function GameResult() {
             <StyledSection>
                 {gameResult?.map((result) => (
                     <GameBox key={result.trashCanId}
-                             bgcolor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
+                             style={{backgroundColor: getBackgroundColor(result.trashCanId)}}
+                    >{result.playerPoints} / {result.dataPoints}</GameBox>
                 ))}
             </StyledSection>
-            <button onClick={handleNextPage}>Go to Main Menu</button>
+            <BuzzerButton onClick={handleNextPage}>button</BuzzerButton>
         </>
     );
 }
 
 type GameBoxProps = {
-    bgcolor: string;
+    bgcolor?: string;
 }
 
-const trashCanColors: {[key: string]: string } = {
+const trashCanColors: { [key: string]: string } = {
     "1": "#0071BC",
     "2": "#F7931E",
     "3": "#333333",
@@ -65,11 +66,57 @@ const StyledSection = styled.section`
 `
 
 const GameBox = styled.p<GameBoxProps>`
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: solid 1px;
   border-radius: 5px;
   height: 20vh;
   width: 200px;
   margin: 20px auto;
-  background-color: ${(props) => props.bgcolor};
+  ${(props) => props.bgcolor && `background-color: ${props.bgcolor};`}
+`
+const BuzzerButton = styled.button`
+  position: relative;
+  outline: none;
+  font-size: 1.5rem;
+  color: rgb(137, 180, 205);
+  text-transform: uppercase;
+  padding: 1em 2em;
+  border: 2px solid rgb(137, 180, 205);
+  border-radius: 1em;
+  //border-radius: 50%;
+  //height: 100px;
+  //width: 50px;
+  background: rgb(232, 251, 255);
+  transform-style: preserve-3d;
+  transition: all 175ms cubic-bezier(0, 0, 1, 1);
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgb(195, 230, 242);
+    border-radius: inherit;
+    box-shadow: 0 0 0 2px rgb(156, 198, 205), 0 0.75em 0 0 rgb(137, 180, 205);
+    transform: translate3d(0, 0.75em, -1em);
+    transition: all 175ms cubic-bezier(0, 0, 1, 1);
+  }
+
+  &:hover {
+    background: rgb(211, 243, 251);
+    transform: translate(0, 0.375em);
+  }
+
+  &:active {
+    transform: translate(0em, 0.75em);
+  }
+
+  &:active::before {
+    transform: translate3d(0, 0, -1em);
+    box-shadow: 0 0 0 2px rgb(137, 180, 205), 0 0.25em 0 0 rgb(137, 180, 205);
+  }
 `
