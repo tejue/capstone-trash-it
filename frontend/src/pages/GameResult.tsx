@@ -40,7 +40,11 @@ export default function GameResult() {
                     >{result.playerPoints} / {result.dataPoints}</GameBox>
                 ))}
             </StyledSection>
-            <BuzzerButton onClick={handleNextPage}>button</BuzzerButton>
+            <ButtonContainer>
+                <BuzzerButton onClick={handleNextPage}>
+                    <StyledSpan>main menue</StyledSpan>
+                </BuzzerButton>
+            </ButtonContainer>
         </>
     );
 }
@@ -69,54 +73,54 @@ const GameBox = styled.p<GameBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 1px;
+  border: solid 1px #1f1e1e;
   border-radius: 5px;
-  height: 20vh;
+  height: 15vh;
   width: 200px;
   margin: 20px auto;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
   ${(props) => props.bgcolor && `background-color: ${props.bgcolor};`}
 `
-const BuzzerButton = styled.button`
-  position: relative;
-  outline: none;
-  font-size: 1.5rem;
-  color: rgb(137, 180, 205);
-  text-transform: uppercase;
-  padding: 1em 2em;
-  border: 2px solid rgb(137, 180, 205);
-  border-radius: 1em;
-  //border-radius: 50%;
-  //height: 100px;
-  //width: 50px;
-  background: rgb(232, 251, 255);
-  transform-style: preserve-3d;
-  transition: all 175ms cubic-bezier(0, 0, 1, 1);
 
-  &::before {
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: rgb(195, 230, 242);
-    border-radius: inherit;
-    box-shadow: 0 0 0 2px rgb(156, 198, 205), 0 0.75em 0 0 rgb(137, 180, 205);
-    transform: translate3d(0, 0.75em, -1em);
-    transition: all 175ms cubic-bezier(0, 0, 1, 1);
-  }
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 40px 30px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+`
+
+const BuzzerButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1px solid #1f1e1e;
+  //background: linear-gradient(0deg, #1a1919, #3b3a3a);
+  background: linear-gradient(0deg, #560018, #9f0225);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  transition: box-shadow 0.2s;
 
   &:hover {
-    background: rgb(211, 243, 251);
-    transform: translate(0, 0.375em);
+    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.3);
   }
+`
 
-  &:active {
-    transform: translate(0em, 0.75em);
-  }
-
-  &:active::before {
-    transform: translate3d(0, 0, -1em);
-    box-shadow: 0 0 0 2px rgb(137, 180, 205), 0 0.25em 0 0 rgb(137, 180, 205);
-  }
+const StyledSpan = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 80px;
+  //border: 1px solid #1f1e1e;
+  border: 1px solid #810123;
+  border-radius: 50%;
+  //background: linear-gradient(180deg, #1a1919, #3b3a3a);
+  background: linear-gradient(180deg, #560018, #9f0225);
+  font-size: 16px;
+  color: #c0bdbd;
 `
