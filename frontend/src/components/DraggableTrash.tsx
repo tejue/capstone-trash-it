@@ -1,11 +1,11 @@
 import {TrashType} from "../types/TrashType.ts";
 import styled from "styled-components";
-import {CSS} from "@dnd-kit/utilities";
+import {CSS, Transform} from "@dnd-kit/utilities";
 import {useDraggable} from "@dnd-kit/core";
 
 type DraggableTrashProps = {
     trash: TrashType;
-    index: number;
+    //index: number;
 }
 export default function DraggableTrash(props: Readonly<DraggableTrashProps>) {
 
@@ -15,31 +15,41 @@ export default function DraggableTrash(props: Readonly<DraggableTrashProps>) {
         <StyledDraggableTrash
             id={props.trash.id}
             ref={setNodeRef}
-            index={props.index}
+            //$index={props.index}
             transform={transform}
             {...attributes}
             {...listeners}>
-            <img src={`${props.trash.image}`} alt={`${props.trash.name}`}/>
+            <StyledImage src={`${props.trash.image}`} alt={`${props.trash.name}`}/>
         </StyledDraggableTrash>
     )
 }
 
-const StyledDraggableTrash = styled.div<{
-    index: number;
-    transform: any;
-}>`
-  grid-area: ${(props) => `area${props.index}`};
+type StyledDraggableTrashProps = {
+    transform: Transform | null;
+    id: string;
+    //index?: number
+}
+
+const StyledDraggableTrash = styled.div.attrs<StyledDraggableTrashProps>(
+    ({
+         transform, id
+     }) => ({
+        style: {
+            transform: CSS.Transform.toString(transform),
+            gridArea: `area${id}`
+        }
+    })
+)`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
   height: auto;
   box-sizing: border-box;
-  transform: ${(props) => CSS.Transform.toString(props.transform)};
+`
 
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
-  }
-`;
+const StyledImage = styled.img`
+  overflow: inherit;
+  //width: 100%;
+  height: 100px;
+`
