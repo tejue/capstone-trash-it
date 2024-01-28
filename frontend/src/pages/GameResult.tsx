@@ -101,7 +101,7 @@ const BuzzerButton = styled.button`
   border-radius: 50%;
   border: 1px solid #1f1e1e;
   //background: linear-gradient(0deg, #1a1919, #3b3a3a);
-  background: linear-gradient(0deg, #560018, #9f0225);
+  background: linear-gradient(0deg, #013b01, #026002);
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
   transition: box-shadow 0.2s;
 
@@ -117,10 +117,10 @@ const StyledSpan = styled.span`
   height: 80px;
   width: 80px;
   //border: 1px solid #1f1e1e;
-  border: 1px solid #810123;
+  border: 1px solid #015701;
   border-radius: 50%;
   //background: linear-gradient(180deg, #1a1919, #3b3a3a);
-  background: linear-gradient(180deg, #560018, #9f0225);
+  background: linear-gradient(180deg, #013b01, #026002);
   font-size: 16px;
   color: #c0bdbd;
 `
