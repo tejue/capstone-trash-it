@@ -46,11 +46,11 @@ export default function MainMenu() {
     return (
         <>
             {allGamesResult.length === 0 ? (
-                <StyledSection1>
-                    <GameBox1>You have no saved result so far</GameBox1>
-                </StyledSection1>
-            ) : (
                 <StyledSection>
+                    <GameBox>You have no saved result so far</GameBox>
+                </StyledSection>
+            ) : (
+                <StyledListSection>
                     <StyledList><Span>SCORE</Span>
                         {allGamesResult.map((gameResult, index: number) =>
                             <StyledListItem key={index}>
@@ -58,7 +58,7 @@ export default function MainMenu() {
                                 <span>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</span>
                             </StyledListItem>
                         )}</StyledList>
-                </StyledSection>
+                </StyledListSection>
             )}
             {allGamesResult.length > 0 && (
                 <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
@@ -68,7 +68,7 @@ export default function MainMenu() {
     )
 }
 
-const StyledSection = styled.section`
+const StyledListSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,14 +107,14 @@ const StyledListItem = styled.li`
   height: auto;
   width: 100%;
 `
-const StyledSection1 = styled.section`
+const StyledSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 70vh;
 `
 
-const GameBox1 = styled.p`
+const GameBox = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;

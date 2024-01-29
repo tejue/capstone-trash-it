@@ -20,7 +20,7 @@ export default function Trash(props: Readonly<TrashProps>) {
 
 const StyledSection = styled.section`
   display: grid;
-  grid-template-columns: repeat(8, 40px);
+  grid-template-columns: repeat(8, 1fr);
   gap: 8px;
   height: 65vh;
   grid-auto-flow: row dense;
