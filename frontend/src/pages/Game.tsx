@@ -142,7 +142,6 @@ const GameBox = styled.p`
   padding: 20px;
   background-color: #9d6101;
   width: 200px;
-  //margin: -100px auto;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
 `
 
