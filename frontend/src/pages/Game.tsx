@@ -78,15 +78,28 @@ export default function Game() {
                 return newResults;
             });
             setTrashes((prevTrashes) => {
-                const trashToRecycle = prevTrashes.filter((trash) => trash.id !== active.id)
+                const trashToRecycle = [...prevTrashes];
+
+                const draggedTrashIndex = prevTrashes.findIndex(trash => trash.id === active.id);
+                if (draggedTrashIndex !== -1) {
+                    trashToRecycle.splice(draggedTrashIndex, 1);
+                    trashToRecycle.splice(draggedTrashIndex, 0, {
+                        id: `placeholder-${draggedTrashIndex}`,
+                        name: "",
+                        image: "",
+                        trashType: ""
+                    });
+                }
+
                 handleGameEnd(trashToRecycle);
                 return trashToRecycle;
-            });
+            })
         }
     }
 
-    function handleGameEnd(trashToRecycle: TrashType []) {
-        if (trashToRecycle.length === 0) setGameEnd(true)
+    function handleGameEnd(trashToRecycle: TrashType[]) {
+        const noLeftTrashes = trashToRecycle.every(trash => trash.name === "");
+        setGameEnd(noLeftTrashes)
     }
 
     return (

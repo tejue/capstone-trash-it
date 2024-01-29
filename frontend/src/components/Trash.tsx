@@ -10,12 +10,8 @@ export default function Trash(props: Readonly<TrashProps>) {
 
     return (
         <StyledSection>
-            {props.trashes.map((trash,
-                                //                index
-            ) => (
-                <DraggableTrash key={trash.id} trash={trash}
-                    //                index={index +1}
-                />
+            {props.trashes.map((trash, index) => (
+                <DraggableTrash key={trash.id} trash={trash} index={index + 1}/>
             ))
             }
         </StyledSection>
