@@ -24,6 +24,6 @@ const StyledSection = styled.section`
   display: flex;
   justify-content: space-evenly;
   gap: 20px;
-  bottom: 100px;
-  height: 20vh;
+  bottom: 190px;
+  height: 10vh;
 `

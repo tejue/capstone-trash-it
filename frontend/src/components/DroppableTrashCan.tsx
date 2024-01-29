@@ -32,10 +32,9 @@ type StyledDroppableTrashCanProps = {
 }
 
 const StyledDroppableTrashCan = styled.div<StyledDroppableTrashCanProps>`
-  height: auto;
+  margin: 5px;
   box-sizing: border-box;
   width: 33%;
-  //width: 100px; 
   transition: transform 0.3s ease;
   transform: ${({isOver}) => isOver ? 'scale(1.2)' : 'scale(1)'};
 `
