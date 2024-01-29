@@ -26,13 +26,16 @@ export default function MainMenu() {
     }
 
     function deleteAllGamesResult() {
-        axios.put(`/api/game/${playerId}/gamesResult`)
-            .then(() => {
-                setAllGamesResult([])
-            })
-            .catch(error => {
-                console.error("Data could not be deleted:", error)
-            })
+        const deleteMessage = window.confirm("By clicking 'ok', the score of all games will be deleted. You're sure, this is what you want?");
+        if (deleteMessage) {
+            axios.put(`/api/game/${playerId}/gamesResult`)
+                .then(() => {
+                    setAllGamesResult([])
+                })
+                .catch(error => {
+                    console.error("Data could not be deleted:", error)
+                })
+        }
     }
 
     function handleStartNewGame() {
