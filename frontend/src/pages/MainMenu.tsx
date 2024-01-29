@@ -49,13 +49,15 @@ export default function MainMenu() {
                     <GameBox1>You have no saved result so far</GameBox1>
                 </StyledSection1>
             ) : (
-                <>
-                    {allGamesResult.map((gameResult, index: number) =>
-                        <StyledSection key={index}>
-                            <GameBox>Game {index + 1}: </GameBox>
-                            <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
-                        </StyledSection>)}
-                </>
+                <StyledSection>
+                    <StyledList><Span>SCORE</Span>
+                        {allGamesResult.map((gameResult, index: number) =>
+                            <StyledListItem key={index}>
+                                <span>Game {index + 1}:</span>
+                                <span>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</span>
+                            </StyledListItem>
+                        )}</StyledList>
+                </StyledSection>
             )}
             {allGamesResult.length > 0 && (
                 <ButtonContainer1>
@@ -71,23 +73,42 @@ export default function MainMenu() {
 
 const StyledSection = styled.section`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 20px;
   margin: 30px;
 `
-const GameBox = styled.p`
+
+const StyledList = styled.ul`
+  list-style: none;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   border: solid 1px #1f1e1e;
   border-radius: 5px;
-  padding: 20px;
-  background-color: #9d6101;
-  height: 10vh;
+  height: 60vh;
   width: 200px;
+  padding: 20px;
   margin: 20px auto;
+  background-color: #9d6101;
+  //background-color: #e75b01;
+  //color: #1f1f1f;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  overflow: auto;
+`
+
+const Span = styled.span`
+  line-height: 4;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  `
+
+const StyledListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+  margin: 10px auto;
+  height: auto;
+  width: 100%;
 `
 
 const ButtonContainer = styled.div`
@@ -171,7 +192,6 @@ const StyledSection1 = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 30px;
   height: 70vh;
 `
 
