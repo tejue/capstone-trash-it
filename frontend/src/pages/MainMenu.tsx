@@ -62,8 +62,8 @@ export default function MainMenu() {
             )}
             {allGamesResult.length > 0 && (
                 <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
-                              $position={"right"}/>)}
-            <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"} $position={"left"}/>
+                              $position={"left"}/>)}
+            <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"}/>
         </>
     )
 }

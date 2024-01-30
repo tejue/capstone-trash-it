@@ -14,7 +14,7 @@ export default function DroppableTrashCan(props: Readonly<DroppableTrashCanProps
     });
 
     const style = {
-        transform: isOver ? 'scale(1.2)' : 'scale(1)', // Hier wird die Skalierung angewendet
+        transform: isOver ? 'scale(1.2)' : 'scale(1)'
     };
 
     return (

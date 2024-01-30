@@ -4,7 +4,7 @@ type ButtonBuzzerProps = {
     handleClick: () => void,
     buttonText?: string,
     color?: string
-    $position?: string;
+    $position: string;
 }
 
 export default function ButtonBuzzer(props: Readonly<ButtonBuzzerProps>) {
@@ -22,8 +22,7 @@ const ButtonContainer = styled.div<{$position?: string}>`
   margin: 40px 30px;
   position: fixed;
   bottom: 0;
-  right: ${({$position}) => $position === "right" ? 0 : undefined};
-  left: ${({$position}) => $position === "left" ? 0 : undefined};
+  ${({$position}) => `${$position}: 0`};
 `
 
 const BuzzerButton = styled.button<{color?: string}>`
