@@ -3,6 +3,7 @@ import axios from "axios";
 import {SetOfPointsType} from "../types/SetOfPointsType.ts";
 import styled from "styled-components";
 import {useNavigate, useParams} from "react-router-dom";
+import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 
 export default function GameResult() {
 
@@ -33,32 +34,47 @@ export default function GameResult() {
 
     return (
         <>
-            {gameResult?.map((result) => (
-                <StyledSection key={result.trashCanId}>
-                    <GameBox
-                        bgcolor={getBackgroundColor(result.trashCanId)}>{result.playerPoints} / {result.dataPoints}</GameBox>
-                </StyledSection>
-            ))}
-            <button onClick={handleNextPage}>Go to Main Menu</button>
+            <StyledSection>
+                {gameResult?.map((result) => (
+                    <GameBox key={result.trashCanId}
+                             style={{backgroundColor: getBackgroundColor(result.trashCanId)}}
+                    >{result.playerPoints} / {result.dataPoints}</GameBox>
+                ))}
+            </StyledSection>
+            <ButtonBuzzer handleClick={handleNextPage} buttonText={"main menu"} $position={"right"}/>
         </>
     );
 }
 
 type GameBoxProps = {
-    bgcolor: string;
+    bgcolor?: string;
 }
+
+const trashCanColors: { [key: string]: string } = {
+    "1": "#0071BC",
+    "2": "#F7931E",
+    "3": "#333333",
+};
+
+const getBackgroundColor = (trashCanId: string) =>
+    trashCanColors[trashCanId] || "default";
 
 const StyledSection = styled.section`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
-const getBackgroundColor = (trashCanId: string) =>
-    trashCanId === "1" ? "blue" : trashCanId === "2" ? "yellow" : trashCanId === "3" ? "grey" : "default";
 
 const GameBox = styled.p<GameBoxProps>`
-  border: solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px #1f1e1e;
   border-radius: 5px;
-  padding: 20px;
-  text-align: center;
-  background-color: ${(props) => props.bgcolor};
+  height: 15vh;
+  width: 200px;
+  margin: 20px auto;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  ${(props) => props.bgcolor && `background-color: ${props.bgcolor};`}
 `

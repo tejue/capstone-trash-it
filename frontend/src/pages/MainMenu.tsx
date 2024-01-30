@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import {GamePointsType} from "../types/GamePointsType.ts";
 import {useNavigate} from "react-router-dom";
+import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 
 export default function MainMenu() {
 
@@ -26,13 +27,16 @@ export default function MainMenu() {
     }
 
     function deleteAllGamesResult() {
-        axios.put(`/api/game/${playerId}/gamesResult`)
-            .then(() => {
-                setAllGamesResult([])
-            })
-            .catch(error => {
-                console.error("Data could not be deleted:", error)
-            })
+        const deleteMessage = window.confirm("By clicking 'ok', the score of all games will be deleted. You're sure, this is what you want?");
+        if (deleteMessage) {
+            axios.put(`/api/game/${playerId}/gamesResult`)
+                .then(() => {
+                    setAllGamesResult([])
+                })
+                .catch(error => {
+                    console.error("Data could not be deleted:", error)
+                })
+        }
     }
 
     function handleStartNewGame() {
@@ -42,29 +46,84 @@ export default function MainMenu() {
     return (
         <>
             {allGamesResult.length === 0 ? (
-                <GameBox>You have no saved result so far</GameBox>
+                <StyledSection>
+                    <GameBox>You have no saved result so far</GameBox>
+                </StyledSection>
             ) : (
-                <>
-                    {allGamesResult.map((gameResult, index: number) =>
-                        <StyledSection key={index}>
-                            <GameBox>Game {index + 1}: </GameBox>
-                            <GameBox>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</GameBox>
-                        </StyledSection>)}
-                    <button onClick={deleteAllGamesResult}>Fresh start: Delete all your results</button>
-                </>
+                <StyledListSection>
+                    <StyledList><Span>SCORE</Span>
+                        {allGamesResult.map((gameResult, index: number) =>
+                            <StyledListItem key={index}>
+                                <span>Game {index + 1}:</span>
+                                <span>{gameResult.playerPointsTotal} / {gameResult.dataPointsTotal}</span>
+                            </StyledListItem>
+                        )}</StyledList>
+                </StyledListSection>
             )}
-                <button onClick={handleStartNewGame}>Start a new  game</button>
+            {allGamesResult.length > 0 && (
+                <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
+                              $position={"left"}/>)}
+            <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"}/>
         </>
     )
 }
 
-const StyledSection = styled.section`
+const StyledListSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px;
+`
+
+const StyledList = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 1px #1f1e1e;
+  border-radius: 5px;
+  height: 60vh;
+  width: 200px;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #9d6101;
+  //background-color: #e75b01;
+  //color: #1f1f1f;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  overflow: auto;
+`
+
+const Span = styled.span`
+  line-height: 4;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+`
+
+const StyledListItem = styled.li`
   display: flex;
   justify-content: space-between;
+  margin: 10px auto;
+  height: auto;
+  width: 100%;
 `
+const StyledSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+`
+
 const GameBox = styled.p`
-  border: solid 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: 1.4;
+  border: solid 1px #1f1e1e;
   border-radius: 5px;
   padding: 20px;
-  text-align: center;
+  background-color: #9d6101;
+  width: 200px;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
 `
