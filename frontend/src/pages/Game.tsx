@@ -3,7 +3,7 @@ import TrashCan from "../components/TrashCan.tsx";
 import {TrashType} from "../types/TrashType.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
 import {GameType} from "../types/GameType.ts";
-import {DndContext, DragEndEvent} from "@dnd-kit/core";
+import {DndContext, DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {PlayerResultType} from "../types/PlayerResultType.ts";
@@ -16,6 +16,10 @@ export default function Game() {
     const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
 
     const navigate = useNavigate();
+const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+)
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
@@ -105,6 +109,7 @@ export default function Game() {
 
     return (
         <DndContext
+            sensors={sensors}
             onDragEnd={handleDragEnd}
         >
             {gameEnd ? (
@@ -112,8 +117,8 @@ export default function Game() {
                     <StyledSection>
                         <GameBox>Well Done! All trash is sorted.</GameBox>
                     </StyledSection>
-                     <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"} $position={"right"} />
-                     </>
+                    <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"} $position={"right"}/>
+                </>
             ) : (
                 <>
                     <Trash trashes={trashes}/>
