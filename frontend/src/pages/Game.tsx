@@ -113,7 +113,7 @@ export default function Game() {
         setTimeout(() => {
             const noLeftTrashes = trashToRecycle.every(trash => trash.name === "");
             setGameEnd(noLeftTrashes);
-        },250);
+        }, 250);
     }
 
     return (

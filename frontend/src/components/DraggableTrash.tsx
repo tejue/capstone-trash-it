@@ -36,7 +36,8 @@ const StyledDraggableTrash = styled.div.attrs<StyledDraggableTrashProps>(
      }) => ({
         style: {
             transform: CSS.Transform.toString(transform),
-            gridArea: `area${$index}`
+            gridArea: `area${$index}`,
+            touchAction: 'none'
         }
     })
 )`
