@@ -19,11 +19,12 @@ export default function TrashCan(props: Readonly<TrashCanProps>) {
 }
 
 const StyledSection = styled.section`
-  position: fixed;
+  position: absolute;
   width: 100%;
+  height: 35vh;
   display: flex;
+  bottom: 0;
   justify-content: space-evenly;
-  gap: 20px;
-  bottom: 190px;
-  height: 10vh;
+  align-items: center;
+  gap: 5px;
 `

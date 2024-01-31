@@ -3,19 +3,25 @@ import TrashCan from "../components/TrashCan.tsx";
 import {TrashType} from "../types/TrashType.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
 import {GameType} from "../types/GameType.ts";
-import {DndContext, DragEndEvent} from "@dnd-kit/core";
+import {DndContext, DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {PlayerResultType} from "../types/PlayerResultType.ts";
 import {useNavigate} from 'react-router-dom';
 import styled from "styled-components";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
+import windsGrey from "../assets/windsGrey.svg";
+import {Background} from "../components/Background.ts";
 
 export default function Game() {
 
     const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
 
     const navigate = useNavigate();
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor),
+    )
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
@@ -104,24 +110,46 @@ export default function Game() {
     }
 
     return (
-        <DndContext
-            onDragEnd={handleDragEnd}
-        >
-            {gameEnd ? (
-                <>
-                    <StyledSection>
-                        <GameBox>Well Done! All trash is sorted.</GameBox>
-                    </StyledSection>
-                     <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"} $position={"right"} />
-                     </>
-            ) : (
-                <>
-                    <Trash trashes={trashes}/>
-                    <TrashCan trashCans={trashCans}/>
-                </>)}
-        </DndContext>
+        <>
+            <Background/>
+            {!gameEnd && <StyledImage src={windsGrey} alt={"winds"}/>}
+            <DndContext
+                sensors={sensors}
+                onDragEnd={handleDragEnd}
+            >
+                {gameEnd ? (
+                    <>
+                        <StyledSection>
+                            <GameBox>Well Done! All trash is sorted.</GameBox>
+                        </StyledSection>
+                        <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}/>
+                    </>
+                ) : (
+                    <StyledDivGameArea>
+                        <Trash trashes={trashes}/>
+                        <TrashCan trashCans={trashCans}/>
+                    </StyledDivGameArea>
+                )}
+            </DndContext>
+        </>
     )
 }
+
+const StyledDivGameArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100vh;
+`
+
+const StyledImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+`
 
 const StyledSection = styled.section`
   display: flex;
@@ -136,10 +164,9 @@ const GameBox = styled.p`
   align-items: center;
   text-align: center;
   line-height: 1.4;
-  border: solid 1px #1f1e1e;
-  border-radius: 5px;
   padding: 20px;
-  background-color: #9d6101;
-  width: 200px;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  background-color: #E6F0E9;
+  width: 300px;
+  height: 300px;
+  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
 `

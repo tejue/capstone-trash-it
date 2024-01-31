@@ -4,6 +4,8 @@ import {SetOfPointsType} from "../types/SetOfPointsType.ts";
 import styled from "styled-components";
 import {useNavigate, useParams} from "react-router-dom";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
+import {Background} from "../components/Background.ts";
+import {TrashCanType} from "../types/TrashCanType.ts";
 
 export default function GameResult() {
 
@@ -13,10 +15,12 @@ export default function GameResult() {
     const navigate = useNavigate();
 
     const [gameResult, setGameResult] = useState<SetOfPointsType[]>([])
+    const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
 
     useEffect(() => {
-        getGameResult();
-    },);
+        getGameResult()
+        getTrashCans();
+    }, []);
 
     function getGameResult() {
         axios.get(`/api/game/${playerId}/${gameId}/gameResult`)
@@ -28,23 +32,43 @@ export default function GameResult() {
             })
     }
 
+    function getTrashCans() {
+        axios.get("/api/trashcan")
+            .then(response => {
+                setTrashCans(response.data)
+            })
+            .catch(error => {
+                console.error("Request failed: ", error);
+            });
+    }
+
     function handleNextPage() {
         navigate('/main-menu');
     }
 
     return (
         <>
-            <StyledSection>
-                {gameResult?.map((result) => (
-                    <GameBox key={result.trashCanId}
-                             style={{backgroundColor: getBackgroundColor(result.trashCanId)}}
-                    >{result.playerPoints} / {result.dataPoints}</GameBox>
-                ))}
-            </StyledSection>
-            <ButtonBuzzer handleClick={handleNextPage} buttonText={"main menu"} $position={"right"}/>
+            <Background/>
+            <StyledDivResult>
+                <StyledSection>
+                    {gameResult?.map((result) => (
+                        <GameBox key={result.trashCanId}
+                                 style={{backgroundColor: getBackgroundColor(result.trashCanId)}}
+                        >{result.playerPoints} / {result.dataPoints}</GameBox>
+                    ))}
+                </StyledSection>
+                <ImageContainer>
+                    {trashCans?.map((trashCan) => (
+                        <StyledImage key={trashCan.id} src={`${trashCan.image}`} alt={`${trashCan.name}`}/>))}
+                </ImageContainer>
+            </StyledDivResult>
+            <ButtonBuzzer handleClick={handleNextPage} buttonText={"main menu"}/>
         </>
     );
 }
+
+const getBackgroundColor = (trashCanId: string) =>
+    trashCanColors[trashCanId] || "default";
 
 type GameBoxProps = {
     bgcolor?: string;
@@ -56,25 +80,44 @@ const trashCanColors: { [key: string]: string } = {
     "3": "#333333",
 };
 
-const getBackgroundColor = (trashCanId: string) =>
-    trashCanColors[trashCanId] || "default";
+const StyledDivResult = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
 
 const StyledSection = styled.section`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
 `
 
 const GameBox = styled.p<GameBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid 1px #1f1e1e;
-  border-radius: 5px;
-  height: 15vh;
-  width: 200px;
-  margin: 20px auto;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  text-align: center;
+  line-height: 1.4;
+  color: #E6F0E9;
   ${(props) => props.bgcolor && `background-color: ${props.bgcolor};`}
+  margin: auto 5px;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
+`
+
+const ImageContainer = styled.div`
+  display: flex;
+  height: 32vh;
+  overflow: hidden;
+`
+
+const StyledImage = styled.img`
+  height: 100%;
 `

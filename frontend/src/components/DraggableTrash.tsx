@@ -9,7 +9,7 @@ type DraggableTrashProps = {
 }
 
 export default function DraggableTrash(props: Readonly<DraggableTrashProps>) {
-       const {attributes, listeners, setNodeRef, transform} = useDraggable({id: props.trash.id});
+    const {attributes, listeners, setNodeRef, transform} = useDraggable({id: props.trash.id});
 
     return (
         <StyledDraggableTrash
@@ -49,5 +49,8 @@ const StyledDraggableTrash = styled.div.attrs<StyledDraggableTrashProps>(
 `
 
 const StyledImage = styled.img`
-  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  rotate: 10deg;
+  overflow: hidden;
 `

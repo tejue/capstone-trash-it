@@ -7,28 +7,17 @@
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.87);
+    color: rgba(54, 54, 54, 0.87);
 
-    background-image: url("./assets/green.jpg");
+    background-image: url("assets/city.jpg");
     background-size: cover;
     background-position: center;
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.3); /* Hier kannst du die Transparenz anpassen */
-    backdrop-filter: blur(0.1px);
-    z-index: -1;
+    overflow: hidden;
+    position: relative;
 }
 
 body {
     margin: 0;
-}
+  }

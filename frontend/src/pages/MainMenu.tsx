@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {GamePointsType} from "../types/GamePointsType.ts";
 import {useNavigate} from "react-router-dom";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
+import {Background} from "../components/Background.ts";
 
 export default function MainMenu() {
 
@@ -45,13 +46,14 @@ export default function MainMenu() {
 
     return (
         <>
+            <Background/>
             {allGamesResult.length === 0 ? (
                 <StyledSection>
                     <GameBox>You have no saved result so far</GameBox>
                 </StyledSection>
             ) : (
                 <StyledListSection>
-                    <StyledList><Span>SCORE</Span>
+                    <StyledList><StyledHeading>Score</StyledHeading>
                         {allGamesResult.map((gameResult, index: number) =>
                             <StyledListItem key={index}>
                                 <span>Game {index + 1}:</span>
@@ -60,10 +62,12 @@ export default function MainMenu() {
                         )}</StyledList>
                 </StyledListSection>
             )}
-            {allGamesResult.length > 0 && (
-                <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
-                              $position={"left"}/>)}
-            <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"}/>
+            <StyledDivButtonsPosition>
+                {allGamesResult.length > 0 && (
+                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}  $position={"left"}
+                                  />)}
+                <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"} />
+            </StyledDivButtonsPosition>
         </>
     )
 }
@@ -72,6 +76,7 @@ const StyledListSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 70vh;
   margin: 30px;
 `
 
@@ -80,24 +85,22 @@ const StyledList = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: solid 1px #1f1e1e;
-  border-radius: 5px;
-  height: 60vh;
-  width: 200px;
-  padding: 20px;
+  height: 50vh;
+  width: 350px;
+  padding: 40px 80px;
   margin: 20px auto;
-  background-color: #9d6101;
-  //background-color: #e75b01;
-  //color: #1f1f1f;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  background-color: #E6F0E9;
+  color: #1f1f1f;
   overflow: auto;
+  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 10% 90%, 0% 60%, 10% 25%);
 `
 
-const Span = styled.span`
-  line-height: 4;
-  font-size: 20px;
+const StyledHeading = styled.h1`
+  //line-height: 4;
+  font-size: 1.3rem;
   font-weight: bold;
   letter-spacing: 2px;
+  text-transform: uppercase;
 `
 
 const StyledListItem = styled.li`
@@ -107,6 +110,7 @@ const StyledListItem = styled.li`
   height: auto;
   width: 100%;
 `
+
 const StyledSection = styled.section`
   display: flex;
   justify-content: center;
@@ -120,10 +124,13 @@ const GameBox = styled.p`
   align-items: center;
   text-align: center;
   line-height: 1.4;
-  border: solid 1px #1f1e1e;
-  border-radius: 5px;
   padding: 20px;
-  background-color: #9d6101;
-  width: 200px;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  background-color: #E6F0E9;
+  width: 300px;
+  height: 300px;
+  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
+`
+
+const StyledDivButtonsPosition = styled.div`
+display: flex;
 `
