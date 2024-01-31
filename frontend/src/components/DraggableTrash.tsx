@@ -53,5 +53,4 @@ const StyledImage = styled.img`
   max-height: 100%;
   max-width: 100%;
   rotate: 10deg;
-  overflow: hidden;
-`
+  `
