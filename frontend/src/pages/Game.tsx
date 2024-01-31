@@ -110,8 +110,10 @@ export default function Game() {
     }
 
     function handleGameEnd(trashToRecycle: TrashType[]) {
-        const noLeftTrashes = trashToRecycle.every(trash => trash.name === "");
-        setGameEnd(noLeftTrashes)
+        setTimeout(() => {
+            const noLeftTrashes = trashToRecycle.every(trash => trash.name === "");
+            setGameEnd(noLeftTrashes);
+        },250);
     }
 
     return (
