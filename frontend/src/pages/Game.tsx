@@ -3,7 +3,7 @@ import TrashCan from "../components/TrashCan.tsx";
 import {TrashType} from "../types/TrashType.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
 import {GameType} from "../types/GameType.ts";
-import {DndContext, DragEndEvent, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
+import {DndContext, DragEndEvent, PointerSensor, TouchSensor, useSensor, useSensors} from "@dnd-kit/core";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {PlayerResultType} from "../types/PlayerResultType.ts";
@@ -26,7 +26,7 @@ export default function Game() {
         },
     });
 
-    const sensors = useSensors(touchSensor);
+    const sensors = useSensors(touchSensor, useSensor(PointerSensor));
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
