@@ -62,10 +62,12 @@ export default function MainMenu() {
                         )}</StyledList>
                 </StyledListSection>
             )}
-            {allGamesResult.length > 0 && (
-                <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
-                              $position={"left"}/>)}
-            <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"}/>
+            <StyledDivButtonsPosition>
+                {allGamesResult.length > 0 && (
+                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}  $position={"left"}
+                                  />)}
+                <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"} />
+            </StyledDivButtonsPosition>
         </>
     )
 }
@@ -76,7 +78,7 @@ const StyledListSection = styled.section`
   align-items: center;
   height: 70vh;
   margin: 30px;
-  `
+`
 
 const StyledList = styled.ul`
   list-style: none;
@@ -127,4 +129,8 @@ const GameBox = styled.p`
   width: 300px;
   height: 300px;
   clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
+`
+
+const StyledDivButtonsPosition = styled.div`
+display: flex;
 `

@@ -62,7 +62,7 @@ export default function GameResult() {
                         <StyledImage key={trashCan.id} src={`${trashCan.image}`} alt={`${trashCan.name}`}/>))}
                 </ImageContainer>
             </StyledDivResult>
-            <ButtonBuzzer handleClick={handleNextPage} buttonText={"main menu"} $position={"right"}/>
+            <ButtonBuzzer handleClick={handleNextPage} buttonText={"main menu"}/>
         </>
     );
 }

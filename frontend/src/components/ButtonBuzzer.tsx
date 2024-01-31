@@ -4,7 +4,7 @@ type ButtonBuzzerProps = {
     handleClick: () => void,
     buttonText?: string,
     color?: string
-    $position: string;
+    $position?: string;
 }
 
 export default function ButtonBuzzer(props: Readonly<ButtonBuzzerProps>) {
@@ -17,15 +17,18 @@ export default function ButtonBuzzer(props: Readonly<ButtonBuzzerProps>) {
     )
 }
 
-const ButtonContainer = styled.div<{$position?: string}>`
+const ButtonContainer = styled.div<{ $position?: string }>`
   display: flex;
-  margin: 40px 30px;
+  align-items: center;
+  padding: 40px 30px;
   position: fixed;
   bottom: 0;
+  width: ${({$position}) => ($position === "left" || $position === "right" ? "50%" : "100%")};
   ${({$position}) => `${$position}: 0`};
+  justify-content: ${({$position}) => $position === "left" ? "flex-end" : $position === "right" ? "flex-start" : "center"};
 `
 
-const BuzzerButton = styled.button<{color?: string}>`
+const BuzzerButton = styled.button<{ color?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,9 +36,9 @@ const BuzzerButton = styled.button<{color?: string}>`
   width: 100px;
   overflow: hidden;
   border-radius: 50%;
-  border: 1px solid #1f1e1e;
-  background: ${({color}) => color === "red" ? "linear-gradient(0deg, #560018, #9f0225)" : "linear-gradient(0deg, #013b01, #026002)"};
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  border: 1px solid ${({color}) => color === "red" ? "#AD007E" : "#29A05C"};
+  background: ${({color}) => color === "red" ? "linear-gradient(0deg, #850061, #EA33B4)" : "linear-gradient(0deg, #1E7644, #63C177)"};
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.2s;
 
   &:hover {
@@ -43,15 +46,15 @@ const BuzzerButton = styled.button<{color?: string}>`
   }
 `
 
-const StyledSpan = styled.span<{color?: string}>`
+const StyledSpan = styled.span<{ color?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80px;
   width: 80px;
-  border: 1px solid ${({color}) => color === "red" ? "#810123" : "#015701"};
+  border: 1px solid ${({color}) => color === "red" ? "#AD007E" : "#29A05C"};
   border-radius: 50%;
-  background: ${({color}) => color === "red" ? "linear-gradient(180deg, #560018, #9f0225)" : "linear-gradient(180deg, #013b01, #026002)"};
+  background: ${({color}) => color === "red" ? "linear-gradient(180deg, #850061, #EA33B4)" : "linear-gradient(180deg, #1E7644, #63C177)"};
   font-size: 16px;
-  color: #c0bdbd;
+  color: #E6F0E9;
 `

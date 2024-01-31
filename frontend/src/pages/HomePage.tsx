@@ -17,7 +17,7 @@ export default function HomePage() {
             <StyledSection>
                 <GameBox>Start cleaning up and...</GameBox>
             </StyledSection>
-            <ButtonBuzzer handleClick={handleClick} buttonText={"trash it"} $position={"right"}/>
+            <ButtonBuzzer handleClick={handleClick} buttonText={"trash it"}/>
         </>
     )
 }

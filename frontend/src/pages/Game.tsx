@@ -122,8 +122,7 @@ export default function Game() {
                         <StyledSection>
                             <GameBox>Well Done! All trash is sorted.</GameBox>
                         </StyledSection>
-                        <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}
-                                      $position={"right"}/>
+                        <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}/>
                     </>
                 ) : (
                     <StyledDivGameArea>
@@ -165,12 +164,9 @@ const GameBox = styled.p`
   align-items: center;
   text-align: center;
   line-height: 1.4;
-  border: solid 1px #e4f0e9;
-  border-radius: 5px;
   padding: 20px;
   background-color: #E6F0E9;
   width: 300px;
   height: 300px;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
   clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
 `
