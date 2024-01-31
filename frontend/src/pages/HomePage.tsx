@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
+import {Background} from "../components/Background.ts";
 
 export default function HomePage() {
 
@@ -10,9 +11,9 @@ export default function HomePage() {
         navigate("/game")
     }
 
-
     return (
         <>
+            <Background $backgroundColor={"none"}/>
             <StyledSection>
                 <GameBox>Start cleaning up and...</GameBox>
             </StyledSection>
@@ -34,10 +35,9 @@ const GameBox = styled.p`
   align-items: center;
   text-align: center;
   line-height: 1.4;
-  border: solid 1px #1f1e1e;
-  border-radius: 5px;
   padding: 20px;
-  background-color: #9d6101;
-  width: 200px;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.9);
+  background-color: #E6F0E9;
+  width: 300px;
+  height: 300px;
+  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
 `
