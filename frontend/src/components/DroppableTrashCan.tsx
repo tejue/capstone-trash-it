@@ -22,7 +22,7 @@ export default function DroppableTrashCan(props: Readonly<DroppableTrashCanProps
             id={props.trashCan.id}
             ref={setNodeRef}
             style={style}>
-            <img src={`${props.trashCan.image}`} alt={`${props.trashCan.name}`}/>
+            <StyledImage src={`${props.trashCan.image}`} alt={`${props.trashCan.name}`}/>
         </StyledDroppableTrashCan>
     )
 }
@@ -32,9 +32,16 @@ type StyledDroppableTrashCanProps = {
 }
 
 const StyledDroppableTrashCan = styled.div<StyledDroppableTrashCanProps>`
-  margin: 5px;
-  box-sizing: border-box;
-  width: 33%;
-  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   transform: ${({isOver}) => isOver ? 'scale(1.2)' : 'scale(1)'};
+`
+
+const StyledImage = styled.img`
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
 `
