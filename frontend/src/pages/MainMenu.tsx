@@ -64,9 +64,10 @@ export default function MainMenu() {
             )}
             <StyledDivButtonsPosition>
                 {allGamesResult.length > 0 && (
-                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}  $position={"left"}
-                                  />)}
-                <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"} />
+                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
+                                  $position={"left"}
+                    />)}
+                <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"} $position={"right"}/>
             </StyledDivButtonsPosition>
         </>
     )
@@ -132,5 +133,5 @@ const GameBox = styled.p`
 `
 
 const StyledDivButtonsPosition = styled.div`
-display: flex;
+  display: flex;
 `
