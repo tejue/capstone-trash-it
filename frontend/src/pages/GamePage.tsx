@@ -16,7 +16,7 @@ import lottieLoading from "../assets/lottieBird.json";
 import Lottie from "lottie-react";
 import GameBox from "../components/GameBox.tsx";
 
-export default function Game() {
+export default function GamePage() {
 
     const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
 

@@ -7,7 +7,7 @@ import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import {Background} from "../components/Background.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
 
-export default function GameResult() {
+export default function GameResultPage() {
 
     const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
 
