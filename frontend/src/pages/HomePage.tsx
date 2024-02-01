@@ -57,8 +57,9 @@ export default function HomePage() {
                 <GameBox
                     $text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>
             </StyledGameBoxSection>
+            <StyledLottieBirdSection>
                 <Lottie animationData={lottieBird} loop={true}/>
-
+            </StyledLottieBirdSection>
             <ButtonBuzzer handleClick={handleClick} buttonText={"trash it"}/>
         </>
     )
@@ -69,4 +70,11 @@ const StyledGameBoxSection = styled.section`
   justify-content: center;
   align-items: center;
   height: 70vh;
+`
+
+const StyledLottieBirdSection = styled.section`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  transform: translate(0, 90%);
 `
