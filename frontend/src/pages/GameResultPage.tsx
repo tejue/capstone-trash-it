@@ -6,12 +6,14 @@ import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import {Background} from "../components/Background.ts";
 import {TrashCanType} from "../types/TrashCanType.ts";
 import GameResult from "../components/GameResult.tsx";
+import Snackbar from "../components/Snackbar.tsx";
 
 export default function GameResultPage() {
 
     const navigate = useNavigate();
 
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false)
 
     useEffect(() => {
         getTrashCans();
@@ -23,8 +25,13 @@ export default function GameResultPage() {
                 setTrashCans(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response.status);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             });
+    }
+
+    function handleCloseSnackbar() {
+    setShowSnackbar(false);
     }
 
     function handleNextPage() {
@@ -34,6 +41,7 @@ export default function GameResultPage() {
     return (
         <>
             <Background/>
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
             <StyledDivResult>
                 <StyledSection>
                     <GameResult/>

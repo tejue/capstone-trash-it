@@ -15,6 +15,7 @@ import {Background} from "../components/Background.ts";
 import GameBox from "../components/GameBox.tsx";
 import Lottie from "lottie-react";
 import lottieWindLoading from "../assets/lottieWindLoading.json";
+import Snackbar from "../components/Snackbar.tsx";
 
 export default function GamePage() {
 
@@ -38,6 +39,7 @@ export default function GamePage() {
     const [gameEnd, setGameEnd] = useState<boolean>(false);
     const [games, setGames] = useState<GameType[]>([])
     const [loading, setLoading] = useState<boolean>(true);
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false)
 
     useEffect(() => {
         if (!initialTrashes) {
@@ -57,7 +59,8 @@ export default function GamePage() {
                     })
             })
             .catch(error => {
-                console.error("Request failed: ", error.response.status);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             })
             .finally(() => {
                 setLoading(false);
@@ -70,14 +73,16 @@ export default function GamePage() {
                 setTrashCans(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response.status);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             });
     }
 
     function postPlayerResult() {
         axios.put(`/api/game/${playerId}/` + games.length, playerResult)
             .catch(error => {
-                console.error("Data could not be transmitted:", error.response.status);
+                console.error("Data could not be transmitted:", error.response.status)
+                setShowSnackbar(true);
             })
             .finally(() => {
                 navigate('/game-result/' + games.length);
@@ -123,9 +128,14 @@ export default function GamePage() {
         }, 250);
     }
 
+    function handleCloseSnackbar() {
+        setShowSnackbar(false);
+    }
+
     return (
         <>
             <Background/>
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
             {loading && (<StyledLottieWindSection>
                 <Lottie animationData={lottieWindLoading} loop={true}/>
             </StyledLottieWindSection>)}

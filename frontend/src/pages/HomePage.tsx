@@ -8,6 +8,7 @@ import lottieBird from "../assets/lottieBird.json";
 import Lottie from "lottie-react";
 import GameBox from "../components/GameBox.tsx";
 import styled from "styled-components";
+import Snackbar from "../components/Snackbar.tsx";
 
 export default function HomePage() {
 
@@ -15,6 +16,7 @@ export default function HomePage() {
 
     const navigate = useNavigate();
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
     useEffect(() => {
         getAllGamesResult()
@@ -30,6 +32,7 @@ export default function HomePage() {
                     })
                     .catch(error => {
                         console.error("Data could not be deleted:", error.response.status)
+                        setShowSnackbar(true);
                     })
                     .finally(() => {
                         navigate("/game")
@@ -46,13 +49,19 @@ export default function HomePage() {
                 setAllGamesResult(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response.status);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             })
+    }
+
+    function handleCloseSnackbar() {
+        setShowSnackbar(false);
     }
 
     return (
         <>
             <Background $backgroundColor={"none"}/>
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
             <StyledGameBoxSection>
                 <GameBox
                     $text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>

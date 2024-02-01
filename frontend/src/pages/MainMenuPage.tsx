@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import {Background} from "../components/Background.ts";
 import GameBox from "../components/GameBox.tsx";
+import Snackbar from "../components/Snackbar.tsx";
 
 export default function MainMenuPage() {
 
@@ -13,6 +14,7 @@ export default function MainMenuPage() {
     const navigate = useNavigate();
 
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
     useEffect(() => {
         getAllGamesResult()
@@ -24,7 +26,8 @@ export default function MainMenuPage() {
                 setAllGamesResult(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response.status);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             })
     }
 
@@ -37,8 +40,13 @@ export default function MainMenuPage() {
                 })
                 .catch(error => {
                     console.error("Data could not be deleted:", error.response.status)
+                    setShowSnackbar(true);
                 })
         }
+    }
+
+    function handleCloseSnackbar() {
+        setShowSnackbar(false);
     }
 
     function handleStartNewGame() {
@@ -48,6 +56,7 @@ export default function MainMenuPage() {
     return (
         <>
             <Background/>
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
             {allGamesResult.length === 0 ? (
                 <StyledGameBoxSection>
                     <GameBox $text={"You have no saved result so far"}/>
