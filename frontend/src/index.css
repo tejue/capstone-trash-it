@@ -7,7 +7,24 @@
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-weight: 400;
-    color: rgba(54, 54, 54, 0.87);
+    color: var(--text-color-dark);
+
+    --text-color-dark: rgba(54, 54, 54, 0.87);
+    --text-color-light: #E6F0E9;
+
+    --primary-color: #4CA7A6FF;
+    --secondary-color: #E6F0E9;
+
+    --primary-highlight-color: #1E7644;
+    --primary-highlight-color-gradientStart: #63C177;
+    --primary-highlight-color-border: #29A05C;
+    --secondary-highlight-color: #850061;
+    --secondary-highlight-color-gradientStart: #EA33B4;
+    --secondary-highlight-color-border: #AD007E;
+
+    --trash-color-paper: #0071BC;
+    --trash-color-recycable: #F7931E;
+    --trash-color-rest: #333333;
 
     background-image: url("assets/city.jpg");
     background-size: cover;
@@ -20,4 +37,4 @@
 
 body {
     margin: 0;
-  }
+}

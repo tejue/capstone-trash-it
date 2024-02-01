@@ -44,7 +44,7 @@ export default function GameResult() {
 const trashCanColors: {
     [key: string]: string
 } = {
-    "1": "#0071BC",
-    "2": "#F7931E",
-    "3": "#333333",
+    "1": "var(--trash-color-paper)",
+    "2": "var(--trash-color-recycable)",
+    "3": "var(--trash-color-rest)",
 };

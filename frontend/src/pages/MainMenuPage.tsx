@@ -98,7 +98,7 @@ const StyledList = styled.ul`
   width: 350px;
   padding: 40px 80px;
   margin: 20px auto;
-  background-color: #E6F0E9;
+  background-color: var(--secondary-color);
   overflow: auto;
   clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 10% 90%, 0% 60%, 10% 25%);
 `
