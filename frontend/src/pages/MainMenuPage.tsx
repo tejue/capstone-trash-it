@@ -49,7 +49,9 @@ export default function MainMenuPage() {
         <>
             <Background/>
             {allGamesResult.length === 0 ? (
-                <GameBox text={"You have no saved result so far"}/>
+                <StyledGameBoxSection>
+                    <GameBox text={"You have no saved result so far"}/>
+                </StyledGameBoxSection>
             ) : (
                 <StyledListSection>
                     <StyledList><StyledHeading>Score</StyledHeading>
@@ -71,6 +73,13 @@ export default function MainMenuPage() {
         </>
     )
 }
+
+const StyledGameBoxSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+`
 
 const StyledListSection = styled.section`
   display: flex;

@@ -2,32 +2,29 @@ import styled from "styled-components";
 
 type GameBoxProps = {
     text: string;
+    color?: string;
+    $backgroundColor?: string;
+    size?: string;
+    $margin?: string;
 }
 
 export default function GameBox(props: GameBoxProps) {
     return (
-        <StyledSection>
-            <StyledParagraph>{props.text}</StyledParagraph>
-        </StyledSection>
+        <StyledParagraph {...props}>{props.text}</StyledParagraph>
     )
 }
 
-const StyledSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-`
-
-const StyledParagraph = styled.p<{ $backgroundColor?: string }>`
+const StyledParagraph = styled.p<GameBoxProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   line-height: 1.4;
   padding: 20px;
-  background-color: #E6F0E9;
-  width: 300px;
-  height: 300px;
+  ${({$margin}) => `${$margin} &&  ${$margin}`};
+  color: ${({color}) => color === "colorLight" ? "#E6F0E9" : "initial"};
+  background-color: ${({$backgroundColor}) => $backgroundColor || "#E6F0E9"};
+  width: ${({size}) => size || "300px"};
+  height: ${({size}) => size || "300px"};
   clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
 `

@@ -7,6 +7,7 @@ import {GamePointsType} from "../types/GamePointsType.ts";
 import lottieBird from "../assets/lottieBird.json";
 import Lottie from "lottie-react";
 import GameBox from "../components/GameBox.tsx";
+import styled from "styled-components";
 
 export default function HomePage() {
 
@@ -52,10 +53,20 @@ export default function HomePage() {
     return (
         <>
             <Background $backgroundColor={"none"}/>
-            <GameBox
-                text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>
-            <Lottie animationData={lottieBird} loop={true}/>
+            <StyledGameBoxSection>
+                <GameBox
+                    text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>
+            </StyledGameBoxSection>
+                <Lottie animationData={lottieBird} loop={true}/>
+
             <ButtonBuzzer handleClick={handleClick} buttonText={"trash it"}/>
         </>
     )
 }
+
+const StyledGameBoxSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+`

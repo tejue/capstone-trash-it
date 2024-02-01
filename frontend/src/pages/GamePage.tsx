@@ -134,7 +134,9 @@ export default function GamePage() {
             >
                 {gameEnd ? (
                     <>
-                        <GameBox text={"Well Done! All trash is sorted."}/>
+                        <StyledGameBoxSection>
+                            <GameBox text={"Well Done! All trash is sorted."}/>
+                        </StyledGameBoxSection>
                         <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}/>
                     </>
                 ) : (
@@ -162,4 +164,11 @@ const StyledImage = styled.img`
   width: 100%;
   height: 100%;
   z-index: -1;
+`
+
+const StyledGameBoxSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
 `
