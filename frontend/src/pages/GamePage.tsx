@@ -12,9 +12,9 @@ import styled from "styled-components";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import windsGrey from "../assets/windsGrey.svg";
 import {Background} from "../components/Background.ts";
-import lottieLoading from "../assets/lottieBird.json";
-import Lottie from "lottie-react";
 import GameBox from "../components/GameBox.tsx";
+import Lottie from "lottie-react";
+import lottieWindLoading from "../assets/lottieWindLoading.json";
 
 export default function GamePage() {
 
@@ -126,7 +126,9 @@ export default function GamePage() {
     return (
         <>
             <Background/>
-            {loading && (<Lottie animationData={lottieLoading} loop={true}/>)}
+            {loading && (<StyledLottieWindSection>
+                <Lottie animationData={lottieWindLoading} loop={true}/>
+            </StyledLottieWindSection>)}
             {!gameEnd && <StyledImage src={windsGrey} alt={"winds"}/>}
             <DndContext
                 sensors={sensors}
@@ -149,6 +151,13 @@ export default function GamePage() {
         </>
     )
 }
+
+const StyledLottieWindSection = styled.section`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  transform: translate(0, 60%);
+`
 
 const StyledDivGameArea = styled.div`
   display: flex;
