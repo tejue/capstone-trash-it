@@ -4,7 +4,7 @@ type SnackbarProps = {
     onClick: () => void;
 }
 
-export default function Snackbar(props: SnackbarProps) {
+export default function Snackbar(props: Readonly<SnackbarProps>) {
 
     return (
         <StyledSnack>

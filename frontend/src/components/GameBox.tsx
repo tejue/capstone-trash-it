@@ -8,7 +8,7 @@ type GameBoxProps = {
     $margin?: string;
 }
 
-export default function GameBox(props: GameBoxProps) {
+export default function GameBox(props: Readonly<GameBoxProps>) {
     return (
         <StyledParagraph {...props}>{props.$text}</StyledParagraph>
     )
