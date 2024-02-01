@@ -12,6 +12,9 @@ import styled from "styled-components";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import windsGrey from "../assets/windsGrey.svg";
 import {Background} from "../components/Background.ts";
+import lottieLoading from "../assets/lottieBird.json";
+import Lottie from "lottie-react";
+import GameBox from "../components/GameBox.tsx";
 
 export default function Game() {
 
@@ -34,6 +37,7 @@ export default function Game() {
     const [initialTrashes, setInitialTrashes] = useState<boolean>(false);
     const [gameEnd, setGameEnd] = useState<boolean>(false);
     const [games, setGames] = useState<GameType[]>([])
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (!initialTrashes) {
@@ -54,7 +58,10 @@ export default function Game() {
             })
             .catch(error => {
                 console.error("Request failed: ", error);
-            });
+            })
+            .finally(() => {
+                setLoading(false);
+            })
     }
 
     function getTrashCans() {
@@ -119,6 +126,7 @@ export default function Game() {
     return (
         <>
             <Background/>
+            {loading && (<Lottie animationData={lottieLoading} loop={true}/>)}
             {!gameEnd && <StyledImage src={windsGrey} alt={"winds"}/>}
             <DndContext
                 sensors={sensors}
@@ -126,9 +134,7 @@ export default function Game() {
             >
                 {gameEnd ? (
                     <>
-                        <StyledSection>
-                            <GameBox>Well Done! All trash is sorted.</GameBox>
-                        </StyledSection>
+                        <GameBox text={"Well Done! All trash is sorted."}/>
                         <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}/>
                     </>
                 ) : (
@@ -156,24 +162,4 @@ const StyledImage = styled.img`
   width: 100%;
   height: 100%;
   z-index: -1;
-`
-
-const StyledSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-`
-
-const GameBox = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  line-height: 1.4;
-  padding: 20px;
-  background-color: #E6F0E9;
-  width: 300px;
-  height: 300px;
-  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
 `
