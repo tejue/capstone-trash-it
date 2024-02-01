@@ -23,7 +23,7 @@ export default function GameResultPage() {
                 setTrashCans(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error);
+                console.error("Request failed: ", error.response.status);
             });
     }
 

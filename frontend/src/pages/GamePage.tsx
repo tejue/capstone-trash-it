@@ -57,7 +57,7 @@ export default function GamePage() {
                     })
             })
             .catch(error => {
-                console.error("Request failed: ", error);
+                console.error("Request failed: ", error.response.status);
             })
             .finally(() => {
                 setLoading(false);
@@ -70,14 +70,14 @@ export default function GamePage() {
                 setTrashCans(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error);
+                console.error("Request failed: ", error.response.status);
             });
     }
 
     function postPlayerResult() {
         axios.put(`/api/game/${playerId}/` + games.length, playerResult)
             .catch(error => {
-                console.error("data could not be transmitted:", error);
+                console.error("Data could not be transmitted:", error.response.status);
             })
             .finally(() => {
                 navigate('/game-result/' + games.length);

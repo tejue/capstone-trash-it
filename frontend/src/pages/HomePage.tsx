@@ -29,7 +29,7 @@ export default function HomePage() {
                         setAllGamesResult([])
                     })
                     .catch(error => {
-                        console.error("Data could not be deleted:", error)
+                        console.error("Data could not be deleted:", error.response.status)
                     })
                     .finally(() => {
                         navigate("/game")
@@ -46,7 +46,7 @@ export default function HomePage() {
                 setAllGamesResult(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response);
+                console.error("Request failed: ", error.response.status);
             })
     }
 
