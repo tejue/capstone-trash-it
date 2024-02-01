@@ -30,7 +30,7 @@ export default function GameResult() {
         <>
             {gameResult?.map((result) => (
                 <GameBox key={result.trashCanId}
-                         text={`${result.playerPoints} / ${result.dataPoints}`}
+                         $text={`${result.playerPoints} / ${result.dataPoints}`}
                          $backgroundColor={trashCanColors[result.trashCanId]}
                          color={"colorLight"}
                          size={"100px"}

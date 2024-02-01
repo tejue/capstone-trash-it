@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 type GameBoxProps = {
-    text: string;
+    $text: string;
     color?: string;
     $backgroundColor?: string;
     size?: string;
@@ -10,7 +10,7 @@ type GameBoxProps = {
 
 export default function GameBox(props: GameBoxProps) {
     return (
-        <StyledParagraph {...props}>{props.text}</StyledParagraph>
+        <StyledParagraph {...props}>{props.$text}</StyledParagraph>
     )
 }
 

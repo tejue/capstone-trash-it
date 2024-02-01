@@ -50,7 +50,7 @@ export default function MainMenuPage() {
             <Background/>
             {allGamesResult.length === 0 ? (
                 <StyledGameBoxSection>
-                    <GameBox text={"You have no saved result so far"}/>
+                    <GameBox $text={"You have no saved result so far"}/>
                 </StyledGameBoxSection>
             ) : (
                 <StyledListSection>
@@ -103,8 +103,7 @@ const StyledList = styled.ul`
   clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 10% 90%, 0% 60%, 10% 25%);
 `
 
-const StyledHeading = styled.h1`
-  //line-height: 4;
+const StyledHeading = styled.h2`
   font-size: 1.3rem;
   font-weight: bold;
   letter-spacing: 2px;

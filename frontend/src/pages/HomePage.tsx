@@ -55,7 +55,7 @@ export default function HomePage() {
             <Background $backgroundColor={"none"}/>
             <StyledGameBoxSection>
                 <GameBox
-                    text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>
+                    $text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>
             </StyledGameBoxSection>
                 <Lottie animationData={lottieBird} loop={true}/>
 

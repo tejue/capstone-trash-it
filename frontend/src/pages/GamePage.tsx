@@ -135,7 +135,7 @@ export default function GamePage() {
                 {gameEnd ? (
                     <>
                         <StyledGameBoxSection>
-                            <GameBox text={"Well Done! All trash is sorted."}/>
+                            <GameBox $text={"Well Done! All trash is sorted."}/>
                         </StyledGameBoxSection>
                         <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}/>
                     </>
