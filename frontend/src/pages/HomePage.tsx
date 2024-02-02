@@ -64,7 +64,7 @@ export default function HomePage() {
     return (
         <>
             <Background $backgroundColor={"none"}/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
+            {showSnackbar && <Snackbar onClickOk={handleCloseSnackbar} message={errorMessage}/>}
             <StyledGameBoxSection>
                 <GameBox
                     $text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>
