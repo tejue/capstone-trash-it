@@ -36,7 +36,7 @@ export default function MainMenuPage() {
 
     function handleDeleteAllGamesResult() {
         setShowDeleteSnackbar(true);
-        setSnackMessage("By clicking 'ok', the score of all games will be deleted. You're sure, this is what you want?");
+        setSnackMessage("By clicking 'ok', the score of all games will be deleted. Are you sure, this is what you want?");
     }
 
     function deleteAllGamesResult() {
