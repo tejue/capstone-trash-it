@@ -10,7 +10,7 @@ import java.io.IOException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class ReactRoutingPathResourceResolverTest {
+class ReactRoutingForwardingTest {
 
     @Test
     void expectRelativeResource_ifItExists() throws IOException {
