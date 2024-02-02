@@ -13,6 +13,7 @@ export default function GameResultPage() {
     const navigate = useNavigate();
 
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false)
 
     useEffect(() => {
@@ -25,13 +26,15 @@ export default function GameResultPage() {
                 setTrashCans(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response.status)
-                setShowSnackbar(true);
-            });
+                    console.error("Request failed: ", error.response.status)
+                    setErrorMessage("Ups, looks like something went wrong. Try again or come back later!")
+                    setShowSnackbar(true);
+                }
+            )
     }
 
     function handleCloseSnackbar() {
-    setShowSnackbar(false);
+        setShowSnackbar(false);
     }
 
     function handleNextPage() {
@@ -41,7 +44,7 @@ export default function GameResultPage() {
     return (
         <>
             <Background/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
             <StyledDivResult>
                 <StyledSection>
                     <GameResult/>

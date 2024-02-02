@@ -16,6 +16,7 @@ export default function HomePage() {
 
     const navigate = useNavigate();
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
     useEffect(() => {
@@ -32,6 +33,7 @@ export default function HomePage() {
                     })
                     .catch(error => {
                         console.error("Data could not be deleted:", error.response.status)
+                        setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
                         setShowSnackbar(true);
                     })
                     .finally(() => {
@@ -50,6 +52,7 @@ export default function HomePage() {
             })
             .catch(error => {
                 console.error("Request failed: ", error.response.status)
+                setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
                 setShowSnackbar(true);
             })
     }
@@ -61,7 +64,7 @@ export default function HomePage() {
     return (
         <>
             <Background $backgroundColor={"none"}/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
             <StyledGameBoxSection>
                 <GameBox
                     $text={"Under the midday sun, a gentle storm approaches! Winds whip trash into chaos. Take action! Gather and sort swiftly before the storm intensifies!"}/>

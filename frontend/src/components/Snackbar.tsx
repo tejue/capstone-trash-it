@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 type SnackbarProps = {
+    message: string;
     onClick: () => void;
 }
 
@@ -8,8 +9,8 @@ export default function Snackbar(props: Readonly<SnackbarProps>) {
 
     return (
         <StyledSnack>
-            <SnackMessage>Ups, looks like something went wrong. Try again or come back later!</SnackMessage>
-            <SnackButton onClick={props.onClick}>Alright, will do!</SnackButton>
+            <SnackMessage>{props.message}</SnackMessage>
+            <SnackButton onClick={props.onClick}>Alright</SnackButton>
         </StyledSnack>
     );
 }

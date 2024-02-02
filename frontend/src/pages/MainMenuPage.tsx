@@ -14,6 +14,7 @@ export default function MainMenuPage() {
     const navigate = useNavigate();
 
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
     useEffect(() => {
@@ -27,6 +28,7 @@ export default function MainMenuPage() {
             })
             .catch(error => {
                 console.error("Request failed: ", error.response.status)
+                setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
                 setShowSnackbar(true);
             })
     }
@@ -40,6 +42,7 @@ export default function MainMenuPage() {
                 })
                 .catch(error => {
                     console.error("Data could not be deleted:", error.response.status)
+                    setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
                     setShowSnackbar(true);
                 })
         }
@@ -56,7 +59,7 @@ export default function MainMenuPage() {
     return (
         <>
             <Background/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
             {allGamesResult.length === 0 ? (
                 <StyledGameBoxSection>
                     <GameBox $text={"You have no saved result so far"}/>
