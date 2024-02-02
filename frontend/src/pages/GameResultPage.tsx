@@ -44,7 +44,7 @@ export default function GameResultPage() {
     return (
         <>
             <Background/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
+            {showSnackbar && <Snackbar onClickOk={handleCloseSnackbar} message={errorMessage}/>}
             <StyledDivResult>
                 <StyledSection>
                     <GameResult/>

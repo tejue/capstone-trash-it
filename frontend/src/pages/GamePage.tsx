@@ -139,7 +139,7 @@ export default function GamePage() {
     return (
         <>
             <Background/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
+            {showSnackbar && <Snackbar onClickOk={handleCloseSnackbar} message={errorMessage}/>}
             {loading && (<StyledLottieWindSection>
                 <Lottie animationData={lottieWindLoading} loop={true}/>
             </StyledLottieWindSection>)}

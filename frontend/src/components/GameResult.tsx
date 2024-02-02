@@ -37,7 +37,7 @@ export default function GameResult() {
 
     return (
         <>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
+            {showSnackbar && <Snackbar onClickOk={handleCloseSnackbar} message={errorMessage}/>}
             {gameResult?.map((result) => (
                 <GameBox key={result.trashCanId}
                          $text={`${result.playerPoints} / ${result.dataPoints}`}

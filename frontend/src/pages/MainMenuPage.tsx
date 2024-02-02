@@ -14,8 +14,9 @@ export default function MainMenuPage() {
     const navigate = useNavigate();
 
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
+    const [snackMessage, setSnackMessage] = useState<string>("");
+    const [showErrorSnackbar, setShowErrorSnackbar] = useState<boolean>(false);
+    const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false);
 
     useEffect(() => {
         getAllGamesResult()
@@ -28,28 +29,35 @@ export default function MainMenuPage() {
             })
             .catch(error => {
                 console.error("Request failed: ", error.response.status)
-                setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
-                setShowSnackbar(true);
+                setSnackMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
+                setShowErrorSnackbar(true);
             })
     }
 
-    function deleteAllGamesResult() {
-        const deleteMessage = window.confirm("By clicking 'ok', the score of all games will be deleted. You're sure, this is what you want?");
-        if (deleteMessage) {
-            axios.put(`/api/game/${playerId}/gamesResult`)
-                .then(() => {
-                    setAllGamesResult([])
-                })
-                .catch(error => {
-                    console.error("Data could not be deleted:", error.response.status)
-                    setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
-                    setShowSnackbar(true);
-                })
-        }
+    function handleDeleteAllGamesResult() {
+        setShowDeleteSnackbar(true);
+        setSnackMessage("By clicking 'ok', the score of all games will be deleted. You're sure, this is what you want?");
     }
 
-    function handleCloseSnackbar() {
-        setShowSnackbar(false);
+    function deleteAllGamesResult() {
+        axios.put(`/api/game/${playerId}/gamesResult`)
+            .then(() => {
+                setAllGamesResult([])
+                setShowDeleteSnackbar(false);
+            })
+            .catch(error => {
+                console.error("Data could not be deleted:", error.response.status)
+                setSnackMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
+                setShowErrorSnackbar(true);
+            })
+    }
+
+    function handleCancelDeleteSnackbar() {
+        setShowDeleteSnackbar(false);
+    }
+
+    function handleCloseErrorSnackbar() {
+        setShowErrorSnackbar(false);
     }
 
     function handleStartNewGame() {
@@ -59,7 +67,7 @@ export default function MainMenuPage() {
     return (
         <>
             <Background/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar} message={errorMessage}/>}
+            {showErrorSnackbar && <Snackbar onClickOk={handleCloseErrorSnackbar} message={snackMessage}/>}
             {allGamesResult.length === 0 ? (
                 <StyledGameBoxSection>
                     <GameBox $text={"You have no saved result so far"}/>
@@ -77,11 +85,13 @@ export default function MainMenuPage() {
             )}
             <StyledDivButtonsPosition>
                 {allGamesResult.length > 0 && (
-                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
+                    <ButtonBuzzer handleClick={handleDeleteAllGamesResult} buttonText={"fresh start"} color={"red"}
                                   $position={"left"}
                     />)}
                 <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"} $position={"right"}/>
             </StyledDivButtonsPosition>
+            {showDeleteSnackbar && <Snackbar onClickOk={deleteAllGamesResult} onClickCancel={handleCancelDeleteSnackbar}
+                                             message={snackMessage}/>}
         </>
     )
 }
