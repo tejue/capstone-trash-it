@@ -12,16 +12,25 @@ import styled from "styled-components";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import windsGrey from "../assets/windsGrey.svg";
 import {Background} from "../components/Background.ts";
+import GameBox from "../components/GameBox.tsx";
+import Lottie from "lottie-react";
+import lottieWindLoading from "../assets/lottieWindLoading.json";
+import Snackbar from "../components/Snackbar.tsx";
 
-export default function Game() {
+export default function GamePage() {
 
     const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
 
     const navigate = useNavigate();
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(TouchSensor),
-    )
+
+    const touchSensor = useSensor(TouchSensor, {
+        activationConstraint: {
+            delay: 250,
+            tolerance: 5,
+        },
+    });
+
+    const sensors = useSensors(touchSensor, useSensor(PointerSensor));
 
     const [trashes, setTrashes] = useState<TrashType[]>([]);
     const [trashCans, setTrashCans] = useState<TrashCanType[]>([])
@@ -29,6 +38,8 @@ export default function Game() {
     const [initialTrashes, setInitialTrashes] = useState<boolean>(false);
     const [gameEnd, setGameEnd] = useState<boolean>(false);
     const [games, setGames] = useState<GameType[]>([])
+    const [loading, setLoading] = useState<boolean>(true);
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false)
 
     useEffect(() => {
         if (!initialTrashes) {
@@ -48,8 +59,12 @@ export default function Game() {
                     })
             })
             .catch(error => {
-                console.error("Request failed: ", error);
-            });
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
+            })
+            .finally(() => {
+                setLoading(false);
+            })
     }
 
     function getTrashCans() {
@@ -58,14 +73,16 @@ export default function Game() {
                 setTrashCans(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             });
     }
 
     function postPlayerResult() {
         axios.put(`/api/game/${playerId}/` + games.length, playerResult)
             .catch(error => {
-                console.error("data could not be transmitted:", error);
+                console.error("Data could not be transmitted:", error.response.status)
+                setShowSnackbar(true);
             })
             .finally(() => {
                 navigate('/game-result/' + games.length);
@@ -105,13 +122,23 @@ export default function Game() {
     }
 
     function handleGameEnd(trashToRecycle: TrashType[]) {
-        const noLeftTrashes = trashToRecycle.every(trash => trash.name === "");
-        setGameEnd(noLeftTrashes)
+        setTimeout(() => {
+            const noLeftTrashes = trashToRecycle.every(trash => trash.name === "");
+            setGameEnd(noLeftTrashes);
+        }, 250);
+    }
+
+    function handleCloseSnackbar() {
+        setShowSnackbar(false);
     }
 
     return (
         <>
             <Background/>
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
+            {loading && (<StyledLottieWindSection>
+                <Lottie animationData={lottieWindLoading} loop={true}/>
+            </StyledLottieWindSection>)}
             {!gameEnd && <StyledImage src={windsGrey} alt={"winds"}/>}
             <DndContext
                 sensors={sensors}
@@ -119,9 +146,9 @@ export default function Game() {
             >
                 {gameEnd ? (
                     <>
-                        <StyledSection>
-                            <GameBox>Well Done! All trash is sorted.</GameBox>
-                        </StyledSection>
+                        <StyledGameBoxSection>
+                            <GameBox $text={"Well Done! All trash is sorted."}/>
+                        </StyledGameBoxSection>
                         <ButtonBuzzer handleClick={postPlayerResult} buttonText={"see your result"}/>
                     </>
                 ) : (
@@ -134,6 +161,13 @@ export default function Game() {
         </>
     )
 }
+
+const StyledLottieWindSection = styled.section`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  transform: translate(0, 60%);
+`
 
 const StyledDivGameArea = styled.div`
   display: flex;
@@ -151,22 +185,9 @@ const StyledImage = styled.img`
   z-index: -1;
 `
 
-const StyledSection = styled.section`
+const StyledGameBoxSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 70vh;
-`
-
-const GameBox = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  line-height: 1.4;
-  padding: 20px;
-  background-color: #E6F0E9;
-  width: 300px;
-  height: 300px;
-  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
 `

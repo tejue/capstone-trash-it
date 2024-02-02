@@ -5,7 +5,7 @@ type BackgroundProps = {
 }
 
 export const Background = styled.div<BackgroundProps>`
-   content: "";
+  content: "";
   position: fixed;
   top: 0;
   left: 0;

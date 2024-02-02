@@ -36,7 +36,8 @@ const StyledDraggableTrash = styled.div.attrs<StyledDraggableTrashProps>(
      }) => ({
         style: {
             transform: CSS.Transform.toString(transform),
-            gridArea: `area${$index}`
+            gridArea: `area${$index}`,
+            touchAction: 'none'
         }
     })
 )`
@@ -52,5 +53,4 @@ const StyledImage = styled.img`
   max-height: 100%;
   max-width: 100%;
   rotate: 10deg;
-  overflow: hidden;
-`
+  `

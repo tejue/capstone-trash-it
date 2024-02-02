@@ -1,17 +1,17 @@
 import './App.css'
-import MainMenu from "./pages/MainMenu.tsx";
-import Game from "./pages/Game.tsx";
+import MainMenuPage from "./pages/MainMenuPage.tsx";
+import GamePage from "./pages/GamePage.tsx";
 import {Route, Routes} from "react-router-dom";
-import GameResult from "./pages/GameResult.tsx";
+import GameResultPage from "./pages/GameResultPage.tsx";
 import HomePage from "./pages/HomePage.tsx";
 
 export default function App() {
     return (
         <Routes>
             <Route path={"/"} element={<HomePage/>}/>
-            <Route path={"/main-menu"} element={<MainMenu/>}/>
-            <Route path={"/game"} element={<Game/>}/>
-            <Route path={"/game-result/:gameId"} element={<GameResult/>}/>
+            <Route path={"/main-menu"} element={<MainMenuPage/>}/>
+            <Route path={"/game"} element={<GamePage/>}/>
+            <Route path={"/game-result/:gameId"} element={<GameResultPage/>}/>
         </Routes>
     )
 }

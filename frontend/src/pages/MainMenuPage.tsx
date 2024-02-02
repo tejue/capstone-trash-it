@@ -5,13 +5,16 @@ import {GamePointsType} from "../types/GamePointsType.ts";
 import {useNavigate} from "react-router-dom";
 import ButtonBuzzer from "../components/ButtonBuzzer.tsx";
 import {Background} from "../components/Background.ts";
+import GameBox from "../components/GameBox.tsx";
+import Snackbar from "../components/Snackbar.tsx";
 
-export default function MainMenu() {
+export default function MainMenuPage() {
 
     const playerId: string = "8162795f-5c82-44fc-a5ef-1cf5ce545f7b"
     const navigate = useNavigate();
 
     const [allGamesResult, setAllGamesResult] = useState<GamePointsType[]>([])
+    const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
 
     useEffect(() => {
         getAllGamesResult()
@@ -23,7 +26,8 @@ export default function MainMenu() {
                 setAllGamesResult(response.data)
             })
             .catch(error => {
-                console.error("Request failed: ", error.response);
+                console.error("Request failed: ", error.response.status)
+                setShowSnackbar(true);
             })
     }
 
@@ -35,9 +39,14 @@ export default function MainMenu() {
                     setAllGamesResult([])
                 })
                 .catch(error => {
-                    console.error("Data could not be deleted:", error)
+                    console.error("Data could not be deleted:", error.response.status)
+                    setShowSnackbar(true);
                 })
         }
+    }
+
+    function handleCloseSnackbar() {
+        setShowSnackbar(false);
     }
 
     function handleStartNewGame() {
@@ -47,10 +56,11 @@ export default function MainMenu() {
     return (
         <>
             <Background/>
+            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
             {allGamesResult.length === 0 ? (
-                <StyledSection>
-                    <GameBox>You have no saved result so far</GameBox>
-                </StyledSection>
+                <StyledGameBoxSection>
+                    <GameBox $text={"You have no saved result so far"}/>
+                </StyledGameBoxSection>
             ) : (
                 <StyledListSection>
                     <StyledList><StyledHeading>Score</StyledHeading>
@@ -64,13 +74,21 @@ export default function MainMenu() {
             )}
             <StyledDivButtonsPosition>
                 {allGamesResult.length > 0 && (
-                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}  $position={"left"}
-                                  />)}
-                <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"}  $position={"right"} />
+                    <ButtonBuzzer handleClick={deleteAllGamesResult} buttonText={"fresh start"} color={"red"}
+                                  $position={"left"}
+                    />)}
+                <ButtonBuzzer handleClick={handleStartNewGame} buttonText={"new game"} $position={"right"}/>
             </StyledDivButtonsPosition>
         </>
     )
 }
+
+const StyledGameBoxSection = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+`
 
 const StyledListSection = styled.section`
   display: flex;
@@ -89,14 +107,12 @@ const StyledList = styled.ul`
   width: 350px;
   padding: 40px 80px;
   margin: 20px auto;
-  background-color: #E6F0E9;
-  color: #1f1f1f;
+  background-color: var(--secondary-color);
   overflow: auto;
   clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 10% 90%, 0% 60%, 10% 25%);
 `
 
-const StyledHeading = styled.h1`
-  //line-height: 4;
+const StyledHeading = styled.h2`
   font-size: 1.3rem;
   font-weight: bold;
   letter-spacing: 2px;
@@ -111,26 +127,6 @@ const StyledListItem = styled.li`
   width: 100%;
 `
 
-const StyledSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 70vh;
-`
-
-const GameBox = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  line-height: 1.4;
-  padding: 20px;
-  background-color: #E6F0E9;
-  width: 300px;
-  height: 300px;
-  clip-path: polygon(50% 0%, 90% 20%, 100% 50%, 100% 80%, 60% 100%, 20% 90%, 0% 60%, 10% 25%);
-`
-
 const StyledDivButtonsPosition = styled.div`
-display: flex;
+  display: flex;
 `

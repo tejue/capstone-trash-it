@@ -36,8 +36,8 @@ const BuzzerButton = styled.button<{ color?: string }>`
   width: 100px;
   overflow: hidden;
   border-radius: 50%;
-  border: 1px solid ${({color}) => color === "red" ? "#AD007E" : "#29A05C"};
-  background: ${({color}) => color === "red" ? "linear-gradient(0deg, #850061, #EA33B4)" : "linear-gradient(0deg, #1E7644, #63C177)"};
+  border: 1px solid ${({color}) => color === "red" ? "var(--secondary-highlight-color-border)" : "var(--primary-highlight-color-border)"};
+  background: ${({color}) => color === "red" ? "linear-gradient(0, var(--secondary-highlight-color), var(--secondary-highlight-color-gradientStart))" : "linear-gradient(0deg, var(--primary-highlight-color), var(--primary-highlight-color-gradientStart))"};
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.2s;
 
@@ -52,9 +52,9 @@ const StyledSpan = styled.span<{ color?: string }>`
   justify-content: center;
   height: 80px;
   width: 80px;
-  border: 1px solid ${({color}) => color === "red" ? "#AD007E" : "#29A05C"};
+  border: 1px solid ${({color}) => color === "red" ? "var(--secondary-highlight-color-border:)" : "var(--primary-highlight-color-border)"};
   border-radius: 50%;
-  background: ${({color}) => color === "red" ? "linear-gradient(180deg, #850061, #EA33B4)" : "linear-gradient(180deg, #1E7644, #63C177)"};
+  background: ${({color}) => color === "red" ? "linear-gradient(180deg, var(--secondary-highlight-color), var(--secondary-highlight-color-gradientStart))" : "linear-gradient(180deg, var(--primary-highlight-color), var(--primary-highlight-color-gradientStart))"};
   font-size: 16px;
-  color: #E6F0E9;
+  color: var(--text-color-light);
 `
