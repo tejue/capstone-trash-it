@@ -39,6 +39,7 @@ export default function GamePage() {
     const [gameEnd, setGameEnd] = useState<boolean>(false);
     const [games, setGames] = useState<GameType[]>([])
     const [loading, setLoading] = useState<boolean>(true);
+    const [errorMessage, setErrorMessage] = useState<string>("");
     const [showSnackbar, setShowSnackbar] = useState<boolean>(false)
 
     useEffect(() => {
@@ -60,6 +61,7 @@ export default function GamePage() {
             })
             .catch(error => {
                 console.error("Request failed: ", error.response.status)
+                setErrorMessage("Ups, looks like something went wrong. Try again or come back later!")
                 setShowSnackbar(true);
             })
             .finally(() => {
@@ -74,6 +76,7 @@ export default function GamePage() {
             })
             .catch(error => {
                 console.error("Request failed: ", error.response.status)
+                setErrorMessage("Ups, looks like something went wrong. Try again or come back later!")
                 setShowSnackbar(true);
             });
     }
@@ -82,6 +85,7 @@ export default function GamePage() {
         axios.put(`/api/game/${playerId}/` + games.length, playerResult)
             .catch(error => {
                 console.error("Data could not be transmitted:", error.response.status)
+                setErrorMessage(error.response?.data?.message || "Ups, looks like something went wrong. Try again or come back later!");
                 setShowSnackbar(true);
             })
             .finally(() => {
@@ -135,7 +139,7 @@ export default function GamePage() {
     return (
         <>
             <Background/>
-            {showSnackbar && <Snackbar onClick={handleCloseSnackbar}/>}
+            {showSnackbar && <Snackbar onClickOk={handleCloseSnackbar} message={errorMessage}/>}
             {loading && (<StyledLottieWindSection>
                 <Lottie animationData={lottieWindLoading} loop={true}/>
             </StyledLottieWindSection>)}
